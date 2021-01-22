@@ -3,6 +3,7 @@ import tw from "twin.macro";
 import firebase from "firebase/app";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { Horario } from "features/horarios/types";
 
 const Input = styled.input`
   ${tw`border p-2 rounded`}
@@ -29,10 +30,24 @@ const Registro = () => {
     }
 
     const userCredential = await firebase.auth().createUserWithEmailAndPassword(correo, contrasena);
+
+    const horario: Horario = {
+      tipo: "manual",
+      dias: {
+        lunes: { horaApertura: "", horaCierre: "", isAbierto: true },
+        martes: { horaApertura: "", horaCierre: "", isAbierto: true },
+        miercoles: { horaApertura: "", horaCierre: "", isAbierto: true },
+        jueves: { horaApertura: "", horaCierre: "", isAbierto: true },
+        viernes: { horaApertura: "", horaCierre: "", isAbierto: true },
+        sabado: { horaApertura: "", horaCierre: "", isAbierto: true },
+        domingo: { horaApertura: "", horaCierre: "", isAbierto: true },
+      },
+    };
+
     firebase
       .database()
       .ref(`tiendas/${userCredential.user?.uid}`)
-      .set({ titulo: "Titulo", menu: false, horario: false, profilePicUrl: false, bannerPicUrl: false, activo: false });
+      .set({ titulo: "Titulo", menu: false, horario, profilePicUrl: false, bannerPicUrl: false, activo: false });
 
     router.push("/rolselect");
   };
