@@ -43,18 +43,42 @@ const MenuArticuloCreator: FC<{ categoria: string; setOpenCrearArticulo: Functio
   categoria,
   setOpenCrearArticulo,
 }) => {
+  const userUID = useContext(globalContext).user?.uid;
+
   const { register, handleSubmit, watch } = useForm<{
     titulo: string;
     descripcion: string;
     precio: number;
     moneda: string;
     categoria: string;
-    imgInput: FileList;
+    imgFileList: FileList;
   }>();
-  const handleArticleCreation = handleSubmit(({ titulo, descripcion, precio, moneda, categoria, imgInput }) => {});
+  const handleArticleCreation = handleSubmit(({ titulo, descripcion, precio, moneda, categoria, imgFileList }) => {
+    if (!imgFileList?.[0]) return;
 
-  const previewImgFile = watch("imgInput")?.[0];
-  const previewImgUrl = previewImgFile !== undefined ? URL.createObjectURL(watch("imgInput")?.[0]) : "";
+    const articleRef = firebase.database().ref(`/tiendas/${userUID}/menu/articulos`).push();
+
+    const uploadTask = firebase
+      .storage()
+      .ref(`/imagenes/tiendas/${userUID}/menu/articulos/${articleRef.key}`)
+      .put(imgFileList[0]);
+
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, null, null, () =>
+      uploadTask.snapshot.ref.getDownloadURL().then(imgUrl =>
+        articleRef.set({
+          titulo,
+          descripcion,
+          precio: Number(precio),
+          moneda,
+          categoria: categoria.toLowerCase(),
+          imgUrl,
+        }),
+      ),
+    );
+  });
+
+  const previewImgFile = watch("imgFileList")?.[0];
+  const previewImgUrl = previewImgFile !== undefined ? URL.createObjectURL(previewImgFile) : "";
 
   return (
     <form tw="space-y-3" onSubmit={handleArticleCreation}>
@@ -64,16 +88,17 @@ const MenuArticuloCreator: FC<{ categoria: string; setOpenCrearArticulo: Functio
       </div>
 
       <div tw="flex flex-col space-y-2">
-        <input type="text" readOnly value={categoria} tw="hidden" name="categoria" />
-        <img src={previewImgUrl} tw="w-80 m-0 self-center" />
+        <input type="text" readOnly value={categoria} tw="hidden" ref={register} name="categoria" />
+        <img src={previewImgUrl} tw="w-80 self-center" />
         <input
           id="img-input"
           ref={register}
-          name="imgInput"
+          name="imgFileList"
           type="file"
           placeholder="Foto"
           tw="hidden"
           accept="image/*"
+          required
         />
 
         <button
@@ -83,12 +108,12 @@ const MenuArticuloCreator: FC<{ categoria: string; setOpenCrearArticulo: Functio
           Elegir foto
         </button>
 
-        <TextInput ref={register} name="titulo" type="text" placeholder="Nombre del articulo" />
-        <TextInput ref={register} name="descripcion" as="textarea" placeholder="Descripcion del articulo" />
+        <TextInput required ref={register} name="titulo" type="text" placeholder="Nombre del articulo" />
+        <TextInput required ref={register} name="descripcion" as="textarea" placeholder="Descripcion del articulo" />
 
         <div tw="space-x-2">
-          <TextInput ref={register} name="precio" tw="w-32" type="number" placeholder="Precio" />
-          <select ref={register} name="moneda">
+          <TextInput required ref={register} name="precio" tw="w-32" type="number" placeholder="Precio" />
+          <select required ref={register} name="moneda">
             <option value="dolares">Dolares</option>
             <option value="bolivares">Bolivares</option>
           </select>
