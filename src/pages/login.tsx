@@ -1,17 +1,9 @@
-import styled from "styled-components";
 import Link from "next/link";
-import tw from "twin.macro";
+import "twin.macro";
 import { useForm } from "react-hook-form";
 import firebase from "firebase";
 import { useRouter } from "next/router";
-
-const Input = styled.input`
-  ${tw`border p-2 rounded`}
-
-  ::placeholder {
-    ${tw`font-sans text-gray-600 text-xs`}
-  }
-`;
+import TextInput from "shared/components/TextInput";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
@@ -27,7 +19,7 @@ const Login = () => {
   return (
     <div tw="flex justify-center pt-8 px-4">
       <form tw="flex flex-col p-6 rounded shadow w-full max-w-sm" onSubmit={handleSubmit(handleLogin)}>
-        <Input
+        <TextInput
           name="correo"
           type="email"
           placeholder="Correo Electronico"
@@ -35,7 +27,7 @@ const Login = () => {
           autoComplete="email"
           ref={register}
         />
-        <Input
+        <TextInput
           name="contrasena"
           type="password"
           placeholder="Contrasena"

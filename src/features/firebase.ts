@@ -4,7 +4,6 @@ import "firebase/analytics";
 import "firebase/database";
 import "firebase/storage";
 import { useEffect, useState } from "react";
-import { Dia } from "./horarios/types";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDkznvRFE3D4oq41Yeos82CeINR9W60Ptg",

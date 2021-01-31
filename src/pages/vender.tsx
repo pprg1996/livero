@@ -4,7 +4,8 @@ import "twin.macro";
 import { globalContext } from "pages/_app";
 import { useFirebaseTiendaImg, useFirebaseTiendaTitulo } from "features/firebase";
 import EditSvg from "../assets/icons/edit.svg";
-import HorariosConfigCard from "features/horarios/HorariosConfigCard";
+import HorariosConfigCard from "features/horario/HorariosConfigCard";
+import MenuConfigCard from "features/menu/MenuConfigCard";
 
 const triggerInputClick = (id: string) => {
   document.getElementById(id)?.click();
@@ -61,12 +62,14 @@ const Vender = () => {
         <input id="profile-img-input" onChange={handleProfileImgChange} type="file" tw="hidden" accept="image/*" />
       </div>
 
-      <div className="titulo" tw="-mt-10 ml-32 flex items-center">
+      <div className="titulo" tw="-mt-10 mb-8 ml-32 flex items-center">
         <h1 tw="font-medium text-lg">{titulo}</h1>
         <button tw="ml-2" onClick={cambiarTitulo}>
           <EditSvg tw="w-4" />
         </button>
       </div>
+
+      <MenuConfigCard />
 
       <HorariosConfigCard />
     </div>

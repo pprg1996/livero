@@ -1,17 +1,10 @@
-import styled from "styled-components";
-import tw from "twin.macro";
+import "twin.macro";
 import firebase from "firebase/app";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { Horario } from "features/horarios/types";
-
-const Input = styled.input`
-  ${tw`border p-2 rounded`}
-
-  ::placeholder {
-    ${tw`font-sans text-gray-600 text-xs`}
-  }
-`;
+import { Horario } from "features/horario/types";
+import { Menu } from "features/menu/types";
+import TextInput from "shared/components/TextInput";
 
 type Inputs = {
   correo: string;
@@ -44,10 +37,15 @@ const Registro = () => {
       },
     };
 
+    const menu: Menu = {
+      categorias: [],
+      articulos: [],
+    };
+
     firebase
       .database()
       .ref(`tiendas/${userCredential.user?.uid}`)
-      .set({ titulo: "Titulo", menu: false, horario, profilePicUrl: false, bannerPicUrl: false, activo: false });
+      .set({ titulo: "Titulo", menu, horario, activo: false });
 
     router.push("/rolselect");
   };
@@ -55,7 +53,7 @@ const Registro = () => {
   return (
     <div tw="flex justify-center pt-8 px-4">
       <form tw="flex flex-col p-6 rounded shadow w-full max-w-sm" onSubmit={handleSubmit(handleRegister)}>
-        <Input
+        <TextInput
           name="correo"
           type="email"
           placeholder="Correo Electronico"
@@ -63,7 +61,7 @@ const Registro = () => {
           autoComplete="email"
           ref={register}
         />
-        <Input
+        <TextInput
           name="contrasena"
           type="password"
           placeholder="Contrasena"
@@ -71,7 +69,7 @@ const Registro = () => {
           autoComplete="new-password"
           ref={register}
         />
-        <Input
+        <TextInput
           name="contrasena2"
           type="password"
           placeholder="Repetir Contrasena"

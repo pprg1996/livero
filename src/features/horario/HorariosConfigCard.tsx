@@ -1,24 +1,25 @@
 import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import type { FC } from "react";
 import "twin.macro";
-import { Dia, TipoHorario } from "./types";
+import { Dia, TipoHorario } from "features/horario/types";
 import { useForm } from "react-hook-form";
 import firebase from "firebase/app";
 import { globalContext } from "pages/_app";
+import Card from "shared/components/Card";
 
 const HorariosConfigCard = () => {
   const [tipoHorario, setTipoHorario] = useState<TipoHorario>("automatico");
   const [tipoDescripcion, setTipoDescripcion] = useState("");
-  const UserUID = useContext(globalContext).user?.uid;
+  const userUID = useContext(globalContext).user?.uid;
 
   useEffect(() => {
-    if (UserUID === undefined) return;
+    if (userUID === undefined) return;
 
     firebase
       .database()
-      .ref(`/tiendas/${UserUID}/horario/tipo`)
+      .ref(`/tiendas/${userUID}/horario/tipo`)
       .on("value", data => setTipoHorario(data.val()));
-  }, [UserUID]);
+  }, [userUID]);
 
   useEffect(() => {
     if (tipoHorario === "automatico")
@@ -30,12 +31,12 @@ const HorariosConfigCard = () => {
   const handleHorarioTipoChange = (e: SyntheticEvent) => {
     firebase
       .database()
-      .ref(`/tiendas/${UserUID}/horario/tipo`)
+      .ref(`/tiendas/${userUID}/horario/tipo`)
       .set((e.currentTarget as HTMLInputElement).value);
   };
 
   return (
-    <div className="horarios" tw="shadow mt-8 mx-4 divide-y px-4 pb-2">
+    <Card className="horarios">
       <div className="card-header" tw="flex justify-between py-2">
         <h1 tw="font-medium text-lg">Horario</h1>
         <label>
@@ -47,8 +48,8 @@ const HorariosConfigCard = () => {
         </label>
       </div>
 
-      <div className="card-body">
-        <h2 tw="pt-2">{tipoDescripcion}</h2>
+      <div className="card-body" tw="py-2">
+        <h2>{tipoDescripcion}</h2>
 
         {tipoHorario === "automatico" ? (
           <div className="dias-config" tw="mt-2">
@@ -62,34 +63,39 @@ const HorariosConfigCard = () => {
           </div>
         ) : null}
       </div>
-    </div>
+    </Card>
   );
 };
 
 const DiaSetup: FC<{
   dia: string;
 }> = ({ dia }) => {
-  const UserUID = useContext(globalContext).user?.uid;
-  const { register, watch } = useForm<Dia>();
+  const userUID = useContext(globalContext).user?.uid;
+  const { register, watch, setValue } = useForm<Dia>();
   const { isAbierto, horaApertura, horaCierre } = watch();
   const [diaConfigRemoto, setDiaConfigRemoto] = useState<Dia>();
 
   useEffect(() => {
-    if (UserUID === undefined) return;
+    if (userUID === undefined) return;
 
     firebase
       .database()
-      .ref(`/tiendas/${UserUID}/horario/dias/${dia.toLowerCase()}`)
-      .on("value", data => setDiaConfigRemoto(data.val()));
-  }, [UserUID]);
+      .ref(`/tiendas/${userUID}/horario/dias/${dia.toLowerCase()}`)
+      .on("value", data => {
+        setDiaConfigRemoto(data.val());
+        setValue("isAbierto", data.val().isAbierto);
+        setValue("horaApertura", data.val().horaApertura);
+        setValue("horaCierre", data.val().horaCierre);
+      });
+  }, [userUID]);
 
   useEffect(() => {
-    if (UserUID === undefined || isAbierto === undefined || horaApertura === undefined || horaCierre === undefined)
+    if (userUID === undefined || isAbierto === undefined || horaApertura === undefined || horaCierre === undefined)
       return;
 
     firebase
       .database()
-      .ref(`/tiendas/${UserUID}/horario/dias/${dia.toLowerCase()}`)
+      .ref(`/tiendas/${userUID}/horario/dias/${dia.toLowerCase()}`)
       .set({ isAbierto, horaApertura, horaCierre });
   }, [isAbierto, horaApertura, horaCierre]);
 
