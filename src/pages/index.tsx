@@ -14,6 +14,7 @@ export default function Home() {
         setLatitude(-1);
         setLongitude(-1);
       },
+      { enableHighAccuracy: true },
     );
   }, []);
 
