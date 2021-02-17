@@ -5,9 +5,10 @@ import tw, { GlobalStyles } from "twin.macro";
 import { createGlobalStyle } from "styled-components";
 import MenuSvg from "../assets/icons/menu.svg";
 import Link from "next/link";
-import { createContext, FC, useEffect, useReducer, useState } from "react";
+import { createContext, FC, useEffect, useReducer, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import firebase from "firebase/app";
+import { useClickOutside } from "shared/hooks";
 
 const CustomGlobalStyles = createGlobalStyle`
 html,
@@ -88,7 +89,7 @@ const Header = () => {
             <MenuSvg tw="w-6 h-auto transform transition-transform group-hover:translate-x-1" />
           </button>
 
-          <SideMenu showSideMenu={showSideMenu} />
+          <SideMenu showSideMenu={showSideMenu} setShowSideMenu={setShowSideMenu} />
         </>
       )}
 
@@ -97,9 +98,14 @@ const Header = () => {
   );
 };
 
-const SideMenu: FC<{ showSideMenu: boolean }> = ({ showSideMenu }) => {
+const SideMenu: FC<{ showSideMenu: boolean; setShowSideMenu: Function }> = ({ showSideMenu, setShowSideMenu }) => {
+  const menuRef = useRef(null);
+  useClickOutside(menuRef, () => {
+    if (showSideMenu) setShowSideMenu(false);
+  });
+
   return (
-    <div tw="absolute bg-white top-12 hidden border flex-col p-4 z-10" css={[showSideMenu && tw`flex`]}>
+    <div ref={menuRef} tw="absolute bg-white top-12 hidden border flex-col p-4 z-10" css={[showSideMenu && tw`flex`]}>
       <Link href="/comprar">
         <a>Comprar</a>
       </Link>
