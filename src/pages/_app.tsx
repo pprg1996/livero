@@ -81,7 +81,7 @@ const Header = () => {
   const router = useRouter();
 
   return (
-    <div tw="flex border-b px-3 py-1 relative">
+    <div tw="flex border-b px-3 py-1 relative max-w-screen-sm mx-auto">
       {["/login", "/registro"].includes(router.pathname) ? null : (
         <>
           <button tw="mr-4" className="group" onClick={() => setShowSideMenu(s => !s)}>
@@ -99,7 +99,7 @@ const Header = () => {
 
 const SideMenu: FC<{ showSideMenu: boolean }> = ({ showSideMenu }) => {
   return (
-    <div tw="absolute bg-white top-12 -left-32 border flex flex-col p-4 z-10" css={[showSideMenu && tw`left-4`]}>
+    <div tw="absolute bg-white top-12 hidden border flex-col p-4 z-10" css={[showSideMenu && tw`flex`]}>
       <Link href="/comprar">
         <a>Comprar</a>
       </Link>
