@@ -42,10 +42,12 @@ const Registro = () => {
       articulos: [],
     };
 
+    const ubicacion = { longitud: 0, latitud: 0 };
+
     firebase
       .database()
       .ref(`tiendas/${userCredential.user?.uid}`)
-      .set({ titulo: "Titulo", menu, horario, activo: false });
+      .set({ titulo: "Titulo", menu, horario, activo: false, ubicacion });
 
     router.push("/rolselect");
   };

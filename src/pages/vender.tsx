@@ -6,6 +6,7 @@ import { useFirebaseTiendaImg, useFirebaseTiendaTitulo } from "features/firebase
 import EditSvg from "../assets/icons/edit.svg";
 import HorariosConfigCard from "features/horario/HorariosConfigCard";
 import MenuConfigCard from "features/menu/MenuConfigCard";
+import UbicacionConfigCard from "features/ubicacion/UbicacionConfigCard";
 
 const triggerInputClick = (id: string) => {
   document.getElementById(id)?.click();
@@ -68,6 +69,8 @@ const Vender = () => {
           <EditSvg tw="w-4" />
         </button>
       </div>
+
+      <UbicacionConfigCard />
 
       <MenuConfigCard />
 
