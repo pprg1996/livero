@@ -95,8 +95,11 @@ const UbicacionConfigCard = () => {
       .ref(`tiendas/${userUID}/ubicacion`)
       .set(ubicacion)
       .then(() => {
-        alert("Nueva ubicacion guardada");
         setIsModUbicacion(false);
+
+        setTimeout(() => {
+          alert("Nueva ubicacion guardada");
+        }, 1200);
       });
   };
 
