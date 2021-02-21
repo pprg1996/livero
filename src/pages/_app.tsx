@@ -82,7 +82,7 @@ const Header = () => {
   const router = useRouter();
 
   return (
-    <div tw="flex border-b px-3 py-1 relative max-w-screen-sm mx-auto">
+    <div tw="flex border-b px-3 py-2 relative max-w-screen-sm mx-auto">
       {["/login", "/registro"].includes(router.pathname) ? null : (
         <>
           <button tw="mr-4" className="group" onClick={() => setShowSideMenu(s => !s)}>
