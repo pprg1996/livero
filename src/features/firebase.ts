@@ -34,14 +34,12 @@ const useFirebaseTiendaImg: FirebaseImg = (uid, type) => {
 
   // Cargar foto la primera vez que carga la app
   useEffect(() => {
-    if (!uid) return;
-
     const imgFolderRef = firebase.storage().ref(`imagenes/tiendas/${uid}/${type}`);
     imgFolderRef.listAll().then(data => {
       const imgRef = data.items[0];
       if (imgRef) imgRef.getDownloadURL().then(url => setImgUrl(url));
     });
-  }, [uid]);
+  }, []);
 
   // Actualiza la imagen y borra la anterior
   const actualizarImg = (imgFile: File) => {
@@ -68,15 +66,13 @@ const useFirebaseTiendaTitulo = (uid: string | undefined) => {
   const [titulo, setTitulo] = useState("Titulo");
 
   useEffect(() => {
-    if (!uid) return;
-
     firebase
       .database()
       .ref(`/tiendas/${uid}/titulo`)
       .on("value", data => {
         setTitulo(data.val());
       });
-  }, [uid]);
+  }, []);
 
   const actualizarTitulo = (nuevoTitulo: string) => {
     firebase.database().ref(`/tiendas/${uid}/titulo`).set(nuevoTitulo);

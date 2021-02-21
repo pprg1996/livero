@@ -13,13 +13,11 @@ const HorariosConfigCard = () => {
   const userUID = useContext(globalContext).user?.uid;
 
   useEffect(() => {
-    if (userUID === undefined) return;
-
     firebase
       .database()
       .ref(`/tiendas/${userUID}/horario/tipo`)
       .on("value", data => setTipoHorario(data.val()));
-  }, [userUID]);
+  }, []);
 
   useEffect(() => {
     if (tipoHorario === "automatico")
@@ -76,8 +74,6 @@ const DiaSetup: FC<{
   const [diaConfigRemoto, setDiaConfigRemoto] = useState<Dia>();
 
   useEffect(() => {
-    if (userUID === undefined) return;
-
     firebase
       .database()
       .ref(`/tiendas/${userUID}/horario/dias/${dia.toLowerCase()}`)
@@ -87,7 +83,7 @@ const DiaSetup: FC<{
         setValue("horaApertura", data.val().horaApertura);
         setValue("horaCierre", data.val().horaCierre);
       });
-  }, [userUID]);
+  }, []);
 
   useEffect(() => {
     if (userUID === undefined || isAbierto === undefined || horaApertura === undefined || horaCierre === undefined)

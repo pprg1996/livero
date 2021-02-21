@@ -145,15 +145,13 @@ const CategoriaDropdown: FC<{ categoria: string; setCategoria: Function }> = ({ 
   const userUID = useContext(globalContext).user?.uid;
 
   useEffect(() => {
-    if (!userUID) return;
-
     firebase
       .database()
       .ref(`/tiendas/${userUID}/menu/categorias`)
       .on("value", data => {
         setCategoriaList(data.val() ?? []);
       });
-  }, [userUID]);
+  }, []);
 
   useClickOutside(menuRef, () => {
     if (showMenu) setShowMenu(false);

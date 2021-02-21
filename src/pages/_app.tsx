@@ -69,10 +69,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <CustomGlobalStyles />
       <GlobalStyles />
+
       <Header />
-      <div tw="max-w-screen-sm m-auto">
-        <Component {...pageProps} />
-      </div>
+
+      <div tw="max-w-screen-sm m-auto">{state.user !== undefined ? <Component {...pageProps} /> : null}</div>
     </globalContext.Provider>
   );
 }

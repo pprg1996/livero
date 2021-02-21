@@ -13,8 +13,6 @@ const UbicacionConfigCard = () => {
   const [isModUbicacion, setIsModUbicacion] = useState(false);
 
   useEffect(() => {
-    if (!userUID) return;
-
     navigator.geolocation.getCurrentPosition(
       pos => {
         mapboxgl.accessToken =
@@ -47,11 +45,9 @@ const UbicacionConfigCard = () => {
       undefined,
       { enableHighAccuracy: true },
     );
-  }, [userUID]);
+  }, []);
 
   useEffect(() => {
-    if (!userUID) return;
-
     mapRef.current?.resize();
 
     const mapClickHandler = (clickEvent: mapboxgl.MapMouseEvent & mapboxgl.EventData): void => {
@@ -77,7 +73,7 @@ const UbicacionConfigCard = () => {
           markerRef.current?.setLngLat([lng, lat]);
         });
     };
-  }, [isModUbicacion, userUID]);
+  }, [isModUbicacion]);
 
   const goToCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition(
