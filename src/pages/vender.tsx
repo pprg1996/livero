@@ -1,12 +1,14 @@
-import { SyntheticEvent, useContext } from "react";
+import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import Image from "next/image";
-import "twin.macro";
+import tw from "twin.macro";
 import { globalContext } from "pages/_app";
 import { useFirebaseTiendaImg, useFirebaseTiendaTitulo } from "features/firebase";
 import EditSvg from "../assets/icons/edit.svg";
 import HorariosConfigCard from "features/horario/HorariosConfigCard";
 import MenuConfigCard from "features/menu/MenuConfigCard";
 import UbicacionConfigCard from "features/ubicacion/UbicacionConfigCard";
+import firebase from "firebase/app";
+import SwitchToggle from "shared/components/SwitchToggle";
 
 const triggerInputClick = (id: string) => {
   document.getElementById(id)?.click();
@@ -17,6 +19,7 @@ const Vender = () => {
   const { imgUrl: bannerImgUrl, actualizarImg: actualizarBannerImg } = useFirebaseTiendaImg(userUID, "banner");
   const { imgUrl: profileImgUrl, actualizarImg: actualizarProfileImg } = useFirebaseTiendaImg(userUID, "profile");
   const { titulo, actualizarTitulo } = useFirebaseTiendaTitulo(userUID);
+  const [tiendaActivada, setTiendaActivada] = useState();
 
   // Subir foto de banner cuando hay un cambio en el archivo seleccionado
   const handleBannerImgChange = (e: SyntheticEvent) => {
@@ -38,6 +41,17 @@ const Vender = () => {
   const cambiarTitulo = () => {
     actualizarTitulo(prompt("Ingrese el titulo nuevo") ?? "");
   };
+
+  useEffect(() => {
+    const tiendaActivadaRef = firebase.database().ref(`/tiendas/${userUID}/activo`);
+
+    if (tiendaActivada === undefined) {
+      tiendaActivadaRef.on("value", data => setTiendaActivada(data.val()));
+      return;
+    }
+
+    tiendaActivadaRef.set(tiendaActivada);
+  }, [tiendaActivada]);
 
   return (
     <div tw="flex flex-col">
@@ -70,11 +84,24 @@ const Vender = () => {
         </button>
       </div>
 
-      <UbicacionConfigCard />
+      <SwitchToggle
+        checked={tiendaActivada ?? true}
+        setChecked={setTiendaActivada}
+        label={tiendaActivada ? "Tienda activada" : "Tienda desactivada"}
+        wrapperTW={tw`self-center mb-2`}
+      />
 
-      <MenuConfigCard />
+      {tiendaActivada ? (
+        <>
+          <UbicacionConfigCard />
 
-      <HorariosConfigCard />
+          <MenuConfigCard />
+
+          <HorariosConfigCard />
+        </>
+      ) : (
+        <h1 tw="text-xl text-center px-2">Activa tu tienda para configurarla y empezar a vender!</h1>
+      )}
     </div>
   );
 };
