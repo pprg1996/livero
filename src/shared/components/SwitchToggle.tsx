@@ -2,7 +2,7 @@ import tw from "twin.macro";
 
 const SwitchToggle = ({ checked, setChecked, label }: { checked: boolean; setChecked: Function; label: string }) => {
   return (
-    <div>
+    <div className="switch-toggle">
       <div tw="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
         <input
           type="checkbox"
