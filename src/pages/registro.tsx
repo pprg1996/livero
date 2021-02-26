@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { Horario } from "features/horario/types";
 import { Menu } from "features/menu/types";
 import TextInput from "shared/components/TextInput";
+import { Ubicacion } from "features/ubicacion/types";
+import { Tienda } from "features/tienda/types";
 
 type Inputs = {
   correo: string;
@@ -42,12 +44,11 @@ const Registro = () => {
       articulos: {},
     };
 
-    const ubicacion = { longitud: 0, latitud: 0 };
+    const ubicacion: Ubicacion = { longitud: 0, latitud: 0 };
 
-    firebase
-      .database()
-      .ref(`tiendas/${userCredential.user?.uid}`)
-      .set({ titulo: "Titulo", menu, horario, activo: false, ubicacion });
+    const tienda: Tienda = { titulo: "Titulo", menu, horario, activo: false, abierto: false, ubicacion };
+
+    firebase.database().ref(`tiendas/${userCredential.user?.uid}`).set(tienda);
 
     router.push("/rolselect");
   };
