@@ -1,4 +1,4 @@
-import { SyntheticEvent, useContext, useEffect, useState } from "react";
+import React, { SyntheticEvent, useContext, useEffect, useState } from "react";
 import type { FC } from "react";
 import "twin.macro";
 import { Dia, TipoHorario } from "features/horario/types";
@@ -6,24 +6,31 @@ import { useForm } from "react-hook-form";
 import firebase from "firebase/app";
 import { globalContext } from "pages/_app";
 import Card from "shared/components/Card";
+import SwitchToggle from "shared/components/SwitchToggle";
 
 const HorariosConfigCard = () => {
   const [tipoHorario, setTipoHorario] = useState<TipoHorario>("automatico");
   const [tipoDescripcion, setTipoDescripcion] = useState("");
   const userUID = useContext(globalContext).user?.uid;
+  const [tiendaAbierta, setTiendaAbierta] = useState();
 
   useEffect(() => {
     firebase
       .database()
       .ref(`/tiendas/${userUID}/horario/tipo`)
       .on("value", data => setTipoHorario(data.val()));
+
+    firebase
+      .database()
+      .ref(`/tiendas/${userUID}/abierto`)
+      .on("value", data => setTiendaAbierta(data.val()));
   }, []);
 
   useEffect(() => {
     if (tipoHorario === "automatico")
       setTipoDescripcion("Tu tienda abrira y cerrara automaticamente en un horario establecido");
     else if (tipoHorario === "manual")
-      setTipoDescripcion("Tu tienda recibira ordenes solo cuando abras y dejaras de recibirlas cuando cierres");
+      setTipoDescripcion("Tu tienda recibira ordenes solo cuando abras y dejara de recibirlas cuando cierres");
   }, [tipoHorario]);
 
   const handleHorarioTipoChange = (e: SyntheticEvent) => {
@@ -32,6 +39,11 @@ const HorariosConfigCard = () => {
       .ref(`/tiendas/${userUID}/horario/tipo`)
       .set((e.currentTarget as HTMLInputElement).value);
   };
+
+  useEffect(() => {
+    if (tiendaAbierta === undefined) return;
+    firebase.database().ref(`/tiendas/${userUID}/abierto`).set(tiendaAbierta);
+  }, [tiendaAbierta]);
 
   return (
     <Card className="horarios">
@@ -59,7 +71,13 @@ const HorariosConfigCard = () => {
             <DiaSetup dia="Sabado" />
             <DiaSetup dia="Domingo" />
           </div>
-        ) : null}
+        ) : (
+          <SwitchToggle
+            checked={tiendaAbierta ?? true}
+            setChecked={setTiendaAbierta}
+            label={tiendaAbierta ? "Tienda abierta" : "Tienda cerrada"}
+          />
+        )}
       </div>
     </Card>
   );
