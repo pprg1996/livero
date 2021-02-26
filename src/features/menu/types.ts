@@ -8,4 +8,6 @@ export type Articulo = {
   tipo: string;
 };
 
-export type Menu = { categorias: string[]; articulos: Articulo[] };
+export type ArticuloId = string;
+
+export type Menu = { categorias: string[]; articulos: Record<ArticuloId, Articulo> };

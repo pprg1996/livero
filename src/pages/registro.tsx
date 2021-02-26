@@ -39,7 +39,7 @@ const Registro = () => {
 
     const menu: Menu = {
       categorias: [],
-      articulos: [],
+      articulos: {},
     };
 
     const ubicacion = { longitud: 0, latitud: 0 };
