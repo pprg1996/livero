@@ -3,7 +3,9 @@ import "firebase/auth";
 import "firebase/analytics";
 import "firebase/database";
 import "firebase/storage";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { globalContext } from "pages/_app";
+import { Operacion } from "./compradores/types";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDkznvRFE3D4oq41Yeos82CeINR9W60Ptg",
@@ -81,4 +83,47 @@ const useFirebaseTiendaTitulo = (uid: string | undefined) => {
   return { titulo, actualizarTitulo };
 };
 
-export { useFirebaseTiendaImg, useFirebaseTiendaTitulo };
+const useOperaciones = (tipoUsuario: "tiendas" | "compradores" | "repartidores") => {
+  const userUID = useContext(globalContext).user?.uid;
+  const [operacionesIdRecord, setOperacionesIdRecord] = useState<Record<string, string>>({});
+  const [operaciones, setOperaciones] = useState<Record<string, Operacion>>();
+
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`/${tipoUsuario}/${userUID}/operaciones`)
+      .on("value", data => setOperacionesIdRecord(data.val()));
+  }, []);
+
+  useEffect(() => {
+    let operacionesRefs: firebase.database.Reference[] = [];
+
+    for (const operacionKey in operacionesIdRecord) {
+      const onValue = (data: firebase.database.DataSnapshot): void => {
+        const key = data.key as string;
+
+        const newOperaciones: Record<string, Operacion> = {};
+        newOperaciones[key] = data.val();
+
+        setOperaciones(ops => {
+          return { ...ops, ...newOperaciones };
+        });
+      };
+
+      const operacionRef = firebase.database().ref(`/operaciones/${operacionesIdRecord[operacionKey]}`);
+      operacionRef.on("value", onValue);
+
+      operacionesRefs.push(operacionRef);
+    }
+
+    return () => {
+      for (const operacionRef of operacionesRefs) {
+        operacionRef.off();
+      }
+    };
+  }, [operacionesIdRecord]);
+
+  return operaciones;
+};
+
+export { useFirebaseTiendaImg, useFirebaseTiendaTitulo, useOperaciones };

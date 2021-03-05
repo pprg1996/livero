@@ -9,6 +9,8 @@ import MenuConfigCard from "features/menu/MenuConfigCard";
 import UbicacionConfigCard from "features/ubicacion/UbicacionConfigCard";
 import firebase from "firebase/app";
 import SwitchToggle from "shared/components/SwitchToggle";
+import { Operacion } from "features/compradores/types";
+import { useOperaciones } from "features/firebase";
 
 const triggerInputClick = (id: string) => {
   document.getElementById(id)?.click();
@@ -20,6 +22,7 @@ const Vender = () => {
   const { imgUrl: profileImgUrl, actualizarImg: actualizarProfileImg } = useFirebaseTiendaImg(userUID, "profile");
   const { titulo, actualizarTitulo } = useFirebaseTiendaTitulo(userUID);
   const [tiendaActivada, setTiendaActivada] = useState();
+  const operaciones = useOperaciones("tiendas");
 
   // Subir foto de banner cuando hay un cambio en el archivo seleccionado
   const handleBannerImgChange = (e: SyntheticEvent) => {
@@ -53,15 +56,8 @@ const Vender = () => {
     tiendaActivadaRef.set(tiendaActivada);
   }, [tiendaActivada]);
 
-  useEffect(() => {
-    firebase
-      .database()
-      .ref(`/tiendas/${userUID}/operaciones`)
-      .on("value", data => console.log(data.val()));
-  }, []);
-
   return (
-    <div tw="flex flex-col">
+    <div tw="flex flex-col pb-12">
       <div className="banner-img" tw="flex bg-gray-500 relative">
         <Image src={bannerImgUrl} width={640} height={274} objectFit="contain" />
         <button

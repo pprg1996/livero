@@ -1,14 +1,13 @@
 import "features/firebase";
 import { AppProps } from "next/dist/next-server/lib/router/router";
 import Head from "next/head";
-import tw, { GlobalStyles } from "twin.macro";
+import { GlobalStyles } from "twin.macro";
 import { createGlobalStyle } from "styled-components";
-import MenuSvg from "../assets/icons/menu.svg";
-import Link from "next/link";
-import { createContext, FC, useEffect, useReducer, useRef, useState } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { useRouter } from "next/router";
 import firebase from "firebase/app";
-import { useClickOutside } from "shared/hooks";
+import Header from "features/global/components/Header";
+import BottomTabs from "features/global/components/BottomTabs";
 
 const CustomGlobalStyles = createGlobalStyle`
 html,
@@ -75,51 +74,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <div id="content-container" tw="relative max-w-screen-sm m-auto">
         {state.user !== undefined ? <Component {...pageProps} /> : null}
       </div>
+
+      <BottomTabs />
     </globalContext.Provider>
   );
 }
-
-const Header = () => {
-  const [showSideMenu, setShowSideMenu] = useState(false);
-  const router = useRouter();
-
-  return (
-    <div tw="flex border-b px-3 py-2 relative max-w-screen-sm mx-auto">
-      {["/login", "/registro"].includes(router.pathname) ? null : (
-        <>
-          <button tw="mr-4" className="group" onClick={() => setShowSideMenu(s => !s)}>
-            <MenuSvg tw="w-6 h-auto transform transition-transform group-hover:translate-x-1" />
-          </button>
-
-          <SideMenu showSideMenu={showSideMenu} setShowSideMenu={setShowSideMenu} />
-        </>
-      )}
-
-      <h1 tw="font-medium text-xl text-gray-900">Livero</h1>
-    </div>
-  );
-};
-
-const SideMenu: FC<{ showSideMenu: boolean; setShowSideMenu: Function }> = ({ showSideMenu, setShowSideMenu }) => {
-  const menuRef = useRef(null);
-  useClickOutside(menuRef, () => {
-    if (showSideMenu) setShowSideMenu(false);
-  });
-
-  return (
-    <div ref={menuRef} tw="absolute bg-white top-12 hidden border flex-col p-4 z-10" css={[showSideMenu && tw`flex`]}>
-      <Link href="/comprar">
-        <a>Comprar</a>
-      </Link>
-      <Link href="/vender">
-        <a>Vender</a>
-      </Link>
-      <Link href="/repartir">
-        <a>Repartir</a>
-      </Link>
-      <button onClick={() => firebase.auth().signOut()}>Cerrar sesion</button>
-    </div>
-  );
-};
 
 export default MyApp;
