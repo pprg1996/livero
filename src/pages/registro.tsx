@@ -7,6 +7,8 @@ import { Menu } from "features/menu/types";
 import TextInput from "shared/components/TextInput";
 import { Ubicacion } from "features/ubicacion/types";
 import { Tienda } from "features/tienda/types";
+import { Repartidor } from "features/repartidores/types";
+import { Comprador } from "features/compradores/types";
 
 type Inputs = {
   correo: string;
@@ -26,7 +28,7 @@ const Registro = () => {
 
     const userCredential = await firebase.auth().createUserWithEmailAndPassword(correo, contrasena);
 
-    const horario: Horario = {
+    const horarioDefault: Horario = {
       tipo: "manual",
       dias: {
         lunes: { horaApertura: "", horaCierre: "", isAbierto: true },
@@ -39,16 +41,30 @@ const Registro = () => {
       },
     };
 
-    const menu: Menu = {
+    const menuDefault: Menu = {
       categorias: [],
       articulos: {},
     };
 
-    const ubicacion: Ubicacion = { longitud: 0, latitud: 0 };
+    const ubicacionDefault: Ubicacion = { longitud: 0, latitud: 0 };
 
-    const tienda: Tienda = { titulo: "Titulo", menu, horario, activo: false, abierto: false, ubicacion };
+    const tienda: Tienda = {
+      titulo: "Titulo",
+      menu: menuDefault,
+      horario: horarioDefault,
+      activo: false,
+      abierto: false,
+      ubicacion: ubicacionDefault,
+      operaciones: {},
+    };
+
+    const repartidor: Repartidor = { activo: false, disponible: true, operaciones: {} };
+
+    const comprador: Comprador = { operaciones: {} };
 
     firebase.database().ref(`tiendas/${userCredential.user?.uid}`).set(tienda);
+    firebase.database().ref(`repartidores/${userCredential.user?.uid}`).set(repartidor);
+    firebase.database().ref(`compradores/${userCredential.user?.uid}`).set(comprador);
 
     router.push("/rolselect");
   };

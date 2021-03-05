@@ -53,6 +53,13 @@ const Vender = () => {
     tiendaActivadaRef.set(tiendaActivada);
   }, [tiendaActivada]);
 
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`/tiendas/${userUID}/operaciones`)
+      .on("value", data => console.log(data.val()));
+  }, []);
+
   return (
     <div tw="flex flex-col">
       <div className="banner-img" tw="flex bg-gray-500 relative">

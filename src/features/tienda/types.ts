@@ -9,4 +9,5 @@ export type Tienda = {
   menu: Menu;
   titulo: string;
   ubicacion: Ubicacion;
+  operaciones: Record<string, string>;
 };

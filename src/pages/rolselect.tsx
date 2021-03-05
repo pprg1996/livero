@@ -12,7 +12,7 @@ const RolSelect = () => {
     <div tw="flex justify-center pt-20">
       <Link href="/comprar" passHref>
         <RolLink>
-          <ShoppingCartSvg />
+          <ShoppingCartSvg tw="text-white fill-current" />
           <RolTitle>Comprar</RolTitle>
         </RolLink>
       </Link>

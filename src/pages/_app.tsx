@@ -72,7 +72,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       <Header />
 
-      <div tw="max-w-screen-sm m-auto">{state.user !== undefined ? <Component {...pageProps} /> : null}</div>
+      <div id="content-container" tw="relative max-w-screen-sm m-auto">
+        {state.user !== undefined ? <Component {...pageProps} /> : null}
+      </div>
     </globalContext.Provider>
   );
 }
