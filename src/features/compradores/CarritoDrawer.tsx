@@ -36,7 +36,7 @@ const CarritoDrawer = ({ setCompraStatus }: { setCompraStatus: Function }) => {
       compradorId: userUID,
       tiendaId: tiendaId,
       status: "pagando",
-      fecha: Date.now(),
+      timestamp: Date.now(),
     };
 
     setCompraStatus("pagando");

@@ -5,7 +5,7 @@ import "firebase/database";
 import "firebase/storage";
 import { useContext, useEffect, useState } from "react";
 import { globalContext } from "pages/_app";
-import { Operacion } from "./compradores/types";
+import { Mensaje, Operacion } from "./compradores/types";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDkznvRFE3D4oq41Yeos82CeINR9W60Ptg",
@@ -24,7 +24,7 @@ interface FirebaseImg {
   (uid: string | undefined, type: "profile" | "banner"): { imgUrl: string; actualizarImg: Function };
 }
 
-const useFirebaseTiendaImg: FirebaseImg = (uid, type) => {
+export const useFirebaseTiendaImg: FirebaseImg = (uid, type) => {
   let placeholderUrl = "/profile-placeholder.jpg";
   switch (type) {
     case "banner":
@@ -64,7 +64,7 @@ const useFirebaseTiendaImg: FirebaseImg = (uid, type) => {
   return { imgUrl, actualizarImg };
 };
 
-const useFirebaseTiendaTitulo = (uid: string | undefined) => {
+export const useFirebaseTiendaTitulo = (uid: string | undefined) => {
   const [titulo, setTitulo] = useState("Titulo");
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const useFirebaseTiendaTitulo = (uid: string | undefined) => {
   return { titulo, actualizarTitulo };
 };
 
-const useOperaciones = (tipoUsuario: "tiendas" | "compradores" | "repartidores") => {
+export const useOperaciones = (tipoUsuario: "tiendas" | "compradores" | "repartidores") => {
   const userUID = useContext(globalContext).user?.uid;
   const [operacionesIdRecord, setOperacionesIdRecord] = useState<Record<string, string>>({});
   const [operaciones, setOperaciones] = useState<Record<string, Operacion>>();
@@ -126,4 +126,6 @@ const useOperaciones = (tipoUsuario: "tiendas" | "compradores" | "repartidores")
   return operaciones;
 };
 
-export { useFirebaseTiendaImg, useFirebaseTiendaTitulo, useOperaciones };
+export const mandarMensaje = (mensaje: Mensaje, operacionId: string) => {
+  firebase.database().ref(`/operaciones/${operacionId}/mensajes`).push(mensaje);
+};

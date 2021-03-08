@@ -8,7 +8,7 @@ export type ArticuloPack = {
 
 export type Carrito = { articuloPacks: ArticuloPack[] };
 
-export type Mensaje = { texto: string; rol: "comprador" | "vendedor" | "repartidor" };
+export type Mensaje = { texto: string; rol: "comprador" | "vendedor" | "repartidor"; timestamp: number };
 
 export type CompraStatus = "explorando" | "pagando" | "repartiendo";
 
@@ -17,9 +17,9 @@ export type Operacion = {
   tiendaId: string;
   compradorId: string;
   repartidorId?: string;
-  mensajes?: Mensaje[];
+  mensajes?: Record<string, Mensaje>;
   status: "pagando" | "repartiendo" | "finalizado" | "cancelado";
-  fecha: number;
+  timestamp: number;
 };
 
-export type Comprador = { operaciones: Record<string, string> };
+export type Comprador = { operaciones: Record<string, string>; nombre: string };
