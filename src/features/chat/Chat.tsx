@@ -9,7 +9,7 @@ const Chat: FC<{ tipo: "compradores" | "tiendas" | "repartidores" }> = ({ tipo }
   const [operacionIdSeleccionada, setOperacionIdSeleccionada] = useState<string>();
 
   return (
-    <div tw="p-2">
+    <div tw="p-2 h-full">
       {operacionIdSeleccionada ? (
         <ChatDetallado operacionIdSeleccionada={operacionIdSeleccionada} tipo={tipo} />
       ) : (

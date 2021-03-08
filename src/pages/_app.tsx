@@ -2,7 +2,7 @@ import "features/firebase";
 import { AppProps } from "next/dist/next-server/lib/router/router";
 import Head from "next/head";
 import { GlobalStyles } from "twin.macro";
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { createContext, useEffect, useReducer } from "react";
 import { useRouter } from "next/router";
 import firebase from "firebase/app";
@@ -12,6 +12,7 @@ import BottomTabs from "features/global/components/BottomTabs";
 const CustomGlobalStyles = createGlobalStyle`
 html,
 body {
+  height:100%;
   padding: 0;
   margin: 0;
 }
@@ -50,6 +51,15 @@ const reducer = (state: GlobalState, action: { type: string; payload: any }): Gl
   }
 };
 
+const AppDiv = styled.div`
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  max-width: 640px;
+  margin: 0 auto;
+`;
+
 function MyApp({ Component, pageProps }: AppProps) {
   const [state, dispatch] = useReducer(reducer, { user: undefined });
   const router = useRouter();
@@ -59,6 +69,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       dispatch({ type: Actions.SET_USER, payload: user });
       if (!user) router.push("/login");
     });
+
+    const mainDiv = document.getElementById("__next")?.style;
+    if (mainDiv) mainDiv.height = "100%";
   }, []);
 
   return (
@@ -69,13 +82,15 @@ function MyApp({ Component, pageProps }: AppProps) {
       <CustomGlobalStyles />
       <GlobalStyles />
 
-      <Header />
+      <AppDiv>
+        <Header />
 
-      <div id="content-container" tw="relative max-w-screen-sm m-auto">
-        {state.user !== undefined ? <Component {...pageProps} /> : null}
-      </div>
+        <div id="content-container" tw="relative h-full overflow-auto">
+          {state.user !== undefined ? <Component {...pageProps} /> : null}
+        </div>
 
-      <BottomTabs />
+        <BottomTabs />
+      </AppDiv>
     </globalContext.Provider>
   );
 }
