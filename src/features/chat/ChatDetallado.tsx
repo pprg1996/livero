@@ -1,6 +1,6 @@
 import { Mensaje } from "features/compradores/types";
 import { mandarMensaje, useOperaciones } from "features/firebase";
-import { FC, useRef } from "react";
+import { FC, MouseEventHandler, useEffect, useRef } from "react";
 import tw from "twin.macro";
 
 const ChatDetallado: FC<{ operacionIdSeleccionada: string; tipo: "compradores" | "tiendas" | "repartidores" }> = ({
@@ -20,19 +20,28 @@ const ChatDetallado: FC<{ operacionIdSeleccionada: string; tipo: "compradores" |
     : [];
 
   const enviarMensaje = () => {
+    inputRef.current?.focus();
+
     const texto = (inputRef.current as HTMLInputElement).value;
     let rol: "comprador" | "vendedor" | "repartidor" = "comprador";
     if (tipo === "tiendas") rol = "vendedor";
     else if (tipo === "repartidores") rol = "repartidor";
 
     mandarMensaje({ texto, rol, timestamp: Date.now() }, operacionIdSeleccionada);
+
+    (inputRef.current as HTMLInputElement).value = "";
   };
 
   return (
-    <div tw="h-full flex flex-col">
+    <div tw="h-full grid grid-template-rows[1fr auto] grid-cols-1 space-y-2">
       <MensajesList mensajes={mensajes} tipo={tipo} />
-      <input tw="border mt-auto" ref={inputRef} />
-      <button onClick={enviarMensaje}>Enviar</button>
+
+      <div tw="flex space-x-2">
+        <input tw="border flex-grow" ref={inputRef} />
+        <button tw="rounded bg-blue-700 text-xs text-white p-1" onClick={enviarMensaje}>
+          Enviar
+        </button>
+      </div>
     </div>
   );
 };
@@ -41,8 +50,14 @@ const MensajesList: FC<{ mensajes: Mensaje[]; tipo: "compradores" | "tiendas" | 
   tipo,
   mensajes,
 }) => {
+  const listDivRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    listDivRef.current?.scrollTo(0, listDivRef.current.scrollHeight);
+  });
+
   return (
-    <div tw="flex flex-col space-y-2">
+    <div tw="flex flex-col space-y-2 overflow-auto px-2" ref={listDivRef}>
       {mensajes.map(mensaje => {
         let mensajeBg = tw`bg-blue-700`;
         switch (mensaje.rol) {
