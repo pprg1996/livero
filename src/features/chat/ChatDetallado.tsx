@@ -1,6 +1,6 @@
 import { Mensaje } from "features/compradores/types";
 import { mandarMensaje, useOperaciones } from "features/firebase";
-import { FC, MouseEventHandler, useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import tw from "twin.macro";
 
 const ChatDetallado: FC<{ operacionIdSeleccionada: string; tipo: "compradores" | "tiendas" | "repartidores" }> = ({
@@ -51,10 +51,15 @@ const MensajesList: FC<{ mensajes: Mensaje[]; tipo: "compradores" | "tiendas" | 
   mensajes,
 }) => {
   const listDivRef = useRef<HTMLDivElement>(null);
+  const scrollToBottom = () => listDivRef.current?.scrollTo(0, listDivRef.current.scrollHeight);
 
   useEffect(() => {
-    listDivRef.current?.scrollTo(0, listDivRef.current.scrollHeight);
+    scrollToBottom();
   });
+
+  useEffect(() => {
+    new ResizeObserver(() => scrollToBottom()).observe(listDivRef.current as HTMLDivElement);
+  }, []);
 
   return (
     <div tw="flex flex-col space-y-2 overflow-auto px-2" ref={listDivRef}>

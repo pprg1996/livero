@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import { useOperaciones } from "features/firebase";
-import { Operacion } from "features/compradores/types";
 import CartaChatBtn from "features/chat/CartaChatBtn";
 import ChatDetallado from "./ChatDetallado";
 
