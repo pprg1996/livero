@@ -58,9 +58,14 @@ const Registro = () => {
       operaciones: {},
     };
 
-    const repartidor: Repartidor = { activo: false, disponible: true, operaciones: {} };
+    const repartidor: Repartidor = {
+      activo: false,
+      disponible: true,
+      operaciones: {},
+      ubicacion: ubicacionDefault,
+    };
 
-    const comprador: Comprador = { operaciones: {}, nombre: "Nombre" };
+    const comprador: Comprador = { operaciones: {}, nombre: "Nombre", ubicacion: ubicacionDefault };
 
     firebase.database().ref(`tiendas/${userCredential.user?.uid}`).set(tienda);
     firebase.database().ref(`repartidores/${userCredential.user?.uid}`).set(repartidor);

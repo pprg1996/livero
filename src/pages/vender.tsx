@@ -10,7 +10,7 @@ import UbicacionConfigCard from "features/ubicacion/UbicacionConfigCard";
 import firebase from "firebase/app";
 import SwitchToggle from "shared/components/SwitchToggle";
 import { Operacion } from "features/compradores/types";
-import { useOperaciones } from "features/firebase";
+import { useOperacionesPersonales } from "features/firebase";
 
 const triggerInputClick = (id: string) => {
   document.getElementById(id)?.click();
@@ -22,7 +22,7 @@ const Vender = () => {
   const { imgUrl: profileImgUrl, actualizarImg: actualizarProfileImg } = useFirebaseTiendaImg(userUID, "profile");
   const { titulo, actualizarTitulo } = useFirebaseTiendaTitulo(userUID);
   const [tiendaActivada, setTiendaActivada] = useState();
-  const operaciones = useOperaciones("tiendas");
+  const operaciones = useOperacionesPersonales("tiendas");
 
   // Subir foto de banner cuando hay un cambio en el archivo seleccionado
   const handleBannerImgChange = (e: SyntheticEvent) => {

@@ -5,4 +5,5 @@ export type Repartidor = {
   disponible: boolean;
   operaciones: Record<string, string>;
   operacionPendienteId?: string;
+  ubicacion: Ubicacion;
 };

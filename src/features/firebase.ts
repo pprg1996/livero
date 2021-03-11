@@ -5,7 +5,10 @@ import "firebase/database";
 import "firebase/storage";
 import { useContext, useEffect, useState } from "react";
 import { globalContext } from "pages/_app";
-import { Mensaje, Operacion } from "./compradores/types";
+import { Comprador, Mensaje, Operacion } from "./compradores/types";
+import { Ubicacion } from "./ubicacion/types";
+import { Tienda } from "./tienda/types";
+import { Repartidor } from "./repartidores/types";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDkznvRFE3D4oq41Yeos82CeINR9W60Ptg",
@@ -83,7 +86,7 @@ export const useFirebaseTiendaTitulo = (uid: string | undefined) => {
   return { titulo, actualizarTitulo };
 };
 
-export const useOperaciones = (tipoUsuario: "tiendas" | "compradores" | "repartidores") => {
+export const useOperacionesPersonales = (tipoUsuario: "tiendas" | "compradores" | "repartidores") => {
   const userUID = useContext(globalContext).user?.uid;
   const [operacionesIdRecord, setOperacionesIdRecord] = useState<Record<string, string>>({});
   const [operaciones, setOperaciones] = useState<Record<string, Operacion>>();
@@ -126,6 +129,98 @@ export const useOperaciones = (tipoUsuario: "tiendas" | "compradores" | "reparti
   return operaciones;
 };
 
+export const useOperaciones = () => {
+  const [operacionesRecord, setOperacionesRecord] = useState<Record<string, Operacion>>();
+
+  useEffect(() => {
+    firebase
+      .database()
+      .ref(`/operaciones`)
+      .on("value", data => setOperacionesRecord(data.val()));
+  }, []);
+
+  return operacionesRecord;
+};
+
+export const useUpdateUbicacion = (tipo: "tiendas" | "compradores" | "repartidores") => {
+  const userUID = useContext(globalContext).user?.uid;
+
+  useEffect(() => {
+    const watchId = navigator.geolocation.watchPosition(
+      pos => {
+        const ubicacion: Ubicacion = { longitud: pos.coords.longitude, latitud: pos.coords.latitude };
+        firebase.database().ref(`${tipo}/${userUID}/ubicacion`).set(ubicacion);
+      },
+      undefined,
+      { enableHighAccuracy: true },
+    );
+
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+    };
+  }, []);
+};
+
 export const mandarMensaje = (mensaje: Mensaje, operacionId: string) => {
   firebase.database().ref(`/operaciones/${operacionId}/mensajes`).push(mensaje);
+};
+
+export const useCompradores = () => {
+  const [compradores, setCompradores] = useState<Record<string, Comprador>>();
+
+  useEffect(() => {
+    const compradoresRef = firebase.database().ref("/compradores");
+
+    compradoresRef.on("value", data => {
+      if (!data.exists()) return;
+
+      setCompradores(data.val());
+    });
+
+    return () => {
+      compradoresRef.off();
+    };
+  }, []);
+
+  return compradores;
+};
+
+export const useVendedores = () => {
+  const [vendedores, setVendedores] = useState<Record<string, Tienda>>();
+
+  useEffect(() => {
+    const vendedoresRef = firebase.database().ref("/tiendas");
+
+    vendedoresRef.on("value", data => {
+      if (!data.exists()) return;
+
+      setVendedores(data.val());
+    });
+
+    return () => {
+      vendedoresRef.off();
+    };
+  }, []);
+
+  return vendedores;
+};
+
+export const useRepartidores = () => {
+  const [repartidores, setRepartidores] = useState<Record<string, Repartidor>>();
+
+  useEffect(() => {
+    const repartidoresRef = firebase.database().ref("/repartidores");
+
+    repartidoresRef.on("value", data => {
+      if (!data.exists()) return;
+
+      setRepartidores(data.val());
+    });
+
+    return () => {
+      repartidoresRef.off();
+    };
+  }, []);
+
+  return repartidores;
 };

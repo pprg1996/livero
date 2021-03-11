@@ -1,0 +1,26 @@
+.vendedorMarker {
+  background-image: url("/vendedor-marker.png");
+  background-size: contain;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  width: 36.2px;
+  height: 53.9px;
+}
+
+.repartidorMarker {
+  background-image: url("/repartidor-marker.png");
+  background-size: contain;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  width: 36.2px;
+  height: 53.9px;
+}
+
+.compradorMarker {
+  background-image: url("/comprador-marker.png");
+  background-size: contain;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  width: 36.2px;
+  height: 53.9px;
+}

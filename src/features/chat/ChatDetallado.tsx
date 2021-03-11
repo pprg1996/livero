@@ -1,5 +1,5 @@
 import { Mensaje } from "features/compradores/types";
-import { mandarMensaje, useOperaciones } from "features/firebase";
+import { mandarMensaje, useOperacionesPersonales } from "features/firebase";
 import { FC, useEffect, useRef } from "react";
 import tw from "twin.macro";
 
@@ -8,7 +8,7 @@ const ChatDetallado: FC<{ operacionIdSeleccionada: string; tipo: "compradores" |
   tipo,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const operaciones = useOperaciones(tipo);
+  const operaciones = useOperacionesPersonales(tipo);
   const operacionSeleccionada = operaciones && operaciones[operacionIdSeleccionada];
   const mensajesRecord = operacionSeleccionada?.mensajes;
   const mensajes = mensajesRecord

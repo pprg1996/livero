@@ -1,4 +1,5 @@
 import { Articulo } from "features/menu/types";
+import { Ubicacion } from "features/ubicacion/types";
 
 export type ArticuloPack = {
   articulo: Articulo;
@@ -22,4 +23,4 @@ export type Operacion = {
   timestamp: number;
 };
 
-export type Comprador = { operaciones: Record<string, string>; nombre: string };
+export type Comprador = { operaciones: Record<string, string>; nombre: string; ubicacion: Ubicacion };

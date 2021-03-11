@@ -4,13 +4,25 @@ import firebase from "firebase/app";
 import { globalContext } from "./_app";
 import mapboxgl from "mapbox-gl";
 import "twin.macro";
+import DeliveriesDisponibles from "features/repartidores/DeliveriesDisponibles";
+import { useOperaciones, useCompradores, useRepartidores, useUpdateUbicacion, useVendedores } from "features/firebase";
+import { distance, bbox } from "@turf/turf";
+import markerStyles from "features/css/markerStyles.module.css";
 
 const Repartir = () => {
   const userUID = useContext(globalContext).user?.uid;
   const [repartirdorActivado, setRepartidorActivado] = useState();
   const mapRef = useRef<mapboxgl.Map>();
-  const markerRef = useRef<mapboxgl.Marker>();
-  const firstRenderRef = useRef(true);
+  const repartidorMarkerRef = useRef<mapboxgl.Marker>();
+  const compradorMarkerRef = useRef<mapboxgl.Marker>();
+  const vendedorMarkerRef = useRef<mapboxgl.Marker>();
+  const [selectedOperacionId, setSelectedOperacionId] = useState<string>();
+
+  useUpdateUbicacion("repartidores");
+  const operaciones = useOperaciones();
+  const compradores = useCompradores();
+  const vendedores = useVendedores();
+  const repartidores = useRepartidores();
 
   useEffect(() => {
     const repartidorActivoRef = firebase.database().ref(`/repartidores/${userUID}/activo`);
@@ -31,23 +43,99 @@ const Repartir = () => {
       zoom: 16,
     });
 
-    markerRef.current = new mapboxgl.Marker().setLngLat([0, 0]).addTo(map);
-    mapRef.current = map;
+    const vendedorMarkerDiv = document.createElement("div");
+    vendedorMarkerDiv.className = markerStyles.vendedorMarker;
+    const compradorMarkerDiv = document.createElement("div");
+    compradorMarkerDiv.className = markerStyles.compradorMarker;
+    const repartidorMarkerDiv = document.createElement("div");
+    repartidorMarkerDiv.className = markerStyles.repartidorMarker;
 
-    navigator.geolocation.watchPosition(
+    compradorMarkerRef.current = new mapboxgl.Marker({ element: compradorMarkerDiv, anchor: "bottom-left" })
+      .setLngLat([0, 0])
+      .addTo(map);
+
+    vendedorMarkerRef.current = new mapboxgl.Marker({ element: vendedorMarkerDiv, anchor: "bottom-left" })
+      .setLngLat([0, 0])
+      .addTo(map);
+
+    repartidorMarkerRef.current = new mapboxgl.Marker({ element: repartidorMarkerDiv, anchor: "bottom-left" })
+      .setLngLat([0, 0])
+      .addTo(map);
+
+    mapRef.current = map;
+  }, []);
+
+  useEffect(() => {
+    const watchId = navigator.geolocation.watchPosition(
       pos => {
-        markerRef.current?.setLngLat([pos.coords.longitude, pos.coords.latitude]);
-        mapRef.current?.setCenter([pos.coords.longitude, pos.coords.latitude]);
+        repartidorMarkerRef.current?.setLngLat([pos.coords.longitude, pos.coords.latitude]);
+
+        if (!selectedOperacionId) {
+          mapRef.current?.setCenter([pos.coords.longitude, pos.coords.latitude]);
+        }
       },
       undefined,
       { enableHighAccuracy: true },
     );
-  }, []);
 
-  firstRenderRef.current = false;
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+    };
+  }, [selectedOperacionId]);
+
+  useEffect(() => {
+    if (!selectedOperacionId || !operaciones || !compradores || !vendedores || !repartidores) return;
+
+    const selectedOperacion = operaciones[selectedOperacionId];
+    const comprador = compradores[selectedOperacion.compradorId];
+    const vendedor = vendedores[selectedOperacion.tiendaId];
+
+    const compradorUbicacion = comprador.ubicacion;
+    const vendedorUbicacion = vendedor.ubicacion;
+    const repartidorUbicacion = repartidores[userUID as string].ubicacion;
+
+    vendedorMarkerRef.current?.setLngLat([vendedorUbicacion.longitud, vendedorUbicacion.latitud]);
+    compradorMarkerRef.current?.setLngLat([compradorUbicacion.longitud, compradorUbicacion.latitud]);
+
+    const distancia = distance(
+      [compradorUbicacion.longitud, compradorUbicacion.latitud],
+      [vendedorUbicacion.longitud, vendedorUbicacion.latitud],
+      {
+        units: "kilometers",
+      },
+    );
+
+    const geojson = {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          geometry: {
+            type: "LineString",
+            properties: {},
+            coordinates: [
+              [compradorUbicacion.longitud, compradorUbicacion.latitud],
+              [vendedorUbicacion.longitud, vendedorUbicacion.latitud],
+              [repartidorUbicacion.longitud, repartidorUbicacion.latitud],
+            ],
+          },
+        },
+      ],
+    };
+
+    var coordinates = geojson.features[0].geometry.coordinates;
+
+    var bounds = coordinates.reduce(function (bounds, coord) {
+      return bounds.extend(coord as [number, number]);
+    }, new mapboxgl.LngLatBounds(coordinates[0] as [number, number], coordinates[1] as [number, number]));
+
+    mapRef.current?.fitBounds(bounds, {
+      padding: 40,
+    });
+  }, [selectedOperacionId]);
 
   return (
-    <div>
+    <div tw="space-y-2">
       <SwitchToggle
         label={repartirdorActivado ? "Disponible para repartir" : "No disposible para repartir"}
         checked={repartirdorActivado ?? false}
@@ -55,6 +143,11 @@ const Repartir = () => {
       />
 
       <div className="mapboxgl-map" id="map" tw="h-80"></div>
+
+      <DeliveriesDisponibles
+        setSelectedOperacionId={setSelectedOperacionId}
+        selectedOperacionId={selectedOperacionId}
+      />
     </div>
   );
 };

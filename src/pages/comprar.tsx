@@ -7,7 +7,7 @@ import "twin.macro";
 import { globalContext } from "./_app";
 import CartSvg from "../assets/icons/shopping-cart.svg";
 import TiendaCarta from "features/compradores/TiendaCarta";
-import { useOperaciones } from "features/firebase";
+import { useOperacionesPersonales, useUpdateUbicacion } from "features/firebase";
 
 const Comprar = () => {
   const [carrito, setCarrito] = useState<Carrito>();
@@ -38,7 +38,9 @@ const Comprar = () => {
     firebase.database().ref(`compradores/${userUID}/carrito`).set(newCarrito);
   };
 
-  const operaciones = useOperaciones("compradores");
+  const operaciones = useOperacionesPersonales("compradores");
+
+  useUpdateUbicacion("compradores");
 
   useEffect(() => {
     firebase
