@@ -16,7 +16,7 @@ const DeliveriesDisponibles: FC<{ setSelectedOperacionId: Function; selectedOper
     allOperaciones &&
     Object.entries(allOperaciones)
       .sort((a, b) => b[1].timestamp - a[1].timestamp)
-      .filter(opTuple => !opTuple[1].repartidorId);
+      .filter(opTuple => !opTuple[1].repartidorId && opTuple[1].status === "repartiendo");
 
   const seleccionarOperacion: MouseEventHandler<HTMLButtonElement> = e => {
     const operacionId = e.currentTarget.getAttribute("data-id");
