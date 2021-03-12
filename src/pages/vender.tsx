@@ -17,7 +17,7 @@ const triggerInputClick = (id: string) => {
 };
 
 const Vender = () => {
-  const userUID = useContext(globalContext).user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid;
   const { imgUrl: bannerImgUrl, actualizarImg: actualizarBannerImg } = useFirebaseTiendaImg(userUID, "banner");
   const { imgUrl: profileImgUrl, actualizarImg: actualizarProfileImg } = useFirebaseTiendaImg(userUID, "profile");
   const { titulo, actualizarTitulo } = useFirebaseTiendaTitulo(userUID);

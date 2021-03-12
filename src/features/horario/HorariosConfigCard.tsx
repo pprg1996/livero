@@ -11,7 +11,7 @@ import SwitchToggle from "shared/components/SwitchToggle";
 const HorariosConfigCard = () => {
   const [tipoHorario, setTipoHorario] = useState<TipoHorario>("automatico");
   const [tipoDescripcion, setTipoDescripcion] = useState("");
-  const userUID = useContext(globalContext).user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid;
   const [tiendaAbierta, setTiendaAbierta] = useState();
 
   useEffect(() => {
@@ -86,7 +86,7 @@ const HorariosConfigCard = () => {
 const DiaSetup: FC<{
   dia: string;
 }> = ({ dia }) => {
-  const userUID = useContext(globalContext).user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid;
   const { register, watch, setValue } = useForm<Dia>();
   const { isAbierto, horaApertura, horaCierre } = watch();
   const [diaConfigRemoto, setDiaConfigRemoto] = useState<Dia>();

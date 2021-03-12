@@ -13,7 +13,7 @@ const Comprar = () => {
   const [carrito, setCarrito] = useState<Carrito>();
   const [operacion, setOperacion] = useState<Operacion>();
   const [compraStatus, setCompraStatus] = useState<CompraStatus>("explorando");
-  const userUID = useContext(globalContext).user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid;
   const [tiendaId, setTiendaId] = useState<string>();
   const [repartidorId, setRepartidorId] = useState<string>();
   const [showCarrito, setShowCarrito] = useState(false);

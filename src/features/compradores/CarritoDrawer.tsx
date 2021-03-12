@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { globalContext } from "pages/_app";
 import firebase from "firebase/app";
 
-const carritoDefault = {
+const carritoMock = {
   articuloPacks: [
     {
       articuloId: "-MUhxOZhWw6hHb-3ThUA",
@@ -23,10 +23,12 @@ const carritoDefault = {
   ],
 };
 
+const tiendaIdMock = "LZsH8MawYMVivP4ybiZU7EpSwkz2";
+
 const CarritoDrawer = ({ setCompraStatus }: { setCompraStatus: Function }) => {
-  const [carrito, setCarrito] = useState<Carrito>(carritoDefault);
-  const [tiendaId, setTiendaId] = useState("LZsH8MawYMVivP4ybiZU7EpSwkz2");
-  const userUID = useContext(globalContext).user?.uid;
+  const [carrito, setCarrito] = useState<Carrito>(carritoMock);
+  const [tiendaId, setTiendaId] = useState(tiendaIdMock);
+  const userUID = useContext(globalContext).state.user?.uid;
 
   const procederAPagar = () => {
     if (!tiendaId || !userUID || !carrito) return;

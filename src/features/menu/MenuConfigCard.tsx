@@ -48,7 +48,7 @@ const MenuArticuloCreator: FC<{ tipo: string; categoria: string; setOpenCrearArt
   categoria,
   setOpenCrearArticulo,
 }) => {
-  const userUID = useContext(globalContext).user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid;
 
   const { register, handleSubmit, watch } = useForm<{
     titulo: string;
@@ -158,7 +158,7 @@ const CategoriaDropdown: FC<{ categoria: string; setCategoria: Function }> = ({ 
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [categoriaList, setCategoriaList] = useState<string[]>([]);
-  const userUID = useContext(globalContext).user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid;
 
   useEffect(() => {
     firebase

@@ -2,12 +2,16 @@ import { FC, useContext, useEffect, useState } from "react";
 import { useOperacionesPersonales } from "features/firebase";
 import CartaChatBtn from "features/chat/CartaChatBtn";
 import ChatDetallado from "./ChatDetallado";
-import { globalContext } from "pages/_app";
+import { Actions, globalContext } from "pages/_app";
 
 const Chat: FC<{ tipo: "compradores" | "tiendas" | "repartidores" }> = ({ tipo }) => {
   const operaciones = useOperacionesPersonales(tipo);
   const [operacionIdSeleccionada, setOperacionIdSeleccionada] = useState<string>();
-  const userUID = useContext(globalContext).user?.uid;
+  const dispatch = useContext(globalContext).dispatch;
+
+  useEffect(() => {
+    dispatch({ type: Actions.SET_OPERACION_CHAT_ID, payload: operacionIdSeleccionada });
+  }, [operacionIdSeleccionada]);
 
   return (
     <div tw="p-2 pb-2 h-full">

@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import firebase from "firebase/app";
 import Header from "features/global/components/Header";
 import BottomTabs from "features/global/components/BottomTabs";
+import { Carrito } from "features/compradores/types";
 
 const CustomGlobalStyles = createGlobalStyle`
 html,
@@ -34,18 +35,30 @@ button {
 
 interface GlobalState {
   user: firebase.User | null | undefined;
+  carrito: Carrito | undefined;
+  operacionChatId: string | undefined;
 }
 
 export enum Actions {
   SET_USER = "setUser",
+  SET_CARRITO = "setCarrito",
+  SET_OPERACION_CHAT_ID = "setOperacionChatId",
 }
 
-export const globalContext = createContext<GlobalState>({ user: undefined });
+const defaultGlobalState: GlobalState = { user: undefined, carrito: undefined, operacionChatId: undefined };
+export const globalContext = createContext<{ state: GlobalState; dispatch: Function }>({
+  state: defaultGlobalState,
+  dispatch: () => {},
+});
 
 const reducer = (state: GlobalState, action: { type: string; payload: any }): GlobalState => {
   switch (action.type) {
     case Actions.SET_USER:
       return { ...state, user: action.payload };
+    case Actions.SET_CARRITO:
+      return { ...state, carrito: action.payload };
+    case Actions.SET_OPERACION_CHAT_ID:
+      return { ...state, operacionChatId: action.payload };
     default:
       return state;
   }
@@ -61,7 +74,7 @@ const AppDiv = styled.div`
 `;
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [state, dispatch] = useReducer(reducer, { user: undefined });
+  const [state, dispatch] = useReducer(reducer, defaultGlobalState);
   const router = useRouter();
 
   useEffect(() => {
@@ -75,7 +88,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <globalContext.Provider value={state}>
+    <globalContext.Provider value={{ state, dispatch }}>
       <Head>
         <title>Livero</title>
       </Head>
@@ -85,7 +98,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AppDiv>
         <Header />
 
-        <div id="content-container" tw="relative h-full overflow-auto">
+        <div id="content-container" tw="relative h-full overflow-hidden">
           {state.user !== undefined ? <Component {...pageProps} /> : null}
         </div>
 

@@ -55,7 +55,7 @@ const DeliveryCarta: FC<{
   selectedOperacionId: string | undefined;
   id: string;
 }> = ({ distanciaKm, nombreVendedor, nombreComprador, seleccionarOperacion, id, selectedOperacionId }) => {
-  const userUID = useContext(globalContext).user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid;
 
   const aceptarDelivery: MouseEventHandler<HTMLButtonElement> = e => {
     const operacionId = e.currentTarget.getAttribute("data-id");

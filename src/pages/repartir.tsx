@@ -6,11 +6,11 @@ import mapboxgl from "mapbox-gl";
 import "twin.macro";
 import DeliveriesDisponibles from "features/repartidores/DeliveriesDisponibles";
 import { useOperaciones, useCompradores, useRepartidores, useUpdateUbicacion, useVendedores } from "features/firebase";
-import { distance, bbox } from "@turf/turf";
+import { distance } from "@turf/turf";
 import markerStyles from "features/css/markerStyles.module.css";
 
 const Repartir = () => {
-  const userUID = useContext(globalContext).user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid;
   const [repartirdorActivado, setRepartidorActivado] = useState();
   const mapRef = useRef<mapboxgl.Map>();
   const repartidorMarkerRef = useRef<mapboxgl.Marker>();

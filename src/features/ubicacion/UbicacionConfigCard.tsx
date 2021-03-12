@@ -8,7 +8,7 @@ import firebase from "firebase/app";
 const UbicacionConfigCard = () => {
   const mapRef = useRef<mapboxgl.Map>();
   const markerRef = useRef<mapboxgl.Marker>();
-  const userUID = useContext(globalContext).user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid;
   const [ubicacion, setUbicacion] = useState({ longitud: 0, latitud: 0 });
   const [isModUbicacion, setIsModUbicacion] = useState(false);
 

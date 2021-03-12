@@ -87,7 +87,7 @@ export const useFirebaseTiendaTitulo = (uid: string | undefined) => {
 };
 
 export const useOperacionesPersonales = (tipoUsuario: "tiendas" | "compradores" | "repartidores") => {
-  const userUID = useContext(globalContext).user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid;
   const [operacionesIdRecord, setOperacionesIdRecord] = useState<Record<string, string>>({});
   const [operaciones, setOperaciones] = useState<Record<string, Operacion>>();
 
@@ -143,7 +143,7 @@ export const useOperaciones = () => {
 };
 
 export const useUpdateUbicacion = (tipo: "tiendas" | "compradores" | "repartidores") => {
-  const userUID = useContext(globalContext).user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid;
 
   useEffect(() => {
     const watchId = navigator.geolocation.watchPosition(
