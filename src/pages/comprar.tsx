@@ -22,26 +22,6 @@ const Comprar = () => {
   const [showCarrito, setShowCarrito] = useState(false);
   const [distanciaMaxima, setDistanciaMaxima] = useState(5);
 
-  const meterArticuloAlCarrito = (articulo: Articulo, articuloId: string) => {
-    let newCarrito: Carrito;
-
-    if (carrito === undefined) {
-      newCarrito = { articuloPacks: [{ articulo, articuloId, cantidad: 1 }] };
-    } else {
-      newCarrito = { ...carrito };
-
-      const articuloPack = newCarrito.articuloPacks.find(ap => {
-        return ap.articuloId === articuloId;
-      });
-
-      if (articuloPack) {
-        articuloPack.cantidad++;
-      } else newCarrito.articuloPacks.push({ articulo, cantidad: 1, articuloId });
-    }
-
-    firebase.database().ref(`compradores/${userUID}/carrito`).set(newCarrito);
-  };
-
   const operaciones = useOperacionesPersonales("compradores");
 
   useUpdateUbicacion("compradores");
@@ -75,12 +55,6 @@ const Comprar = () => {
 
   return (
     <div tw="p-2">
-      {/* <button tw="ml-auto" onClick={() => setShowCarrito(s => !s)}>
-        <CartSvg tw="text-gray-700 transform -scale-x-1" fill="currentColor" />
-      </button> */}
-      {/* {showCarrito ? <CarritoDrawer setCompraStatus={setCompraStatus} /> : null} */}
-      {/* <div tw="bg-white py-2"> */}
-
       <span tw="font-medium text-gray-700">Distancia maxima: </span>
       <input
         tw="border rounded w-12"
@@ -99,7 +73,6 @@ const Comprar = () => {
         })}
         <div tw="w-1 flex-shrink-0"></div>
       </div>
-      {/* </div> */}
     </div>
   );
 };

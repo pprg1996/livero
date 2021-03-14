@@ -1,8 +1,11 @@
-import { useContext, useState } from "react";
+import { FC, useContext, useEffect, useRef, useState } from "react";
 import { Carrito, Operacion } from "./types";
 import ReactDOM from "react-dom";
 import { globalContext } from "pages/_app";
 import firebase from "firebase/app";
+import { useClickOutside } from "shared/hooks";
+import tw from "twin.macro";
+import { useCompradores } from "features/firebase";
 
 const carritoMock: Carrito = {
   articuloPacks: [
@@ -25,10 +28,28 @@ const carritoMock: Carrito = {
 
 const tiendaIdMock = "LZsH8MawYMVivP4ybiZU7EpSwkz2";
 
-const CarritoDrawer = ({ setCompraStatus }: { setCompraStatus: Function }) => {
+const CarritoDrawer: FC<{ setCompraStatus: Function; setShowCarrito: Function }> = ({
+  setCompraStatus,
+  setShowCarrito,
+}) => {
   const [carrito, setCarrito] = useState<Carrito>(carritoMock);
   const [tiendaId, setTiendaId] = useState(tiendaIdMock);
   const userUID = useContext(globalContext).state.user?.uid;
+  const [startAnimation, setStartAnimation] = useState(false);
+  const carritoDivRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(carritoDivRef, () => setShowCarrito(false));
+
+  useEffect(() => setStartAnimation(true), []);
+
+  const compradores = useCompradores();
+
+  let carritos: Record<string, Carrito> | undefined = undefined;
+
+  if (compradores && userUID) {
+    carritos = compradores[userUID].carritos;
+    console.log(carritos);
+  }
 
   const procederAPagar = () => {
     if (!tiendaId || !userUID || !carrito) return;
@@ -54,7 +75,11 @@ const CarritoDrawer = ({ setCompraStatus }: { setCompraStatus: Function }) => {
 
   return ReactDOM.createPortal(
     <div tw="bg-gray-700 bg-opacity-40 w-full h-full absolute z-10 flex justify-end right-0 top-0">
-      <div tw="bg-white border w-32 h-32 min-height[90vh] border-gray-700 border-solid">
+      <div
+        ref={carritoDivRef}
+        tw="relative -right-96 bg-white transition-all p-2 overflow-auto"
+        css={[startAnimation ? tw`right-0` : null]}
+      >
         <h1>{carrito.articuloPacks[0].articulo.titulo}</h1>
 
         <button onClick={procederAPagar}>Proceder a pagar</button>

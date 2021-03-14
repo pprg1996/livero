@@ -66,7 +66,7 @@ const Registro = () => {
       nombre: "Nombre",
     };
 
-    const comprador: Comprador = { operaciones: {}, nombre: "Nombre", ubicacion: ubicacionDefault };
+    const comprador: Comprador = { operaciones: {}, nombre: "Nombre", ubicacion: ubicacionDefault, carritos: {} };
 
     firebase.database().ref(`tiendas/${userCredential.user?.uid}`).set(tienda);
     firebase.database().ref(`repartidores/${userCredential.user?.uid}`).set(repartidor);

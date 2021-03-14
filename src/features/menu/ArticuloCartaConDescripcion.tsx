@@ -2,14 +2,20 @@ import { globalContext } from "pages/_app";
 import { FC, useContext, useState } from "react";
 import { Articulo } from "./types";
 import firebase from "firebase/app";
+import { useCompradores } from "features/firebase";
+import { meterArticuloAlCarrito } from "shared/utils";
 
-const ArticuloCartaConDescripcion: FC<{ articulo: Articulo; id: string; editable?: boolean }> = ({
+const ArticuloCartaConDescripcion: FC<{ articulo: Articulo; id: string; editable?: boolean; vendedorId?: string }> = ({
   articulo,
   id,
   editable,
+  vendedorId,
 }) => {
   const [mostrarDescripcion, setMostrarDescripcion] = useState(false);
-  const userUID = useContext(globalContext).state.user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid as string;
+  const carrito = useCompradores()?.[userUID]?.carritos?.[vendedorId as string];
+
+  const enCarrito = carrito?.articuloPacks.some(ap => ap.articuloId === id);
 
   const eliminarArticulo = () => {
     if (!confirm("¿Seguro que desea borrar el artículo?")) return;
@@ -30,9 +36,14 @@ const ArticuloCartaConDescripcion: FC<{ articulo: Articulo; id: string; editable
             <button onClick={eliminarArticulo} tw="text-red-700 border-2 border-red-700 p-1 rounded text-xs">
               Eliminar
             </button>
-          ) : (
-            <button tw="text-white bg-blue-700 p-1 rounded text-xs">Meter al carrito</button>
-          )}
+          ) : !enCarrito ? (
+            <button
+              onClick={() => meterArticuloAlCarrito(articulo, id, userUID, vendedorId as string, carrito)}
+              tw="text-white bg-blue-700 p-1 rounded text-xs mt-1"
+            >
+              Meter al carrito
+            </button>
+          ) : null}
         </div>
 
         <span tw="text-gray-700">${articulo.precio}</span>

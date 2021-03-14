@@ -98,7 +98,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AppDiv>
         <Header />
 
-        <div id="content-container" tw="relative h-full overflow-auto">
+        <div id="content-container" tw="relative h-full overflow-y-auto overflow-x-hidden">
           {state.user !== undefined ? <Component {...pageProps} /> : null}
         </div>
 

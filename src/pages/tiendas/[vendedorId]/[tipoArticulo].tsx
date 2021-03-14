@@ -53,7 +53,7 @@ const TipoArticuloPage = ({ tipo, vendedorId, categoria }: InferGetServerSidePro
       <div tw="rounded shadow p-2 flex flex-col items-center space-y-2">
         {articulosDeCategoria.map(([id, articulo]) => (
           <>
-            <ArticuloCartaConDescripcion key={id} id={id} articulo={articulo} />
+            <ArticuloCartaConDescripcion key={id} vendedorId={vendedorId} id={id} articulo={articulo} />
           </>
         ))}
       </div>

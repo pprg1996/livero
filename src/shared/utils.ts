@@ -1,6 +1,9 @@
 import distance from "@turf/distance";
+import { Carrito } from "features/compradores/types";
+import { Articulo } from "features/menu/types";
 import { Tienda } from "features/tienda/types";
 import { Ubicacion } from "features/ubicacion/types";
+import firebase from "firebase/app";
 
 export const capitalizeFirstLetter = (text: string) => {
   return text.charAt(0).toUpperCase() + text.substring(1);
@@ -75,4 +78,29 @@ export const filtrarVendedorPorDistancia = (
 
   if (distancia <= distanciaMaxima) return true;
   return false;
+};
+
+export const meterArticuloAlCarrito = (
+  articulo: Articulo,
+  articuloId: string,
+  compradorId: string,
+  vendedorId: string,
+  carrito: Carrito | undefined,
+) => {
+  if (!carrito) {
+    const newCarrito: Carrito = {
+      articuloPacks: [{ articulo, articuloId, cantidad: 1 }],
+    };
+
+    firebase.database().ref(`compradores/${compradorId}/carritos/${vendedorId}/`).set(newCarrito);
+  } else if (!carrito.articuloPacks.find(ap => ap.articuloId === articuloId)) {
+    const newArticuloPack = [...carrito.articuloPacks];
+    newArticuloPack.push({ articulo, articuloId, cantidad: 1 });
+
+    const newCarrito: Carrito = {
+      articuloPacks: newArticuloPack,
+    };
+
+    firebase.database().ref(`compradores/${compradorId}/carritos/${vendedorId}/`).set(newCarrito);
+  }
 };

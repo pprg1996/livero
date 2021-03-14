@@ -5,6 +5,8 @@ import SideMenu from "features/global/components/SideMenu";
 import { globalContext } from "pages/_app";
 import tw from "twin.macro";
 import DetallesOperacionDrawer from "features/chat/DetallesOperacionDrawer";
+import CartSvg from "../../../assets/icons/shopping-cart.svg";
+import CarritoDrawer from "features/compradores/CarritoDrawer";
 
 const Header = () => {
   const [showSideMenu, setShowSideMenu] = useState(false);
@@ -26,12 +28,32 @@ const Header = () => {
         <h1 tw="font-medium text-xl text-gray-900">Livero</h1>
       </div>
 
-      {["/chatcomprador", "/chatvendedor", "/chatrepartidor"].includes(router.pathname) ? <DetallesOperacion /> : null}
+      {["/chatcomprador", "/chatvendedor", "/chatrepartidor"].includes(router.pathname) ? (
+        <DetallesOperacionBtn />
+      ) : null}
+
+      <CarritoBtn />
     </div>
   );
 };
 
-const DetallesOperacion = () => {
+const CarritoBtn = () => {
+  const [showCarrito, setShowCarrito] = useState(false);
+
+  return (
+    <>
+      <button>
+        <button tw="ml-auto" onClick={() => setShowCarrito(s => !s)}>
+          <CartSvg tw="text-gray-700 transform -scale-x-1" fill="currentColor" />
+        </button>
+      </button>
+
+      {showCarrito ? <CarritoDrawer setShowCarrito={setShowCarrito} /* setCompraStatus={setCompraStatus} */ /> : null}
+    </>
+  );
+};
+
+const DetallesOperacionBtn = () => {
   const operacionChatId = useContext(globalContext).state.operacionChatId;
   const [showDetalles, setShowDetalles] = useState(false);
 

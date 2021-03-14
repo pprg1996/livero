@@ -23,4 +23,11 @@ export type Operacion = {
   timestamp: number;
 };
 
-export type Comprador = { operaciones: Record<string, string>; nombre: string; ubicacion: Ubicacion };
+type vendedorId = string;
+
+export type Comprador = {
+  operaciones: Record<string, string>;
+  nombre: string;
+  ubicacion: Ubicacion;
+  carritos?: Record<vendedorId, Carrito>;
+};
