@@ -5,7 +5,7 @@ export type Articulo = {
   imgUrl: string;
   categoria: string;
   moneda: string;
-  tipo: string;
+  tipo: "comida" | "vestimenta" | "medicina" | "tecnologia" | "hogar" | "herramienta";
 };
 
 export type ArticuloId = string;

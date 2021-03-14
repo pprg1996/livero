@@ -134,6 +134,15 @@ const Repartir = () => {
     });
   }, [selectedOperacionId]);
 
+  // useEffect(() => {
+  //   navigator.serviceWorker.register("/sw.js").then(registration => {
+  //     console.log(registration);
+  //     registration.showNotification("Al finnnnn");
+  //   });
+
+  //   Notification.requestPermission();
+  // }, []);
+
   return (
     <div tw="space-y-2">
       <SwitchToggle

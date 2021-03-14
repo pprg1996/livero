@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { globalContext } from "pages/_app";
 import firebase from "firebase/app";
 
-const carritoMock = {
+const carritoMock: Carrito = {
   articuloPacks: [
     {
       articuloId: "-MUhxOZhWw6hHb-3ThUA",

@@ -57,7 +57,7 @@ const Vender = () => {
   }, [tiendaActivada]);
 
   return (
-    <div tw="flex flex-col pb-12">
+    <div tw="flex flex-col pb-2">
       <div className="banner-img" tw="flex bg-gray-500 relative">
         <Image src={bannerImgUrl} width={640} height={274} objectFit="contain" />
         <button

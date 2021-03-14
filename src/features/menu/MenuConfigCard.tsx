@@ -177,7 +177,7 @@ const CategoriaDropdown: FC<{ categoria: string; setCategoria: Function }> = ({ 
     firebase
       .database()
       .ref(`/tiendas/${userUID}/menu/categorias`)
-      .set([...categoriaList, prompt("Nueva categoria")]);
+      .set([...categoriaList, prompt("Nueva categoria")?.toLowerCase()]);
   };
 
   const eliminarCategoria = (e: SyntheticEvent) => {

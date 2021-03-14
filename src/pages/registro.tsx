@@ -63,6 +63,7 @@ const Registro = () => {
       disponible: true,
       operaciones: {},
       ubicacion: ubicacionDefault,
+      nombre: "Nombre",
     };
 
     const comprador: Comprador = { operaciones: {}, nombre: "Nombre", ubicacion: ubicacionDefault };
