@@ -129,7 +129,8 @@ const MenuArticuloCreator: FC<{ tipo: string; categoria: string; setOpenCrearArt
 
         <div tw="space-x-2">
           <TextInput required ref={register} name="precio" tw="w-32" type="number" placeholder="Precio" />
-          <select required ref={register} name="moneda">
+          <span tw="text-gray-700">Dólares</span>
+          <select tw="hidden" required ref={register} name="moneda">
             <option value="dolares">Dolares</option>
             <option value="bolivares">Bolivares</option>
           </select>
