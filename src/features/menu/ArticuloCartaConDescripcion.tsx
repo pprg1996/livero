@@ -1,9 +1,22 @@
-import Link from "next/link";
-import { FC, useState } from "react";
+import { globalContext } from "pages/_app";
+import { FC, useContext, useState } from "react";
 import { Articulo } from "./types";
+import firebase from "firebase/app";
 
-const ArticuloCartaConDescripcion: FC<{ articulo: Articulo; id: string }> = ({ articulo, id }) => {
+const ArticuloCartaConDescripcion: FC<{ articulo: Articulo; id: string; editable?: boolean }> = ({
+  articulo,
+  id,
+  editable,
+}) => {
   const [mostrarDescripcion, setMostrarDescripcion] = useState(false);
+  const userUID = useContext(globalContext).state.user?.uid;
+
+  const eliminarArticulo = () => {
+    if (!confirm("¿Seguro que desea borrar el artículo?")) return;
+
+    firebase.storage().refFromURL(articulo.imgUrl).delete();
+    firebase.database().ref(`/tiendas/${userUID}/menu/articulos/${id}`).remove();
+  };
 
   return (
     <div tw="rounded border p-2 space-x-2">
@@ -12,7 +25,14 @@ const ArticuloCartaConDescripcion: FC<{ articulo: Articulo; id: string }> = ({ a
       <div tw="py-2 flex flex-col">
         <div tw="flex justify-between items-center">
           <span tw="font-medium text-gray-700">{articulo.titulo}</span>
-          <button tw="text-white bg-blue-700 p-1 rounded text-xs">Meter al carrito</button>
+
+          {editable ? (
+            <button onClick={eliminarArticulo} tw="text-red-700 border-2 border-red-700 p-1 rounded text-xs">
+              Eliminar
+            </button>
+          ) : (
+            <button tw="text-white bg-blue-700 p-1 rounded text-xs">Meter al carrito</button>
+          )}
         </div>
 
         <span tw="text-gray-700">${articulo.precio}</span>

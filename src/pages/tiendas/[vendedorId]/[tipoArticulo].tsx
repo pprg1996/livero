@@ -42,7 +42,9 @@ const TipoArticuloPage = ({ tipo, vendedorId, categoria }: InferGetServerSidePro
             tw="border rounded ml-1"
           >
             {categorias.map(cat => (
-              <option value={cat}>{capitalizeFirstLetter(cat)}</option>
+              <option key={cat} value={cat}>
+                {capitalizeFirstLetter(cat)}
+              </option>
             ))}
           </select>
         </label>

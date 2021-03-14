@@ -8,12 +8,23 @@ import firebase from "firebase/app";
 import { Articulo } from "./types";
 import TextInput from "shared/components/TextInput";
 import { useForm } from "react-hook-form";
+import { useVendedores } from "features/firebase";
+import ArticuloCartaConDescripcion from "./ArticuloCartaConDescripcion";
 
 const MenuConfigCard = () => {
-  const [categoria, setCategoria] = useState("ninguna");
+  const [categoria, setCategoria] = useState("todo");
   const [tipo, setTipo] = useState("comida");
-  const [articulosList, setArticulosList] = useState<Articulo[]>([]);
   const [openCrearArticulo, setOpenCrearArticulo] = useState(false);
+  const userUID = useContext(globalContext).state.user?.uid;
+
+  const vendedores = useVendedores();
+  let articulosFiltrados: [id: string, articulo: Articulo][] = [];
+
+  if (vendedores && userUID) {
+    articulosFiltrados = Object.entries(vendedores[userUID].menu.articulos).filter(([id, articulo]) => {
+      return articulo.tipo === tipo && (articulo.categoria === categoria || categoria === "todo");
+    });
+  }
 
   return (
     <Card className="menu" tw="mb-4">
@@ -21,9 +32,11 @@ const MenuConfigCard = () => {
         <div tw="flex justify-between">
           <h1 tw="font-medium text-lg">Menu</h1>
 
-          <button tw="w-6" onClick={() => setOpenCrearArticulo(true)}>
-            <PlusSvg />
-          </button>
+          {categoria !== "todo" ? (
+            <button tw="w-6" onClick={() => setOpenCrearArticulo(true)}>
+              <PlusSvg />
+            </button>
+          ) : null}
         </div>
 
         <div tw="flex gap-2 justify-end">
@@ -32,9 +45,15 @@ const MenuConfigCard = () => {
         </div>
       </div>
 
-      <div className="card-body" tw="py-2">
+      <div className="card-body" tw="py-2 flex flex-col items-center space-y-4">
         {openCrearArticulo ? (
           <MenuArticuloCreator setOpenCrearArticulo={setOpenCrearArticulo} categoria={categoria} tipo={tipo} />
+        ) : null}
+
+        {articulosFiltrados.length > 0 ? (
+          articulosFiltrados.map(([id, articulo]) => (
+            <ArticuloCartaConDescripcion key={id} articulo={articulo} id={id} editable />
+          ))
         ) : (
           <h2>No tienes articulos en tu menu</h2>
         )}
@@ -57,7 +76,7 @@ const MenuArticuloCreator: FC<{ tipo: string; categoria: string; setOpenCrearArt
     moneda: string;
     categoria: string;
     imgFileList: FileList;
-    tipo: string;
+    tipo: Articulo["tipo"];
   }>();
   const handleArticleCreation = handleSubmit(
     ({ titulo, descripcion, precio, moneda, categoria, imgFileList, tipo }) => {
@@ -82,7 +101,7 @@ const MenuArticuloCreator: FC<{ tipo: string; categoria: string; setOpenCrearArt
             tipo,
           };
 
-          articleRef.set(nuevoArticulo);
+          articleRef.set(nuevoArticulo).then(() => setOpenCrearArticulo(false));
         }),
       );
     },
@@ -228,10 +247,10 @@ const CategoriaDropdown: FC<{ categoria: string; setCategoria: Function }> = ({ 
       >
         <button
           onClick={selectCategoria}
-          data-categoria="ninguna"
+          data-categoria="todo"
           tw="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
         >
-          Ninguna
+          Todo
         </button>
 
         {categoriaList.map(categoria => (
