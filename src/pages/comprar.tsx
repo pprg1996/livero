@@ -1,28 +1,16 @@
-import CarritoDrawer from "features/compradores/CarritoDrawer";
-import { Carrito, CompraStatus, Operacion } from "features/compradores/types";
-import { Articulo } from "features/menu/types";
 import firebase from "firebase";
 import { ChangeEventHandler, useContext, useEffect, useState } from "react";
 import "twin.macro";
 import { globalContext } from "./_app";
-import CartSvg from "../assets/icons/shopping-cart.svg";
 import TiendaCarta from "features/compradores/TiendaCarta";
-import { useCompradores, useOperacionesPersonales, useUpdateUbicacion, useVendedores } from "features/firebase";
+import { useCompradores, useUpdateUbicacion, useVendedores } from "features/firebase";
 import { filtrarVendedorPorDistancia, filtrarVendedorPorHorario } from "shared/utils";
 import { Ubicacion } from "features/ubicacion/types";
 import { Tienda } from "features/tienda/types";
 
 const Comprar = () => {
-  const [carrito, setCarrito] = useState<Carrito>();
-  const [operacion, setOperacion] = useState<Operacion>();
-  const [compraStatus, setCompraStatus] = useState<CompraStatus>("explorando");
   const userUID = useContext(globalContext).state.user?.uid;
-  const [tiendaId, setTiendaId] = useState<string>();
-  const [repartidorId, setRepartidorId] = useState<string>();
-  const [showCarrito, setShowCarrito] = useState(false);
   const [distanciaMaxima, setDistanciaMaxima] = useState(5);
-
-  const operaciones = useOperacionesPersonales("compradores");
 
   useUpdateUbicacion("compradores");
 
@@ -41,13 +29,6 @@ const Comprar = () => {
       );
     });
   }
-
-  useEffect(() => {
-    firebase
-      .database()
-      .ref(`/compradores/${userUID}/carrito`)
-      .on("value", data => setCarrito(data.val()));
-  }, []);
 
   const handleDistanciaMaxima: ChangeEventHandler<HTMLInputElement> = e => {
     setDistanciaMaxima(Number(e.currentTarget.value));

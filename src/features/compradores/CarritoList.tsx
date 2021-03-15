@@ -1,14 +1,11 @@
 import distance from "@turf/distance";
-import { ArticuloPack } from "features/compradores/types";
+import { ArticuloPack, Carrito } from "features/compradores/types";
 import { useCompradores, useOperaciones, useVendedores } from "features/firebase";
 import { globalContext } from "pages/_app";
 import { FC, useContext } from "react";
 
-const CarritoOperacion = () => {
-  const operacionChatId = useContext(globalContext).state.operacionChatId as string;
-  const operacionSeleccionada = useOperaciones()?.[operacionChatId];
-  const carrito = operacionSeleccionada?.carrito;
-
+const CarritoList: FC<{ vendedorId: string; carrito: Carrito }> = ({ vendedorId, carrito }) => {
+  const userUID = useContext(globalContext).state.user?.uid as string;
   const compradores = useCompradores();
   const vendedores = useVendedores();
 
@@ -16,27 +13,25 @@ const CarritoOperacion = () => {
   let costoDelivery = 0;
   let costoCarrito = 0;
 
-  if (operacionSeleccionada) {
-    const compradorUbicacion = compradores?.[operacionSeleccionada?.compradorId].ubicacion;
-    const vendedorUbicacion = vendedores?.[operacionSeleccionada?.tiendaId].ubicacion;
+  const compradorUbicacion = compradores?.[userUID].ubicacion;
+  const vendedorUbicacion = vendedores?.[vendedorId].ubicacion;
 
-    distanciaDelivery = Number(
-      distance(
-        [compradorUbicacion?.longitud ?? 0, compradorUbicacion?.latitud ?? 0],
-        [vendedorUbicacion?.longitud ?? 0, vendedorUbicacion?.latitud ?? 0],
-        {
-          units: "kilometers",
-        },
-      ).toFixed(2),
-    );
+  distanciaDelivery = Number(
+    distance(
+      [compradorUbicacion?.longitud ?? 0, compradorUbicacion?.latitud ?? 0],
+      [vendedorUbicacion?.longitud ?? 0, vendedorUbicacion?.latitud ?? 0],
+      {
+        units: "kilometers",
+      },
+    ).toFixed(2),
+  );
 
-    costoDelivery = Math.ceil(Number((distanciaDelivery / 5).toFixed(2)));
+  costoDelivery = Math.ceil(Number((distanciaDelivery / 5).toFixed(2)));
 
-    costoCarrito =
-      carrito?.articuloPacks.reduce((precio, articuloPack) => {
-        return (precio += articuloPack.cantidad * articuloPack.articulo.precio);
-      }, 0) ?? 0;
-  }
+  costoCarrito =
+    carrito?.articuloPacks.reduce((precio, articuloPack) => {
+      return (precio += articuloPack.cantidad * articuloPack.articulo.precio);
+    }, 0) ?? 0;
 
   return (
     <div>
@@ -75,4 +70,4 @@ const CarritoItem: FC<{ articuloPack: ArticuloPack }> = ({ articuloPack }) => {
   );
 };
 
-export default CarritoOperacion;
+export default CarritoList;

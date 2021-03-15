@@ -11,7 +11,5 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  // console.log("static props");
-
   return { props: { id: params?.id } };
 };

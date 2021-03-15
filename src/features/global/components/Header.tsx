@@ -32,7 +32,9 @@ const Header = () => {
         <DetallesOperacionBtn />
       ) : null}
 
-      <CarritoBtn />
+      {["/comprar", "/tiendas/[vendedorId]", "/tiendas/[vendedorId]/[tipoArticulo]"].includes(router.pathname) ? (
+        <CarritoBtn />
+      ) : null}
     </div>
   );
 };
@@ -48,7 +50,7 @@ const CarritoBtn = () => {
         </button>
       </button>
 
-      {showCarrito ? <CarritoDrawer setShowCarrito={setShowCarrito} /* setCompraStatus={setCompraStatus} */ /> : null}
+      {showCarrito ? <CarritoDrawer setShowCarrito={setShowCarrito} /> : null}
     </>
   );
 };

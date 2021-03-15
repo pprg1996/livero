@@ -22,7 +22,7 @@ const TipoArticuloPage = ({ tipo, vendedorId, categoria }: InferGetServerSidePro
   }
 
   useEffect(() => {
-    if (!categorias.includes(categoriaSeleccionada ?? "")) {
+    if (!categorias.includes(categoriaSeleccionada ?? "") && categorias.length > 0) {
       setCategoriaSeleccionada(categorias[0]);
     }
   });
@@ -37,7 +37,7 @@ const TipoArticuloPage = ({ tipo, vendedorId, categoria }: InferGetServerSidePro
         <label>
           Categoria:
           <select
-            value={categoriaSeleccionada || undefined}
+            value={categoriaSeleccionada}
             onChange={e => setCategoriaSeleccionada(e.currentTarget.value)}
             tw="border rounded ml-1"
           >
@@ -52,9 +52,7 @@ const TipoArticuloPage = ({ tipo, vendedorId, categoria }: InferGetServerSidePro
 
       <div tw="rounded shadow p-2 flex flex-col items-center space-y-2">
         {articulosDeCategoria.map(([id, articulo]) => (
-          <>
-            <ArticuloCartaConDescripcion key={id} vendedorId={vendedorId} id={id} articulo={articulo} />
-          </>
+          <ArticuloCartaConDescripcion key={id} vendedorId={vendedorId} id={id} articulo={articulo} />
         ))}
       </div>
     </div>

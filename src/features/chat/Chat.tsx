@@ -20,15 +20,17 @@ const Chat: FC<{ tipo: "compradores" | "tiendas" | "repartidores" }> = ({ tipo }
       ) : (
         <div tw="space-y-4 flex flex-col">
           {operaciones !== undefined
-            ? Object.entries(operaciones).map(([id, operacion]) => (
-                <CartaChatBtn
-                  key={id}
-                  id={id}
-                  tipo={tipo}
-                  setOperacionIdSeleccionada={setOperacionIdSeleccionada}
-                  operacion={operacion}
-                />
-              ))
+            ? Object.entries(operaciones)
+                .sort((a, b) => b[1].timestamp - a[1].timestamp)
+                .map(([id, operacion]) => (
+                  <CartaChatBtn
+                    key={id}
+                    id={id}
+                    tipo={tipo}
+                    setOperacionIdSeleccionada={setOperacionIdSeleccionada}
+                    operacion={operacion}
+                  />
+                ))
             : null}
         </div>
       )}

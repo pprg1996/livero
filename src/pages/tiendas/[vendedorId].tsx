@@ -24,7 +24,7 @@ const Tienda = ({ vendedorId }: InferGetServerSidePropsType<typeof getServerSide
   };
 
   if (vendedores) {
-    Object.entries(vendedores[vendedorId].menu.articulos).forEach(([id, articulo]) => {
+    Object.entries(vendedores[vendedorId]?.menu?.articulos ?? {}).forEach(([id, articulo]) => {
       articulosPorTipo[articulo.tipo].push([id, articulo]);
     });
   }
@@ -45,9 +45,7 @@ const Tienda = ({ vendedorId }: InferGetServerSidePropsType<typeof getServerSide
 
       <div tw="rounded shadow p-3 space-y-4">
         {Object.entries(articulosPorTipo).map(([tipo, listaDeTipo]) => (
-          <>
-            <MenuListConTipo vendedorId={vendedorId} listaDeTipo={listaDeTipo} tipo={tipo} key={tipo} />
-          </>
+          <MenuListConTipo vendedorId={vendedorId} listaDeTipo={listaDeTipo} tipo={tipo} key={tipo} />
         ))}
       </div>
     </div>
@@ -67,9 +65,7 @@ const MenuListConTipo: FC<{ tipo: string; listaDeTipo: [string, Articulo][]; ven
 
       <div tw="flex space-x-2 overflow-auto">
         {listaDeTipo.slice(0, 3).map(([id, articulo]) => (
-          <>
-            <ArticuloCarta vendedorId={vendedorId} key={id} articulo={articulo} id={id} tipo={tipo} />
-          </>
+          <ArticuloCarta vendedorId={vendedorId} key={id} articulo={articulo} id={id} tipo={tipo} />
         ))}
 
         <Link href={`/tiendas/${vendedorId}/${tipo}`} passHref>

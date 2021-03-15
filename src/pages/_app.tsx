@@ -35,7 +35,7 @@ button {
 
 interface GlobalState {
   user: firebase.User | null | undefined;
-  carrito: Carrito | undefined;
+  // carrito: Carrito | undefined;
   operacionChatId: string | undefined;
 }
 
@@ -45,7 +45,7 @@ export enum Actions {
   SET_OPERACION_CHAT_ID = "setOperacionChatId",
 }
 
-const defaultGlobalState: GlobalState = { user: undefined, carrito: undefined, operacionChatId: undefined };
+const defaultGlobalState: GlobalState = { user: undefined, /* carrito: undefined, */ operacionChatId: undefined };
 export const globalContext = createContext<{ state: GlobalState; dispatch: Function }>({
   state: defaultGlobalState,
   dispatch: () => {},
@@ -55,8 +55,8 @@ const reducer = (state: GlobalState, action: { type: string; payload: any }): Gl
   switch (action.type) {
     case Actions.SET_USER:
       return { ...state, user: action.payload };
-    case Actions.SET_CARRITO:
-      return { ...state, carrito: action.payload };
+    // case Actions.SET_CARRITO:
+    //   return { ...state, carrito: action.payload };
     case Actions.SET_OPERACION_CHAT_ID:
       return { ...state, operacionChatId: action.payload };
     default:
