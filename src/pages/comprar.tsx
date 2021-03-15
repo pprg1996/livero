@@ -1,5 +1,4 @@
-import firebase from "firebase";
-import { ChangeEventHandler, useContext, useEffect, useState } from "react";
+import { ChangeEventHandler, useContext, useState } from "react";
 import "twin.macro";
 import { globalContext } from "./_app";
 import TiendaCarta from "features/compradores/TiendaCarta";
@@ -9,7 +8,7 @@ import { Ubicacion } from "features/ubicacion/types";
 import { Tienda } from "features/tienda/types";
 
 const Comprar = () => {
-  const userUID = useContext(globalContext).state.user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid as string;
   const [distanciaMaxima, setDistanciaMaxima] = useState(5);
 
   useUpdateUbicacion("compradores");
@@ -35,19 +34,22 @@ const Comprar = () => {
   };
 
   return (
-    <div tw="p-2">
-      <span tw="font-medium text-gray-700">Distancia maxima: </span>
-      <input
-        tw="border rounded w-12"
-        type="number"
-        step={1}
-        min={1}
-        value={distanciaMaxima}
-        onChange={handleDistanciaMaxima}
-      />
-      <span>Km</span>
-
+    <div tw="p-2 flex flex-col ">
       <h1 tw="text-2xl text-gray-700 mb-2">Tiendas en tu proximidad</h1>
+
+      <div>
+        <span tw="font-medium text-gray-700">Distancia maxima: </span>
+        <input
+          tw="border rounded w-12"
+          type="number"
+          step={1}
+          min={1}
+          value={distanciaMaxima}
+          onChange={handleDistanciaMaxima}
+        />
+        <span>Km</span>
+      </div>
+
       <div tw="px-4 py-2 flex gap-4 overflow-auto">
         {vendedoresAbiertosCercanos.map(([id, vendedor]) => {
           return <TiendaCarta key={id} tiendaId={id} vendedor={vendedor} />;

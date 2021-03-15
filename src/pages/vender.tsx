@@ -9,7 +9,6 @@ import MenuConfigCard from "features/menu/MenuConfigCard";
 import UbicacionConfigCard from "features/ubicacion/UbicacionConfigCard";
 import firebase from "firebase/app";
 import SwitchToggle from "shared/components/SwitchToggle";
-import { Operacion } from "features/compradores/types";
 import { useOperacionesPersonales } from "features/firebase";
 
 const triggerInputClick = (id: string) => {
