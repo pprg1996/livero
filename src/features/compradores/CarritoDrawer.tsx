@@ -1,7 +1,7 @@
 import { FC, useContext, useEffect, useRef, useState } from "react";
 import { Carrito, Operacion } from "./types";
 import ReactDOM from "react-dom";
-import { globalContext } from "pages/_app";
+import { Actions, globalContext } from "pages/_app";
 import firebase from "firebase/app";
 import { useClickOutside } from "shared/hooks";
 import tw from "twin.macro";
@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import CarritoList from "./CarritoList";
 
 const CarritoDrawer: FC<{ setShowCarrito: Function }> = ({ setShowCarrito }) => {
+  const dispatch = useContext(globalContext).dispatch;
   const router = useRouter();
   const usarTodosLosCarritos = !router.query.vendedorId;
   const [carritoVendedorIdSeleccionado, setCarritoVendedorIdSeleccionado] = useState(
@@ -47,12 +48,19 @@ const CarritoDrawer: FC<{ setShowCarrito: Function }> = ({ setShowCarrito }) => 
 
     const operacionId = firebase.database().ref(`/operaciones`).push(newOperacion).key;
 
-    firebase
-      .database()
-      .ref(`tiendas/${carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]}/operaciones`)
-      .push(operacionId);
+    const sendInfoToFirebase = async () => {
+      await firebase
+        .database()
+        .ref(`tiendas/${carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]}/operaciones`)
+        .push(operacionId);
 
-    firebase.database().ref(`compradores/${userUID}/operaciones`).push(operacionId);
+      await firebase.database().ref(`compradores/${userUID}/operaciones`).push(operacionId);
+
+      dispatch({ type: Actions.SET_OPERACION_CHAT_ID, payload: operacionId });
+      router.push("/chatcomprador");
+    };
+
+    sendInfoToFirebase();
   };
 
   if (typeof window === "undefined") {
