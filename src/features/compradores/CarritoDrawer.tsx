@@ -56,6 +56,11 @@ const CarritoDrawer: FC<{ setShowCarrito: Function }> = ({ setShowCarrito }) => 
 
       await firebase.database().ref(`compradores/${userUID}/operaciones`).push(operacionId);
 
+      await firebase
+        .database()
+        .ref(`compradores/${userUID}/carritos/${carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]}`)
+        .remove();
+
       dispatch({ type: Actions.SET_OPERACION_CHAT_ID, payload: operacionId });
       router.push("/chatcomprador");
     };
@@ -74,7 +79,7 @@ const CarritoDrawer: FC<{ setShowCarrito: Function }> = ({ setShowCarrito }) => 
         tw="relative -right-96 bg-white transition-all p-2 overflow-auto"
         css={[startAnimation ? tw`right-0` : null]}
       >
-        {usarTodosLosCarritos ? (
+        {usarTodosLosCarritos && carritosVendedoresId.length > 0 ? (
           <div tw="flex space-x-2">
             <h1>Tienda:</h1>
 
@@ -92,15 +97,18 @@ const CarritoDrawer: FC<{ setShowCarrito: Function }> = ({ setShowCarrito }) => 
         ) : null}
 
         {carritosVendedoresId.length > 0 && carritos ? (
-          <CarritoList
-            vendedorId={carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]}
-            carrito={carritos[carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]]}
-          />
-        ) : null}
-
-        <button tw="rounded bg-blue-700 text-white p-1 w-full" onClick={procederAPagar}>
-          Proceder a pagar
-        </button>
+          <>
+            <CarritoList
+              vendedorId={carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]}
+              carrito={carritos[carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]]}
+            />
+            <button tw="rounded bg-blue-700 text-white p-1 w-full" onClick={procederAPagar}>
+              Proceder a pagar
+            </button>
+          </>
+        ) : (
+          <h1 tw="font-medium text-gray-700">Tu carrito esta vacio</h1>
+        )}
       </div>
     </div>,
     document.getElementById("content-container") as HTMLElement,
