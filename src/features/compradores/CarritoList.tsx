@@ -3,6 +3,9 @@ import { ArticuloPack, Carrito } from "features/compradores/types";
 import { useCompradores, useOperaciones, useVendedores } from "features/firebase";
 import { globalContext } from "pages/_app";
 import { FC, useContext } from "react";
+import PlusSvg from "../../assets/icons/plus.svg";
+import MinusSvg from "../../assets/icons/minus.svg";
+import firebase from "firebase/app";
 
 const CarritoList: FC<{ vendedorId: string; carrito: Carrito }> = ({ vendedorId, carrito }) => {
   const userUID = useContext(globalContext).state.user?.uid as string;
@@ -34,9 +37,16 @@ const CarritoList: FC<{ vendedorId: string; carrito: Carrito }> = ({ vendedorId,
     }, 0) ?? 0;
 
   return (
-    <div>
+    <div tw="space-y-2">
       {carrito?.articuloPacks.map(articuloPack => {
-        return <CarritoItem key={articuloPack.articuloId} articuloPack={articuloPack} />;
+        return (
+          <CarritoItem
+            key={articuloPack.articuloId}
+            articuloPack={articuloPack}
+            carrito={carrito}
+            vendedorId={vendedorId}
+          />
+        );
       })}
 
       <h1 tw="text-lg">
@@ -48,8 +58,29 @@ const CarritoList: FC<{ vendedorId: string; carrito: Carrito }> = ({ vendedorId,
   );
 };
 
-const CarritoItem: FC<{ articuloPack: ArticuloPack }> = ({ articuloPack }) => {
+const CarritoItem: FC<{ articuloPack: ArticuloPack; vendedorId: string; carrito: Carrito }> = ({
+  articuloPack,
+  carrito,
+  vendedorId,
+}) => {
   const { titulo, imgUrl, moneda, precio } = articuloPack.articulo;
+  const userUID = useContext(globalContext).state.user?.uid;
+
+  const sumarRestarCantidad = (operacion: "sumar" | "restar") => {
+    const newCarrito: Carrito = { ...carrito };
+
+    const tempAP = newCarrito.articuloPacks.find(ap => ap.articuloId === articuloPack.articuloId);
+
+    if (tempAP) {
+      if (tempAP.cantidad - 1 === 0 && operacion === "restar") return;
+
+      operacion === "sumar" ? tempAP.cantidad++ : tempAP.cantidad--;
+    }
+
+    setTimeout(() => {
+      firebase.database().ref(`/compradores/${userUID}/carritos/${vendedorId}`).set(carrito);
+    }, 100);
+  };
 
   return (
     <div tw="flex items-start space-x-2">
@@ -64,7 +95,20 @@ const CarritoItem: FC<{ articuloPack: ArticuloPack }> = ({ articuloPack }) => {
           </span>
         </div>
 
-        <span>Cantidad: {articuloPack.cantidad}</span>
+        <div tw="flex items-center space-x-2">
+          <span>Cantidad:</span>
+
+          {articuloPack.cantidad > 1 ? (
+            <button onClick={() => sumarRestarCantidad("restar")}>
+              <MinusSvg tw="w-5 h-auto" />
+            </button>
+          ) : null}
+
+          <span tw="text-xl text-gray-700">{articuloPack.cantidad}</span>
+          <button onClick={() => sumarRestarCantidad("sumar")}>
+            <PlusSvg tw="w-5 h-auto" />
+          </button>
+        </div>
       </div>
     </div>
   );
