@@ -20,7 +20,7 @@ const ArticuloCarta: FC<{ articulo: Articulo; id: string; vendedorId: string; ti
     <div tw="rounded border p-2 flex space-x-2 flex-shrink-0">
       <img src={articulo.imgUrl} tw="w-40 h-40 object-contain" />
 
-      <div tw="py-2 flex flex-col">
+      <div tw="py-2 flex flex-col w-28">
         <span tw="font-medium text-gray-700">{articulo.titulo}</span>
         <span tw="text-gray-700">${articulo.precio}</span>
 
