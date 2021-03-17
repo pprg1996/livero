@@ -1,17 +1,19 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import firebase from "firebase/app";
 import { capitalizeFirstLetter } from "shared/utils";
 import { Operacion } from "features/compradores/types";
+import { Actions, globalContext } from "pages/_app";
 
 const CartaChatBtn: FC<{
   id: string;
   tipo: "compradores" | "tiendas" | "repartidores";
-  setOperacionIdSeleccionada: Function;
   operacion: Operacion;
-}> = ({ id, operacion, setOperacionIdSeleccionada, tipo }) => {
+}> = ({ id, operacion, tipo }) => {
   const [nombreComprador, setNombreComprador] = useState("");
   const [nombreVendedor, setNombreVendedor] = useState("");
   const [nombreRepartidor, setNombreRepartidor] = useState("");
+
+  const dispatch = useContext(globalContext).dispatch;
 
   const { compradorId, tiendaId, repartidorId, status } = operacion;
 
@@ -32,7 +34,10 @@ const CartaChatBtn: FC<{
   }, [repartidorId]);
 
   return (
-    <button tw="shadow p-3 space-y-4 flex flex-col" onClick={() => setOperacionIdSeleccionada(id)}>
+    <button
+      tw="shadow p-3 space-y-4 flex flex-col"
+      onClick={() => dispatch({ type: Actions.SET_OPERACION_CHAT_ID, payload: id })}
+    >
       <div tw="space-x-2">
         <span tw="bg-gray-700 border-2 border-gray-700 text-white py-1 px-2 rounded">Operacion: {id.slice(-4)}</span>
         <span tw="border-2 border-gray-700 text-gray-700 py-1 px-2 rounded">
