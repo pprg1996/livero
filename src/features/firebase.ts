@@ -95,36 +95,38 @@ export const useOperacionesPersonales = (tipoUsuario: "tiendas" | "compradores" 
   const [operaciones, setOperaciones] = useState<Record<string, Operacion>>();
 
   useEffect(() => {
-    firebase
-      .database()
-      .ref(`/${tipoUsuario}/${userUID}/operaciones`)
-      .on("value", data => setOperacionesIdRecord(data.val()));
+    const operacionesRef = firebase.database().ref(`/${tipoUsuario}/${userUID}/operaciones`);
+    const refFetchCallback = (data: firebase.database.DataSnapshot): void => setOperacionesIdRecord(data.val());
+
+    operacionesRef.on("value", refFetchCallback);
+
+    return () => operacionesRef.off("value", refFetchCallback);
   }, []);
 
   useEffect(() => {
     let operacionesRefs: firebase.database.Reference[] = [];
 
+    const refFetchCallback = (data: firebase.database.DataSnapshot): void => {
+      const key = data.key as string;
+
+      const newOperaciones: Record<string, Operacion> = {};
+      newOperaciones[key] = data.val();
+
+      setOperaciones(ops => {
+        return { ...ops, ...newOperaciones };
+      });
+    };
+
     for (const operacionKey in operacionesIdRecord) {
-      const onValue = (data: firebase.database.DataSnapshot): void => {
-        const key = data.key as string;
-
-        const newOperaciones: Record<string, Operacion> = {};
-        newOperaciones[key] = data.val();
-
-        setOperaciones(ops => {
-          return { ...ops, ...newOperaciones };
-        });
-      };
-
       const operacionRef = firebase.database().ref(`/operaciones/${operacionesIdRecord[operacionKey]}`);
-      operacionRef.on("value", onValue);
+      operacionRef.on("value", refFetchCallback);
 
       operacionesRefs.push(operacionRef);
     }
 
     return () => {
       for (const operacionRef of operacionesRefs) {
-        operacionRef.off();
+        operacionRef.off("value", refFetchCallback);
       }
     };
   }, [operacionesIdRecord]);
@@ -136,10 +138,12 @@ export const useOperaciones = () => {
   const [operacionesRecord, setOperacionesRecord] = useState<Record<string, Operacion>>();
 
   useEffect(() => {
-    firebase
-      .database()
-      .ref(`/operaciones`)
-      .on("value", data => setOperacionesRecord(data.val()));
+    const operacionesRef = firebase.database().ref(`/operaciones`);
+    const refFetchCallback = (data: firebase.database.DataSnapshot): void => setOperacionesRecord(data.val());
+
+    operacionesRef.on("value", refFetchCallback);
+
+    return () => operacionesRef.off("value", refFetchCallback);
   }, []);
 
   return operacionesRecord;
@@ -174,14 +178,16 @@ export const useCompradores = () => {
   useEffect(() => {
     const compradoresRef = firebase.database().ref("/compradores");
 
-    compradoresRef.on("value", data => {
+    const refFetchCallback = (data: firebase.database.DataSnapshot): void => {
       if (!data.exists()) return;
 
       setCompradores(data.val());
-    });
+    };
+
+    compradoresRef.on("value", refFetchCallback);
 
     return () => {
-      compradoresRef.off();
+      compradoresRef.off("value", refFetchCallback);
     };
   }, []);
 
@@ -194,14 +200,16 @@ export const useVendedores = () => {
   useEffect(() => {
     const vendedoresRef = firebase.database().ref("/tiendas");
 
-    vendedoresRef.on("value", data => {
+    const refFetchCallback = (data: firebase.database.DataSnapshot): void => {
       if (!data.exists()) return;
 
       setVendedores(data.val());
-    });
+    };
+
+    vendedoresRef.on("value", refFetchCallback);
 
     return () => {
-      vendedoresRef.off();
+      vendedoresRef.off("value", refFetchCallback);
     };
   }, []);
 
@@ -214,14 +222,16 @@ export const useRepartidores = () => {
   useEffect(() => {
     const repartidoresRef = firebase.database().ref("/repartidores");
 
-    repartidoresRef.on("value", data => {
+    const refFetchCallback = (data: firebase.database.DataSnapshot): void => {
       if (!data.exists()) return;
 
       setRepartidores(data.val());
-    });
+    };
+
+    repartidoresRef.on("value", refFetchCallback);
 
     return () => {
-      repartidoresRef.off();
+      repartidoresRef.off("value", refFetchCallback);
     };
   }, []);
 
