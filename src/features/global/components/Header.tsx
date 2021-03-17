@@ -7,11 +7,12 @@ import tw from "twin.macro";
 import DetallesOperacionDrawer from "features/chat/DetallesOperacionDrawer";
 import CartSvg from "../../../assets/icons/shopping-cart.svg";
 import CarritoDrawer from "features/compradores/CarritoDrawer";
-import { useCompradores, useRepartidores } from "features/firebase";
+import { useCompradores, useOperaciones, useRepartidores } from "features/firebase";
 import EditSvg from "../../../assets/icons/edit.svg";
 import CameraSvg from "../../../assets/icons/camera.svg";
 import firebase from "firebase";
 import ProfileImgModal from "./ProfileImgModal";
+import { capitalizeFirstLetter } from "shared/utils";
 
 const Header = () => {
   const [showSideMenu, setShowSideMenu] = useState(false);
@@ -20,6 +21,11 @@ const Header = () => {
   const userUID = useContext(globalContext).state.user?.uid as string;
   const compradores = useCompradores();
   const repartidores = useRepartidores();
+
+  const operaciones = useOperaciones();
+  const operacionChatId = useContext(globalContext).state.operacionChatId;
+  const operacionChatSeleccionada = operacionChatId ? operaciones?.[operacionChatId] : undefined;
+  const status = operacionChatSeleccionada?.status;
 
   let nombre = "";
 
@@ -72,7 +78,14 @@ const Header = () => {
       ) : null}
 
       {["/chatcomprador", "/chatvendedor", "/chatrepartidor"].includes(router.pathname) ? (
-        <DetallesOperacionBtn />
+        <div tw="flex items-center space-x-2">
+          {status ? (
+            <span tw="rounded p-1.5 border-2 border-gray-700 text-gray-700 font-medium text-xs">
+              Status: {capitalizeFirstLetter(status)}
+            </span>
+          ) : null}
+          <DetallesOperacionBtn />
+        </div>
       ) : null}
 
       {["/comprar", "/tiendas/[vendedorId]", "/tiendas/[vendedorId]/[tipoArticulo]"].includes(router.pathname) ? (

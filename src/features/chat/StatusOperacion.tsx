@@ -1,11 +1,10 @@
 import { useOperaciones } from "features/firebase";
 import { useRouter } from "next/router";
 import { globalContext } from "pages/_app";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { capitalizeFirstLetter } from "shared/utils";
 import firebase from "firebase/app";
 import { Operacion } from "features/compradores/types";
-import tw from "twin.macro";
 
 const StatusOperacion = () => {
   const operacionChatId = useContext(globalContext).state.operacionChatId as string;
@@ -30,6 +29,16 @@ const StatusOperacion = () => {
     }, 500);
   };
 
+  const cancelarOperacion = () => {
+    if (!confirm("¿Seguro que desea cancelar la operación?")) return;
+
+    const nuevoStatus: Operacion["status"] = "cancelado";
+
+    setTimeout(() => {
+      firebase.database().ref(`operaciones/${operacionChatId}/status`).set(nuevoStatus);
+    }, 500);
+  };
+
   return (
     <div tw="flex flex-col space-y-2">
       <span tw="border-2 border-gray-700 font-medium rounded text-gray-700 p-1.5 self-start">
@@ -45,6 +54,12 @@ const StatusOperacion = () => {
       {router.pathname === "/chatcomprador" && status === "repartiendo" ? (
         <button onClick={marcarComoEntregado} tw="bg-blue-700 p-1.5 rounded text-white">
           Marcar como entregado
+        </button>
+      ) : null}
+
+      {(router.pathname === "/chatcomprador" || router.pathname === "/chatvendedor") && status !== "cancelado" ? (
+        <button onClick={cancelarOperacion} tw="bg-red-700 p-1.5 rounded text-white">
+          Cancelar operación
         </button>
       ) : null}
     </div>
