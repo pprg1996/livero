@@ -24,12 +24,15 @@ const firebaseConfig = {
 if (typeof window !== "undefined") firebase.initializeApp(firebaseConfig);
 
 interface FirebaseImg {
-  (uid: string | undefined, type: "profile" | "banner"): { imgUrl: string; actualizarImg: Function };
+  (uid: string | undefined, imgTipo: "profile" | "banner", tipoUsuario?: "tiendas" | "compradores" | "repartidores"): {
+    imgUrl: string;
+    actualizarImg: Function;
+  };
 }
 
-export const useFirebaseTiendaImg: FirebaseImg = (uid, type) => {
+export const useFirebaseTiendaImg: FirebaseImg = (uid, imgTipo, tipoUsuario = "tiendas") => {
   let placeholderUrl = "/profile-placeholder.jpg";
-  switch (type) {
+  switch (imgTipo) {
     case "banner":
       placeholderUrl = "/banner-placeholder.jpg";
       break;
@@ -39,7 +42,7 @@ export const useFirebaseTiendaImg: FirebaseImg = (uid, type) => {
 
   // Cargar foto la primera vez que carga la app
   useEffect(() => {
-    const imgFolderRef = firebase.storage().ref(`imagenes/tiendas/${uid}/${type}`);
+    const imgFolderRef = firebase.storage().ref(`imagenes/${tipoUsuario}/${uid}/${imgTipo}`);
     imgFolderRef.listAll().then(data => {
       const imgRef = data.items[0];
       if (imgRef) imgRef.getDownloadURL().then(url => setImgUrl(url));
@@ -48,7 +51,7 @@ export const useFirebaseTiendaImg: FirebaseImg = (uid, type) => {
 
   // Actualiza la imagen y borra la anterior
   const actualizarImg = (imgFile: File) => {
-    const imgFolderRef = firebase.storage().ref(`imagenes/tiendas/${uid}/${type}`);
+    const imgFolderRef = firebase.storage().ref(`imagenes/${tipoUsuario}/${uid}/${imgTipo}`);
     const uploadTask = imgFolderRef.child(`/${Date.now()}`).put(imgFile);
 
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, {

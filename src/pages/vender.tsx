@@ -10,10 +10,7 @@ import UbicacionConfigCard from "features/ubicacion/UbicacionConfigCard";
 import firebase from "firebase/app";
 import SwitchToggle from "shared/components/SwitchToggle";
 import { useOperacionesPersonales } from "features/firebase";
-
-const triggerInputClick = (id: string) => {
-  document.getElementById(id)?.click();
-};
+import { triggerInputClick } from "shared/utils";
 
 const Vender = () => {
   const userUID = useContext(globalContext).state.user?.uid;

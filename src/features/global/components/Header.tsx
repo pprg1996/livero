@@ -9,10 +9,13 @@ import CartSvg from "../../../assets/icons/shopping-cart.svg";
 import CarritoDrawer from "features/compradores/CarritoDrawer";
 import { useCompradores, useRepartidores } from "features/firebase";
 import EditSvg from "../../../assets/icons/edit.svg";
+import CameraSvg from "../../../assets/icons/camera.svg";
 import firebase from "firebase";
+import ProfileImgModal from "./ProfileImgModal";
 
 const Header = () => {
   const [showSideMenu, setShowSideMenu] = useState(false);
+  const [showProfileImgModal, setShowProfileImgModal] = useState(false);
   const router = useRouter();
   const userUID = useContext(globalContext).state.user?.uid as string;
   const compradores = useCompradores();
@@ -51,11 +54,20 @@ const Header = () => {
       </div>
 
       {["/comprar", "/repartir"].includes(router.pathname) ? (
-        <div tw="self-end flex space-x-2">
+        <div tw="self-end flex space-x-2 items-center">
+          <button onClick={() => setShowProfileImgModal(true)}>
+            <CameraSvg tw="w-4" />
+          </button>
+
           <h1 tw="font-medium text-lg">{nombre}</h1>
+
           <button tw="ml-2" onClick={cambiarNombre}>
             <EditSvg tw="w-4" />
           </button>
+
+          {showProfileImgModal ? (
+            <ProfileImgModal pathname={router.pathname} setShowProfileImgModal={setShowProfileImgModal} />
+          ) : null}
         </div>
       ) : null}
 

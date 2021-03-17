@@ -5,6 +5,10 @@ import { Tienda } from "features/tienda/types";
 import { Ubicacion } from "features/ubicacion/types";
 import firebase from "firebase/app";
 
+export const triggerInputClick = (id: string) => {
+  document.getElementById(id)?.click();
+};
+
 export const capitalizeFirstLetter = (text: string) => {
   return text.charAt(0).toUpperCase() + text.substring(1);
 };
