@@ -2,7 +2,8 @@ import { useCompradores, useOperaciones, useOperacionesPersonales, useVendedores
 import { FC, MouseEventHandler, useContext, useState } from "react";
 import tw from "twin.macro";
 import firebase from "firebase/app";
-import { globalContext } from "pages/_app";
+import { Actions, globalContext } from "pages/_app";
+import { useRouter } from "next/router";
 
 const DeliveriesDisponibles: FC<{ setSelectedOperacionId: Function; selectedOperacionId: string | undefined }> = ({
   setSelectedOperacionId,
@@ -56,12 +57,21 @@ const DeliveryCarta: FC<{
   id: string;
 }> = ({ distanciaKm, nombreVendedor, nombreComprador, seleccionarOperacion, id, selectedOperacionId }) => {
   const userUID = useContext(globalContext).state.user?.uid;
+  const dispatch = useContext(globalContext).dispatch;
+  const router = useRouter();
 
   const aceptarDelivery: MouseEventHandler<HTMLButtonElement> = e => {
     const operacionId = e.currentTarget.getAttribute("data-id");
 
-    firebase.database().ref(`/operaciones/${operacionId}/repartidorId`).set(userUID);
-    firebase.database().ref(`/repartidores/${userUID}/operaciones`).push(operacionId);
+    const sendInfoToFirebase = async () => {
+      await firebase.database().ref(`/operaciones/${operacionId}/repartidorId`).set(userUID);
+      await firebase.database().ref(`/repartidores/${userUID}/operaciones`).push(operacionId);
+
+      dispatch({ type: Actions.SET_OPERACION_CHAT_ID, payload: operacionId });
+      router.push("/chatrepartidor");
+    };
+
+    sendInfoToFirebase();
   };
 
   return (
