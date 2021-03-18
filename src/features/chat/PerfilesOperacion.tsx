@@ -61,9 +61,9 @@ const PerfilCarta: FC<Props> = ({ tipo, perfil, id }) => {
   let nombre = "";
 
   if (tipo === "compradores" || tipo === "repartidores") {
-    nombre = perfil.nombre;
+    nombre = (perfil as Comprador | Repartidor).nombre;
   } else {
-    nombre = perfil.titulo;
+    nombre = (perfil as Tienda).titulo;
   }
 
   return (
