@@ -1,4 +1,4 @@
-import { useCompradores, useFirebaseTiendaImg } from "features/firebase";
+import { useCompradores, useFirebaseImg } from "features/firebase";
 import { Tienda } from "features/tienda/types";
 import Link from "next/link";
 import { globalContext } from "pages/_app";
@@ -7,8 +7,8 @@ import { capitalizeFirstLetter, distanciaEntreUbicaciones } from "shared/utils";
 
 const TiendaCarta: FC<{ vendedor: Tienda; tiendaId: string }> = ({ vendedor, tiendaId }) => {
   const userUID = useContext(globalContext).state.user?.uid;
-  const { imgUrl: bannerImgUrl } = useFirebaseTiendaImg(tiendaId, "banner");
-  const { imgUrl: profileImgUrl } = useFirebaseTiendaImg(tiendaId, "profile");
+  const { imgUrl: bannerImgUrl } = useFirebaseImg(tiendaId, "banner");
+  const { imgUrl: profileImgUrl } = useFirebaseImg(tiendaId, "profile");
   const compradores = useCompradores();
 
   let distancia = 0;

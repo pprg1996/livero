@@ -30,7 +30,7 @@ interface FirebaseImg {
   };
 }
 
-export const useFirebaseTiendaImg: FirebaseImg = (uid, imgTipo, tipoUsuario = "tiendas") => {
+export const useFirebaseImg: FirebaseImg = (uid, imgTipo, tipoUsuario = "tiendas") => {
   let placeholderUrl = "/profile-placeholder.jpg";
   switch (imgTipo) {
     case "banner":

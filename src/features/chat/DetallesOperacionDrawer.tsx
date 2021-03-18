@@ -4,6 +4,7 @@ import { useClickOutside } from "shared/hooks";
 import tw from "twin.macro";
 import CarritoOperacion from "./CarritoOperacion";
 import MapaOperacion from "./MapaOperacion";
+import PerfilesOperacion from "./PerfilesOperacion";
 import StatusOperacion from "./StatusOperacion";
 
 const SelectableBtn: FC<{ texto: string; selectedValue: string; setSelectedValue: Function }> = ({
@@ -56,7 +57,7 @@ const DetallesOperacionDrawer: FC<{ setShowDetalles: Function }> = ({ setShowDet
             case "mapa":
               return <MapaOperacion />;
             case "perfiles":
-              return null;
+              return <PerfilesOperacion />;
             case "status":
               return <StatusOperacion />;
           }

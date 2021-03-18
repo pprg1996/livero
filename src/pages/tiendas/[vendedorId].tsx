@@ -1,4 +1,4 @@
-import { useFirebaseTiendaImg, useFirebaseTiendaTitulo, useVendedores } from "features/firebase";
+import { useFirebaseImg, useFirebaseTiendaTitulo, useVendedores } from "features/firebase";
 import ArticuloCarta from "features/menu/ArticuloCarta";
 import { Articulo } from "features/menu/types";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
@@ -8,8 +8,8 @@ import { FC } from "react";
 import { capitalizeFirstLetter } from "shared/utils";
 
 const Tienda = ({ vendedorId }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { imgUrl: bannerImgUrl } = useFirebaseTiendaImg(vendedorId, "banner");
-  const { imgUrl: profileImgUrl } = useFirebaseTiendaImg(vendedorId, "profile");
+  const { imgUrl: bannerImgUrl } = useFirebaseImg(vendedorId, "banner");
+  const { imgUrl: profileImgUrl } = useFirebaseImg(vendedorId, "profile");
   const { titulo } = useFirebaseTiendaTitulo(vendedorId);
 
   const vendedores = useVendedores();

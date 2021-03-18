@@ -2,7 +2,7 @@ import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import tw from "twin.macro";
 import { globalContext } from "pages/_app";
-import { useFirebaseTiendaImg, useFirebaseTiendaTitulo } from "features/firebase";
+import { useFirebaseImg, useFirebaseTiendaTitulo } from "features/firebase";
 import EditSvg from "../assets/icons/edit.svg";
 import HorariosConfigCard from "features/horario/HorariosConfigCard";
 import MenuConfigCard from "features/menu/MenuConfigCard";
@@ -14,8 +14,8 @@ import { triggerInputClick } from "shared/utils";
 
 const Vender = () => {
   const userUID = useContext(globalContext).state.user?.uid;
-  const { imgUrl: bannerImgUrl, actualizarImg: actualizarBannerImg } = useFirebaseTiendaImg(userUID, "banner");
-  const { imgUrl: profileImgUrl, actualizarImg: actualizarProfileImg } = useFirebaseTiendaImg(userUID, "profile");
+  const { imgUrl: bannerImgUrl, actualizarImg: actualizarBannerImg } = useFirebaseImg(userUID, "banner");
+  const { imgUrl: profileImgUrl, actualizarImg: actualizarProfileImg } = useFirebaseImg(userUID, "profile");
   const { titulo, actualizarTitulo } = useFirebaseTiendaTitulo(userUID);
   const [tiendaActivada, setTiendaActivada] = useState();
   const operaciones = useOperacionesPersonales("tiendas");

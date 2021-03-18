@@ -1,4 +1,4 @@
-import { useFirebaseTiendaImg } from "features/firebase";
+import { useFirebaseImg } from "features/firebase";
 import { globalContext } from "pages/_app";
 import { FC, MouseEventHandler, SyntheticEvent, useContext } from "react";
 import ReactDOM from "react-dom";
@@ -10,7 +10,7 @@ const ProfileImgModal: FC<{ pathname: string; setShowProfileImgModal: Function }
 }) => {
   const userUID = useContext(globalContext).state.user?.uid;
   const tipo = pathname === "/comprar" ? "compradores" : "repartidores";
-  const { imgUrl, actualizarImg } = useFirebaseTiendaImg(userUID, "profile", tipo);
+  const { imgUrl, actualizarImg } = useFirebaseImg(userUID, "profile", tipo);
 
   const handleProfileImgChange = (e: SyntheticEvent) => {
     const profileImg = (e.currentTarget as HTMLInputElement).files?.[0];
