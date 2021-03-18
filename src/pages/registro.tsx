@@ -26,53 +26,57 @@ const Registro = () => {
       return;
     }
 
-    const userCredential = await firebase.auth().createUserWithEmailAndPassword(correo, contrasena);
+    try {
+      const userCredential = await firebase.auth().createUserWithEmailAndPassword(correo, contrasena);
 
-    const horarioDefault: Horario = {
-      tipo: "manual",
-      dias: {
-        lunes: { horaApertura: "", horaCierre: "", isAbierto: true },
-        martes: { horaApertura: "", horaCierre: "", isAbierto: true },
-        miercoles: { horaApertura: "", horaCierre: "", isAbierto: true },
-        jueves: { horaApertura: "", horaCierre: "", isAbierto: true },
-        viernes: { horaApertura: "", horaCierre: "", isAbierto: true },
-        sabado: { horaApertura: "", horaCierre: "", isAbierto: true },
-        domingo: { horaApertura: "", horaCierre: "", isAbierto: true },
-      },
-    };
+      const horarioDefault: Horario = {
+        tipo: "manual",
+        dias: {
+          lunes: { horaApertura: "", horaCierre: "", isAbierto: true },
+          martes: { horaApertura: "", horaCierre: "", isAbierto: true },
+          miercoles: { horaApertura: "", horaCierre: "", isAbierto: true },
+          jueves: { horaApertura: "", horaCierre: "", isAbierto: true },
+          viernes: { horaApertura: "", horaCierre: "", isAbierto: true },
+          sabado: { horaApertura: "", horaCierre: "", isAbierto: true },
+          domingo: { horaApertura: "", horaCierre: "", isAbierto: true },
+        },
+      };
 
-    const menuDefault: Menu = {
-      categorias: [],
-      articulos: {},
-    };
+      const menuDefault: Menu = {
+        categorias: [],
+        articulos: {},
+      };
 
-    const ubicacionDefault: Ubicacion = { longitud: 0, latitud: 0 };
+      const ubicacionDefault: Ubicacion = { longitud: 0, latitud: 0 };
 
-    const tienda: Tienda = {
-      titulo: "Titulo",
-      menu: menuDefault,
-      horario: horarioDefault,
-      activo: false,
-      abierto: false,
-      ubicacion: ubicacionDefault,
-      operaciones: {},
-    };
+      const tienda: Tienda = {
+        titulo: "Titulo",
+        menu: menuDefault,
+        horario: horarioDefault,
+        activo: false,
+        abierto: false,
+        ubicacion: ubicacionDefault,
+        operaciones: {},
+      };
 
-    const repartidor: Repartidor = {
-      activo: false,
-      disponible: true,
-      operaciones: {},
-      ubicacion: ubicacionDefault,
-      nombre: "Nombre",
-    };
+      const repartidor: Repartidor = {
+        activo: false,
+        disponible: true,
+        operaciones: {},
+        ubicacion: ubicacionDefault,
+        nombre: "Nombre",
+      };
 
-    const comprador: Comprador = { operaciones: {}, nombre: "Nombre", ubicacion: ubicacionDefault, carritos: {} };
+      const comprador: Comprador = { operaciones: {}, nombre: "Nombre", ubicacion: ubicacionDefault, carritos: {} };
 
-    firebase.database().ref(`tiendas/${userCredential.user?.uid}`).set(tienda);
-    firebase.database().ref(`repartidores/${userCredential.user?.uid}`).set(repartidor);
-    firebase.database().ref(`compradores/${userCredential.user?.uid}`).set(comprador);
+      firebase.database().ref(`tiendas/${userCredential.user?.uid}`).set(tienda);
+      firebase.database().ref(`repartidores/${userCredential.user?.uid}`).set(repartidor);
+      firebase.database().ref(`compradores/${userCredential.user?.uid}`).set(comprador);
 
-    router.push("/rolselect");
+      router.push("/rolselect");
+    } catch (e) {
+      alert("La contraseña debe tener al menos 6 caracteres");
+    }
   };
 
   return (

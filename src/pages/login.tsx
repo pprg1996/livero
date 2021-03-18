@@ -13,7 +13,8 @@ const Login = () => {
     firebase
       .auth()
       .signInWithEmailAndPassword(correo, contrasena)
-      .then(() => router.push("/rolselect"));
+      .then(() => router.push("/rolselect"))
+      .catch(() => alert("Credenciales invalidas"));
   };
 
   return (

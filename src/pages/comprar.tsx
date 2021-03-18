@@ -15,7 +15,7 @@ const Comprar = () => {
 
   const vendedores = useVendedores();
   const compradores = useCompradores();
-  const ubicacionPersonal = compradores?.[userUID as string].ubicacion;
+  const ubicacionPersonal = compradores?.[userUID as string]?.ubicacion;
 
   let vendedoresAbiertosCercanos: [string, Tienda][] = [];
 

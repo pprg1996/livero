@@ -64,7 +64,7 @@ export const filtrarVendedorPorHorario = (vendedor: Tienda) => {
 };
 
 export const distanciaEntreUbicaciones = (ubicacion1: Ubicacion, ubicacion2: Ubicacion) => {
-  const distancia = distance([ubicacion1.longitud, ubicacion1.latitud], [ubicacion2.longitud, ubicacion2.latitud], {
+  const distancia = distance([ubicacion1?.longitud, ubicacion1?.latitud], [ubicacion2?.longitud, ubicacion2?.latitud], {
     units: "kilometers",
   });
 
