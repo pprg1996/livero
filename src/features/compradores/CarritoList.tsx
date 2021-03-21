@@ -5,6 +5,7 @@ import { globalContext } from "pages/_app";
 import { FC, useContext } from "react";
 import PlusSvg from "../../assets/icons/plus.svg";
 import MinusSvg from "../../assets/icons/minus.svg";
+import RemoveSvg from "../../assets/icons/remove.svg";
 import firebase from "firebase/app";
 
 const CarritoList: FC<{ vendedorId: string; carrito: Carrito }> = ({ vendedorId, carrito }) => {
@@ -82,11 +83,21 @@ const CarritoItem: FC<{ articuloPack: ArticuloPack; vendedorId: string; carrito:
     }, 100);
   };
 
+  const sacarDelCarrito = () => {
+    const newCarrito: Carrito = { ...carrito };
+
+    newCarrito.articuloPacks = newCarrito.articuloPacks.filter(ap => ap.articuloId !== articuloPack.articuloId);
+
+    setTimeout(() => {
+      firebase.database().ref(`/compradores/${userUID}/carritos/${vendedorId}`).set(newCarrito);
+    }, 100);
+  };
+
   return (
     <div tw="flex items-start space-x-2">
       <img src={imgUrl} tw="object-contain w-24 h-24" />
 
-      <div tw="mt-2">
+      <div tw="mt-2 flex-grow">
         <div tw="flex space-x-2">
           <h2 tw="font-medium">{titulo}</h2>
           <span>
@@ -110,6 +121,10 @@ const CarritoItem: FC<{ articuloPack: ArticuloPack; vendedorId: string; carrito:
           </button>
         </div>
       </div>
+
+      <button onClick={sacarDelCarrito}>
+        <RemoveSvg tw="w-4 h-auto" />
+      </button>
     </div>
   );
 };
