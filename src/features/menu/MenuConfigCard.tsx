@@ -21,7 +21,7 @@ const MenuConfigCard = () => {
   let articulosFiltrados: [id: string, articulo: Articulo][] = [];
 
   if (vendedores && userUID) {
-    articulosFiltrados = Object.entries(vendedores[userUID].menu.articulos).filter(([id, articulo]) => {
+    articulosFiltrados = Object.entries(vendedores[userUID]?.menu?.articulos ?? {}).filter(([id, articulo]) => {
       return articulo.tipo === tipo && (articulo.categoria === categoria || categoria === "todo");
     });
   }
