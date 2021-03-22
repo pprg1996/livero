@@ -138,7 +138,10 @@ const MenuArticuloCreator: FC<{ tipo: string; categoria: string; setOpenCrearArt
 
         <button
           tw="border border-blue-700 bg-blue-700 rounded p-1.5 text-sm text-white"
-          onClick={() => document.getElementById("img-input")?.click()}
+          onClick={e => {
+            e.preventDefault();
+            document.getElementById("img-input")?.click();
+          }}
         >
           Elegir foto
         </button>
