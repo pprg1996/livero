@@ -99,7 +99,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           </div>
 
-          <BottomTabs />
+          {state.user !== null && router.pathname !== "/rolselect" ? <BottomTabs /> : null}
         </AppDiv>
       ) : null}
     </globalContext.Provider>
