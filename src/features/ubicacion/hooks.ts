@@ -1,9 +1,8 @@
-import { useContext, useEffect, useRef } from "react";
-import mapboxgl from "mapbox-gl";
+import { useEffect, useRef } from "react";
+import mapboxgl, { Map } from "mapbox-gl";
 import "twin.macro";
 import markerStyles from "features/css/markerStyles.module.css";
 import { useCompradores, useOperaciones, useRepartidores, useVendedores } from "features/firebase";
-import { globalContext } from "pages/_app";
 import { Ubicacion } from "./types";
 
 export const useMap = (selectedOperacionId: string) => {
@@ -30,8 +29,6 @@ export const useMap = (selectedOperacionId: string) => {
     vendedorMarkerDiv.className = markerStyles.vendedorMarker;
     const compradorMarkerDiv = document.createElement("div");
     compradorMarkerDiv.className = markerStyles.compradorMarker;
-    const repartidorMarkerDiv = document.createElement("div");
-    repartidorMarkerDiv.className = markerStyles.repartidorMarker;
 
     compradorMarkerRef.current = new mapboxgl.Marker({ element: compradorMarkerDiv, anchor: "bottom-left" })
       .setLngLat([0, 0])
@@ -41,12 +38,19 @@ export const useMap = (selectedOperacionId: string) => {
       .setLngLat([0, 0])
       .addTo(map);
 
-    repartidorMarkerRef.current = new mapboxgl.Marker({ element: repartidorMarkerDiv, anchor: "bottom-left" })
-      .setLngLat([0, 0])
-      .addTo(map);
-
     mapRef.current = map;
   }, []);
+
+  useEffect(() => {
+    if (!operaciones!?.[selectedOperacionId].repartidorId) return;
+
+    const repartidorMarkerDiv = document.createElement("div");
+    repartidorMarkerDiv.className = markerStyles.repartidorMarker;
+
+    repartidorMarkerRef.current = new mapboxgl.Marker({ element: repartidorMarkerDiv, anchor: "bottom-left" })
+      .setLngLat([0, 0])
+      .addTo(mapRef.current as Map);
+  }, [operaciones?.[selectedOperacionId].repartidorId]);
 
   if (!selectedOperacionId || !operaciones || !compradores || !vendedores || !repartidores) return;
 

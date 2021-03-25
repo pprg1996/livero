@@ -1,6 +1,6 @@
 import { useMap } from "features/ubicacion/hooks";
 import { globalContext } from "pages/_app";
-import { FC, useContext } from "react";
+import { useContext } from "react";
 
 const MapaOperacion = () => {
   const operacionChatId = useContext(globalContext).state.operacionChatId;
