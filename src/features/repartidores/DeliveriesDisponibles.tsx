@@ -1,21 +1,22 @@
-import { useCompradores, useOperaciones, useOperacionesPersonales, useVendedores } from "features/firebase";
-import { FC, MouseEventHandler, useContext, useState } from "react";
+import { useCompradores, useOperaciones, useVendedores } from "features/firebase";
+import { FC, MouseEventHandler, useContext } from "react";
 import tw from "twin.macro";
 import firebase from "firebase/app";
 import { Actions, globalContext } from "pages/_app";
 import { useRouter } from "next/router";
+import { distanciaEntreUbicaciones } from "shared/utils";
 
 const DeliveriesDisponibles: FC<{ setSelectedOperacionId: Function; selectedOperacionId: string | undefined }> = ({
   setSelectedOperacionId,
   selectedOperacionId,
 }) => {
-  const allOperaciones = useOperaciones();
+  const operaciones = useOperaciones();
   const compradores = useCompradores();
   const vendedores = useVendedores();
 
   const deliveriesDisponiblesRecord =
-    allOperaciones &&
-    Object.entries(allOperaciones)
+    operaciones &&
+    Object.entries(operaciones)
       .sort((a, b) => b[1].timestamp - a[1].timestamp)
       .filter(opTuple => !opTuple[1].repartidorId && opTuple[1].status === "repartiendo");
 
@@ -29,15 +30,18 @@ const DeliveriesDisponibles: FC<{ setSelectedOperacionId: Function; selectedOper
       {deliveriesDisponiblesRecord?.map(([id, op]) => {
         if (!compradores || !vendedores) return;
 
-        const nombreComprador = compradores[op.compradorId].nombre;
-        const nombreVendedor = vendedores[op.tiendaId].titulo;
+        const comprador = compradores[op.compradorId];
+        const nombreComprador = comprador.nombre;
+        const vendedor = vendedores[op.tiendaId];
+        const nombreVendedor = vendedor.titulo;
+        const distanciaKm = distanciaEntreUbicaciones(comprador.ubicacion, vendedor.ubicacion);
 
         return (
           <DeliveryCarta
             key={id}
             id={id}
             selectedOperacionId={selectedOperacionId}
-            distanciaKm={2.4}
+            distanciaKm={distanciaKm}
             nombreComprador={nombreComprador}
             nombreVendedor={nombreVendedor}
             seleccionarOperacion={seleccionarOperacion}
@@ -78,7 +82,7 @@ const DeliveryCarta: FC<{
     <div tw="p-4 shadow space-y-2 flex-shrink-0 rounded" css={[selectedOperacionId === id ? tw`bg-yellow-200` : null]}>
       <div tw="flex flex-col">
         <span>Distancia: {distanciaKm}KM</span>
-        <span>Comisión: ${Math.max(1, Number((distanciaKm / 5).toFixed(1)))}</span>
+        <span>Comisión: ${Math.ceil(Number((distanciaKm / 5).toFixed(2)))}</span>
         <span>Vendedor: {nombreVendedor}</span>
         <span>Comprador: {nombreComprador}</span>
       </div>
