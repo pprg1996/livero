@@ -3,12 +3,14 @@ import firebase from "firebase/app";
 import { capitalizeFirstLetter } from "shared/utils";
 import { Operacion } from "features/compradores/types";
 import { Actions, globalContext } from "pages/_app";
+import SobreSvg from "../../assets/icons/sobre.svg";
 
 const CartaChatBtn: FC<{
   id: string;
   tipo: "compradores" | "tiendas" | "repartidores";
   operacion: Operacion;
-}> = ({ id, operacion, tipo }) => {
+  hayNotificacion: boolean;
+}> = ({ id, operacion, tipo, hayNotificacion }) => {
   const [nombreComprador, setNombreComprador] = useState("");
   const [nombreVendedor, setNombreVendedor] = useState("");
   const [nombreRepartidor, setNombreRepartidor] = useState("");
@@ -38,11 +40,12 @@ const CartaChatBtn: FC<{
       tw="shadow p-3 space-y-4 flex flex-col"
       onClick={() => dispatch({ type: Actions.SET_OPERACION_CHAT_ID, payload: id })}
     >
-      <div tw="space-x-2">
+      <div tw="space-x-2 self-stretch flex items-center">
         <span tw="bg-gray-700 border-2 border-gray-700 text-white py-1 px-2 rounded">Operacion: {id.slice(-4)}</span>
         <span tw="border-2 border-gray-700 text-gray-700 py-1 px-2 rounded">
           Status: {capitalizeFirstLetter(status)}
         </span>
+        {hayNotificacion ? <SobreSvg tw="w-6 h-auto ml-auto!" /> : null}
       </div>
 
       {tipo !== "compradores" ? (

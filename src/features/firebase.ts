@@ -237,3 +237,11 @@ export const useRepartidores = () => {
 
   return repartidores;
 };
+
+export const setNotificacion = (
+  tipo: "tiendas" | "compradores" | "repartidores",
+  userId: string,
+  operacionId: string,
+) => {
+  firebase.database().ref(`/${tipo}/${userId}/notificacionesEnOperaciones/${operacionId}`).set(true);
+};

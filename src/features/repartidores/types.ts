@@ -7,4 +7,5 @@ export type Repartidor = {
   operacionPendienteId?: string;
   ubicacion: Ubicacion;
   nombre: string;
+  notificacionesEnOperaciones?: Record<string, boolean>;
 };

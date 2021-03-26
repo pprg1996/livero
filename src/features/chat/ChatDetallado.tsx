@@ -1,12 +1,15 @@
 import { Mensaje } from "features/compradores/types";
-import { mandarMensaje, useOperacionesPersonales } from "features/firebase";
-import { FC, useEffect, useRef } from "react";
+import { mandarMensaje, setNotificacion, useOperacionesPersonales } from "features/firebase";
+import { FC, useContext, useEffect, useRef } from "react";
 import tw from "twin.macro";
+import firebase from "firebase/app";
+import { globalContext } from "pages/_app";
 
 const ChatDetallado: FC<{ operacionIdSeleccionada: string; tipo: "compradores" | "tiendas" | "repartidores" }> = ({
   operacionIdSeleccionada,
   tipo,
 }) => {
+  const userUID = useContext(globalContext).state.user?.uid;
   const inputRef = useRef<HTMLInputElement>(null);
   const operaciones = useOperacionesPersonales(tipo);
   const operacionSeleccionada = operaciones && operaciones[operacionIdSeleccionada];
@@ -19,6 +22,10 @@ const ChatDetallado: FC<{ operacionIdSeleccionada: string; tipo: "compradores" |
         .sort((a, b) => a.timestamp - b.timestamp)
     : [];
 
+  useEffect(() => {
+    firebase.database().ref(`/${tipo}/${userUID}/notificacionesEnOperaciones/${operacionIdSeleccionada}`).remove();
+  });
+
   const enviarMensaje = () => {
     inputRef.current?.focus();
 
@@ -28,6 +35,15 @@ const ChatDetallado: FC<{ operacionIdSeleccionada: string; tipo: "compradores" |
     else if (tipo === "repartidores") rol = "repartidor";
 
     mandarMensaje({ texto, rol, timestamp: Date.now() }, operacionIdSeleccionada);
+
+    const compradorId = operaciones?.[operacionIdSeleccionada].compradorId as string;
+    const vendedorId = operaciones?.[operacionIdSeleccionada].tiendaId as string;
+    const repartidorId = operaciones?.[operacionIdSeleccionada].repartidorId;
+
+    setNotificacion("compradores", compradorId, operacionIdSeleccionada);
+    setNotificacion("tiendas", vendedorId, operacionIdSeleccionada);
+
+    if (repartidorId) setNotificacion("repartidores", repartidorId, operacionIdSeleccionada);
 
     (inputRef.current as HTMLInputElement).value = "";
   };

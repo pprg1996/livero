@@ -30,4 +30,5 @@ export type Comprador = {
   nombre: string;
   ubicacion: Ubicacion;
   carritos?: Record<vendedorId, Carrito>;
+  notificacionesEnOperaciones?: Record<string, boolean>;
 };
