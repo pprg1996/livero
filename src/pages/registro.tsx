@@ -51,7 +51,7 @@ const Registro = () => {
       const ubicacionDefault: Ubicacion = { longitud: 0, latitud: 0 };
 
       const metodosDePagoDefault: MetodosDePago = {
-        pm: { activo: false, cedula: 0, codigoBanco: 0, telefono: "" },
+        pm: { activo: false, cedula: "", codigoBanco: "0", telefono: "" },
         zelle: { activo: false, correo: "", titular: "" },
         paypal: { activo: false, correo: "" },
       };

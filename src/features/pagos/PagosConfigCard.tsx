@@ -1,6 +1,48 @@
+import { useRouter } from "next/router";
+import { ChangeEventHandler, useContext, useEffect, useState } from "react";
 import Card from "shared/components/Card";
+import { bancos } from "./bancos";
+import firebase from "firebase/app";
+import { globalContext } from "pages/_app";
+import { MetodosDePago } from "./types";
 
 const PagosConfigCard = () => {
+  const router = useRouter();
+  const userUID = useContext(globalContext).state.user?.uid;
+  const [metodosDePago, setMetodosDePago] = useState<MetodosDePago>();
+  const tipoDireccion = router.pathname === "/vender" ? "/tiendas" : "/repartidores";
+
+  useEffect(() => {
+    const metodosDePagoRef = firebase.database().ref(`${tipoDireccion}/${userUID}/metodosDePago`);
+    const refFetchCallback = (data: firebase.database.DataSnapshot): void => {
+      setMetodosDePago(data.val());
+    };
+
+    metodosDePagoRef.on("value", refFetchCallback);
+
+    return () => metodosDePagoRef.off("value", refFetchCallback);
+  }, []);
+
+  const handleActivoChange: ChangeEventHandler<HTMLInputElement> = e => {
+    const checkbox = e.target;
+
+    firebase
+      .database()
+      .ref(`${tipoDireccion}/${userUID}/metodosDePago/${checkbox.getAttribute("data-pago")}/activo`)
+      .set(checkbox.checked);
+  };
+
+  const handleDataChange: ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = e => {
+    const input = e.target;
+
+    firebase
+      .database()
+      .ref(`${tipoDireccion}/${userUID}/metodosDePago/${input.getAttribute("data-pago")}`)
+      .set(input.value);
+  };
+
+  if (!metodosDePago) return null;
+
   return (
     <Card tw="mb-4 py-2 space-y-4">
       <div>
@@ -13,82 +55,96 @@ const PagosConfigCard = () => {
 
       <div tw="flex flex-col space-y-2">
         <label tw="flex items-center flex-shrink-0 space-x-2">
-          <input type="checkbox" />
+          <input type="checkbox" checked={metodosDePago.pm.activo} data-pago="pm" onChange={handleActivoChange} />
           <h2>Pago móvil</h2>
         </label>
 
-        <select tw="flex-grow">
-          <option value="0001"> Banco Central de Venezuela (0001)</option>
-          <option value="0003"> Banco Industrial de Venezuela (0003)</option>
-          <option value="0102"> Banco de Venezuela (0102)</option>
-          <option value="0104"> Venezolano de Crédito (0104)</option>
-          <option value="0105"> Banco Mercantil (0105)</option>
-          <option value="0108"> Banco Provincial (0108)</option>
-          <option value="0114"> Bancaribe (0114)</option>
-          <option value="0115"> Banco Exterior (0115)</option>
-          <option value="0116"> Banco Occidental de Descuento (0116)</option>
-          <option value="0128"> Banco Caroní (0128)</option>
-          <option value="0134"> Banesco Banco Universal (0134)</option>
-          <option value="0137"> Banco Sofitasa Banco Universal (0137)</option>
-          <option value="0138"> Banco Plaza Banco Universal (0138)</option>
-          <option value="0146"> Banco de la Gente Emprendedora (0146)</option>
-          <option value="0149"> Banco del Pueblo Soberano (0149)</option>
-          <option value="0151"> BFC Banco Fondo Común (0151)</option>
-          <option value="0156"> 100% Banco (0156)</option>
-          <option value="0157"> DelSur Banco Universal (0157)</option>
-          <option value="0163"> Banco del Tesoro (0163)</option>
-          <option value="0166"> Banco Agrícola de Venezuela (0166)</option>
-          <option value="0168"> Bancrecer (0168)</option>
-          <option value="0169"> Mi Banco Banco Microfinanciero (0169)</option>
-          <option value="0171"> Banco Activo (0171)</option>
-          <option value="0172"> Bancamiga Banco Microfinanciero (0172)</option>
-          <option value="0173"> Banco Internacional de Desarrollo (0173)</option>
-          <option value="0174"> Banplus Banco Universal (0174)</option>
-          <option value="0175"> Banco Bicentenario Banco Universal (0175)</option>
-          <option value="0176"> Banco Espirito Santo (0176)</option>
-          <option value="0177"> Banco de la Fuerza Armada Nacional Bolivariana (0177)</option>
-          <option value="0190"> Citibank N.A. (0190)</option>
-          <option value="0191"> Banco Nacional de Crédito (0191)</option>
-          <option value="0601"> Instituto Municipal de Crédito Popular (0601)</option>
+        <select
+          tw="flex-grow"
+          value={metodosDePago.pm.codigoBanco}
+          data-pago="pm/codigoBanco"
+          onChange={handleDataChange}
+        >
+          <option value="0">Elegir banco</option>
+          {bancos.map(({ id, name }) => (
+            <option key={id} value={id}>
+              {name} ({id})
+            </option>
+          ))}
         </select>
 
         <label tw="flex items-center flex-shrink-0 space-x-2 justify-between">
           <h2>Cédula</h2>
-          <input type="number" tw="border rounded" />
+          <input
+            type="string"
+            tw="border rounded"
+            value={metodosDePago.pm.cedula}
+            data-pago="pm/cedula"
+            onChange={handleDataChange}
+          />
         </label>
 
         <label tw="flex items-center flex-shrink-0 space-x-2 justify-between">
           <h2>Teléfono</h2>
-          <input type="tel" tw="border rounded" />
+          <input
+            type="tel"
+            tw="border rounded"
+            value={metodosDePago.pm.telefono}
+            data-pago="pm/telefono"
+            onChange={handleDataChange}
+          />
         </label>
       </div>
 
       <div tw="flex flex-col space-y-2">
         <label tw="flex items-center flex-shrink-0 space-x-2">
-          <input type="checkbox" />
+          <input type="checkbox" checked={metodosDePago.zelle.activo} data-pago="zelle" onChange={handleActivoChange} />
           <h2>Zelle</h2>
         </label>
 
         <label tw="flex items-center flex-shrink-0 space-x-2 justify-between">
           <h2>A nombre de</h2>
-          <input type="text" tw="border rounded" />
+          <input
+            type="text"
+            tw="border rounded"
+            value={metodosDePago.zelle.titular}
+            data-pago="zelle/titular"
+            onChange={handleDataChange}
+          />
         </label>
 
         <label tw="flex items-center flex-shrink-0 space-x-2 justify-between">
           <h2>Correo</h2>
-          <input type="email" tw="border rounded" />
+          <input
+            type="email"
+            tw="border rounded"
+            value={metodosDePago.zelle.correo}
+            data-pago="zelle/correo"
+            onChange={handleDataChange}
+          />
         </label>
       </div>
 
       <div tw="flex flex-col space-y-2">
         <label tw="flex items-center flex-shrink-0 space-x-2">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            checked={metodosDePago.paypal.activo}
+            data-pago="paypal"
+            onChange={handleActivoChange}
+          />
           <h2>Paypal</h2>
         </label>
 
         <label tw="flex items-center flex-shrink-0 space-x-2 justify-between">
           <h2>Correo</h2>
-          <input type="email" tw="border rounded" />
+          <input
+            type="email"
+            tw="border rounded"
+            value={metodosDePago.paypal.correo}
+            data-pago="paypal/correo"
+            onChange={handleDataChange}
+          />
         </label>
       </div>
     </Card>
