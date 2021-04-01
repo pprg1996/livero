@@ -12,5 +12,6 @@ export type Tienda = {
   ubicacion: Ubicacion;
   operaciones: Record<string, string>;
   notificacionesEnOperaciones?: Record<string, boolean>;
+  pagosNuevosEnOperaciones?: Record<string, boolean>;
   metodosDePago: MetodosDePago;
 };

@@ -44,6 +44,7 @@ const CarritoDrawer: FC<{ setShowCarrito: Function }> = ({ setShowCarrito }) => 
       tiendaId: carritoVendedorIdSeleccionado ?? carritosVendedoresId[0],
       status: "pagando",
       timestamp: Date.now(),
+      pagos: { repartidor: { paypal: "", zelle: "", pm: "" }, vendedor: { paypal: "", zelle: "", pm: "" } },
     };
 
     const operacionId = firebase.database().ref(`/operaciones`).push(newOperacion).key;

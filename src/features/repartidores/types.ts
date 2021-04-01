@@ -9,5 +9,6 @@ export type Repartidor = {
   ubicacion: Ubicacion;
   nombre: string;
   notificacionesEnOperaciones?: Record<string, boolean>;
+  pagosNuevosEnOperaciones?: Record<string, boolean>;
   metodosDePago: MetodosDePago;
 };

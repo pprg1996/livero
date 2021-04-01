@@ -1,7 +1,7 @@
 export const bancos = [
   {
     id: "0156",
-    name: "100%BANCO",
+    name: "100% BANCO",
   },
   {
     id: "0196",
@@ -9,11 +9,11 @@ export const bancos = [
   },
   {
     id: "0172",
-    name: "BANCAMIGA BANCO MICROFINANCIERO, C.A.",
+    name: "BANCAMIGA",
   },
   {
     id: "0171",
-    name: "BANCO ACTIVO BANCO COMERCIAL, C.A.",
+    name: "BANCO ACTIVO",
   },
   {
     id: "0166",
@@ -25,23 +25,19 @@ export const bancos = [
   },
   {
     id: "0128",
-    name: "BANCO CARONI, C.A. BANCO UNIVERSAL",
-  },
-  {
-    id: "0164",
-    name: "BANCO DE DESARROLLO DEL MICROEMPRESARIO",
+    name: "BANCO CARONI",
   },
   {
     id: "0102",
-    name: "BANCO DE VENEZUELA S.A.C.A. BANCO UNIVERSAL",
+    name: "BANCO DE VENEZUELA",
   },
   {
     id: "0114",
-    name: "BANCARIBE C.A. BANCO UNIVERSAL",
+    name: "BANCARIBE",
   },
   {
     id: "0149",
-    name: "BANCO DEL PUEBLO SOBERANO C.A.",
+    name: "BANCO DEL PUEBLO SOBERANO",
   },
   {
     id: "0163",
@@ -49,11 +45,11 @@ export const bancos = [
   },
   {
     id: "0176",
-    name: "BANCO ESPIRITO SANTO, S.A.",
+    name: "BANCO ESPIRITO SANTO",
   },
   {
     id: "0115",
-    name: "BANCO EXTERIOR C.A.",
+    name: "BANCO EXTERIOR",
   },
   {
     id: "0003",
@@ -61,11 +57,11 @@ export const bancos = [
   },
   {
     id: "0173",
-    name: "BANCO INTERNACIONAL DE DESARROLLO, C.A.",
+    name: "BANCO INTERNACIONAL DE DESARROLLO",
   },
   {
     id: "0105",
-    name: "BANCO MERCANTIL C.A.",
+    name: "BANCO MERCANTIL",
   },
   {
     id: "0191",
@@ -85,11 +81,11 @@ export const bancos = [
   },
   {
     id: "0104",
-    name: "BANCO VENEZOLANO DE CREDITO S.A.",
+    name: "BANCO VENEZOLANO DE CREDITO",
   },
   {
     id: "0168",
-    name: "BANCRECER S.A. BANCO DE DESARROLLO",
+    name: "BANCRECER",
   },
   {
     id: "0134",
@@ -105,15 +101,15 @@ export const bancos = [
   },
   {
     id: "0174",
-    name: "BANPLUS BANCO COMERCIAL C.A",
+    name: "BANPLUS BANCO COMERCIAL",
   },
   {
     id: "0190",
-    name: "CITIBANK.",
+    name: "CITIBANK",
   },
   {
     id: "0121",
-    name: "CORP BANCA.",
+    name: "CORP BANCA",
   },
   {
     id: "0157",
@@ -121,11 +117,11 @@ export const bancos = [
   },
   {
     id: "0151",
-    name: "BFC BANCO FONDO COMÚN C.A. BANCO UNIVERSAL",
+    name: "BFC BANCO FONDO COMÚN",
   },
   {
     id: "0169",
-    name: "MIBANCO BANCO DE DESARROLLO, C.A.",
+    name: "MIBANCO BANCO DE DESARROLLO",
   },
   {
     id: "0137",

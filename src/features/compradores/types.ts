@@ -13,6 +13,11 @@ export type Mensaje = { texto: string; rol: "comprador" | "vendedor" | "repartid
 
 export type CompraStatus = "explorando" | "pagando" | "repartiendo";
 
+export type Pagos = {
+  vendedor: { zelle: string; pm: string; paypal: string };
+  repartidor: { zelle: string; pm: string; paypal: string };
+};
+
 export type Operacion = {
   carrito: Carrito;
   tiendaId: string;
@@ -21,6 +26,7 @@ export type Operacion = {
   mensajes?: Record<string, Mensaje>;
   status: "pagando" | "repartiendo" | "finalizado" | "cancelado";
   timestamp: number;
+  pagos: Pagos;
 };
 
 type vendedorId = string;

@@ -4,13 +4,15 @@ import { capitalizeFirstLetter } from "shared/utils";
 import { Operacion } from "features/compradores/types";
 import { Actions, globalContext } from "pages/_app";
 import SobreSvg from "../../assets/icons/sobre.svg";
+import DollarSvg from "../../assets/icons/dollar.svg";
 
 const CartaChatBtn: FC<{
   id: string;
   tipo: "compradores" | "tiendas" | "repartidores";
   operacion: Operacion;
   hayNotificacion: boolean;
-}> = ({ id, operacion, tipo, hayNotificacion }) => {
+  hayPagoNuevo: boolean;
+}> = ({ id, operacion, tipo, hayNotificacion, hayPagoNuevo }) => {
   const [nombreComprador, setNombreComprador] = useState("");
   const [nombreVendedor, setNombreVendedor] = useState("");
   const [nombreRepartidor, setNombreRepartidor] = useState("");
@@ -45,7 +47,10 @@ const CartaChatBtn: FC<{
         <span tw="border-2 border-gray-700 text-gray-700 py-1 px-2 rounded">
           Status: {capitalizeFirstLetter(status)}
         </span>
-        {hayNotificacion ? <SobreSvg tw="w-6 h-auto ml-auto!" /> : null}
+        <div tw="ml-auto!">
+          {hayNotificacion ? <SobreSvg tw="w-6 h-auto" /> : null}
+          {hayPagoNuevo ? <DollarSvg tw="w-6 h-auto" /> : null}
+        </div>
       </div>
 
       {tipo !== "compradores" ? (

@@ -12,11 +12,23 @@ const BottomTabs = () => {
   const dispatch = useContext(globalContext).dispatch;
   const userUID = useContext(globalContext).state.user?.uid as string;
 
-  const hayNotificacionesComprador = !!useCompradores()?.[userUID].notificacionesEnOperaciones;
-  const hayNotificacionesVendedor = !!useVendedores()?.[userUID].notificacionesEnOperaciones;
-  const hayNotificacionesRepartidor = !!useRepartidores()?.[userUID].notificacionesEnOperaciones;
+  const yoComprador = useCompradores()?.[userUID];
+  const yoVendedor = useVendedores()?.[userUID];
+  const yoRepartidor = useRepartidores()?.[userUID];
 
-  const hayNotificaciones = hayNotificacionesComprador || hayNotificacionesVendedor || hayNotificacionesRepartidor;
+  const hayNotificacionesComprador = !!yoComprador?.notificacionesEnOperaciones;
+  const hayNotificacionesVendedor = !!yoVendedor?.notificacionesEnOperaciones;
+  const hayNotificacionesRepartidor = !!yoRepartidor?.notificacionesEnOperaciones;
+
+  const hayPagoNuevoVendedor = !!yoVendedor?.pagosNuevosEnOperaciones;
+  const hayPagoNuevoRepartidor = !!yoRepartidor?.pagosNuevosEnOperaciones;
+
+  const hayNotificaciones =
+    hayNotificacionesComprador ||
+    hayNotificacionesVendedor ||
+    hayNotificacionesRepartidor ||
+    hayPagoNuevoRepartidor ||
+    hayPagoNuevoVendedor;
 
   let homeHref = "/comprar";
   let chatHref = "/chatcomprador";

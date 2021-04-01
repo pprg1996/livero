@@ -50,6 +50,10 @@ const Comprar = () => {
         <span>Km</span>
       </div>
 
+      <span tw="font-medium text-gray-700">
+        Costo de delivery maximo a esa distancia: ${Math.ceil(distanciaMaxima / 5)}
+      </span>
+
       <div tw="px-4 py-2 flex gap-4 overflow-auto">
         {vendedoresAbiertosCercanos.map(([id, vendedor]) => {
           return <TiendaCarta key={id} tiendaId={id} vendedor={vendedor} />;

@@ -38,7 +38,7 @@ const TiendaCarta: FC<{ vendedor: Tienda; tiendaId: string }> = ({ vendedor, tie
             </div>
           </div>
 
-          <h2 tw="mt-4 text-gray-700 font-medium">{vendedor.titulo}</h2>
+          <h2 tw="mt-4 mr-4 text-gray-700 font-medium text-lg">{vendedor.titulo}</h2>
         </div>
 
         <div tw="grid grid-cols-2 grid-auto-rows[auto] place-items-center gap-2">
@@ -49,6 +49,12 @@ const TiendaCarta: FC<{ vendedor: Tienda; tiendaId: string }> = ({ vendedor, tie
           ))}
 
           <span tw="border-gray-700 border-2 font-medium p-1 rounded">{distancia} Km</span>
+        </div>
+
+        <div tw="flex space-x-3 mt-2">
+          {vendedor.metodosDePago.pm.activo ? <span tw="underline">Pago móvil</span> : null}
+          {vendedor.metodosDePago.zelle.activo ? <span tw="underline">Zelle</span> : null}
+          {vendedor.metodosDePago.paypal.activo ? <span tw="underline">Paypal</span> : null}
         </div>
       </a>
     </Link>

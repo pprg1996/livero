@@ -245,3 +245,7 @@ export const setNotificacion = (
 ) => {
   firebase.database().ref(`/${tipo}/${userId}/notificacionesEnOperaciones/${operacionId}`).set(true);
 };
+
+export const setNuevoPago = (tipo: "tiendas" | "repartidores", userId: string, operacionId: string) => {
+  firebase.database().ref(`/${tipo}/${userId}/pagosNuevosEnOperaciones/${operacionId}`).set(true);
+};
