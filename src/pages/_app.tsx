@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import firebase from "firebase/app";
 import Header from "features/global/components/Header";
 import BottomTabs from "features/global/components/BottomTabs";
-import { Carrito } from "features/compradores/types";
 
 const CustomGlobalStyles = createGlobalStyle`
 html,
@@ -36,15 +35,16 @@ button {
 interface GlobalState {
   user: firebase.User | null | undefined;
   operacionChatId: string | undefined;
+  dolar: number;
 }
 
 export enum Actions {
   SET_USER = "setUser",
-  SET_CARRITO = "setCarrito",
   SET_OPERACION_CHAT_ID = "setOperacionChatId",
+  SET_DOLAR = "setDolar",
 }
 
-const defaultGlobalState: GlobalState = { user: undefined, operacionChatId: undefined };
+const defaultGlobalState: GlobalState = { user: undefined, operacionChatId: undefined, dolar: 1 };
 export const globalContext = createContext<{ state: GlobalState; dispatch: Function }>({
   state: defaultGlobalState,
   dispatch: () => {},
@@ -56,6 +56,8 @@ const reducer = (state: GlobalState, action: { type: string; payload: any }): Gl
       return { ...state, user: action.payload };
     case Actions.SET_OPERACION_CHAT_ID:
       return { ...state, operacionChatId: action.payload };
+    case Actions.SET_DOLAR:
+      return { ...state, dolar: action.payload };
     default:
       return state;
   }
@@ -82,6 +84,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     const mainDiv = document.getElementById("__next")?.style;
     if (mainDiv) mainDiv.height = "100%";
+
+    fetch("https://s3.amazonaws.com/dolartoday/data.json")
+      .then(result => result.json())
+      .then(json => dispatch({ type: Actions.SET_DOLAR, payload: json.USD.dolartoday }));
   }, []);
 
   return (

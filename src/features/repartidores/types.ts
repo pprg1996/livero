@@ -1,3 +1,4 @@
+import { MetodosDePago } from "features/pagos/types";
 import { Ubicacion } from "features/ubicacion/types";
 
 export type Repartidor = {
@@ -8,4 +9,5 @@ export type Repartidor = {
   ubicacion: Ubicacion;
   nombre: string;
   notificacionesEnOperaciones?: Record<string, boolean>;
+  metodosDePago: MetodosDePago;
 };

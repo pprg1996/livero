@@ -8,6 +8,7 @@ import DeliveriesDisponibles from "features/repartidores/DeliveriesDisponibles";
 import { useOperaciones, useCompradores, useRepartidores, useUpdateUbicacion, useVendedores } from "features/firebase";
 import { distance } from "@turf/turf";
 import markerStyles from "features/css/markerStyles.module.css";
+import PagosConfigCard from "features/pagos/PagosConfigCard";
 
 const Repartir = () => {
   const userUID = useContext(globalContext).state.user?.uid;
@@ -157,6 +158,8 @@ const Repartir = () => {
         setSelectedOperacionId={setSelectedOperacionId}
         selectedOperacionId={selectedOperacionId}
       />
+
+      <PagosConfigCard />
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { useClickOutside } from "shared/hooks";
 import tw from "twin.macro";
 import CarritoOperacion from "./CarritoOperacion";
 import MapaOperacion from "./MapaOperacion";
+import PagosOperacion from "./PagosOperacion";
 import PerfilesOperacion from "./PerfilesOperacion";
 import StatusOperacion from "./StatusOperacion";
 
@@ -26,7 +27,9 @@ const SelectableBtn: FC<{ texto: string; selectedValue: string; setSelectedValue
 const DetallesOperacionDrawer: FC<{ setShowDetalles: Function }> = ({ setShowDetalles }) => {
   const [startAnimation, setStartAnimation] = useState(false);
   const detallesRef = useRef<HTMLDivElement>(null);
-  const [selectedDetalle, setSelectedDetalle] = useState<"carrito" | "mapa" | "perfiles" | "status">("carrito");
+  const [selectedDetalle, setSelectedDetalle] = useState<"carrito" | "mapa" | "perfiles" | "status" | "pagos">(
+    "carrito",
+  );
 
   useEffect(() => setStartAnimation(true), []);
 
@@ -48,6 +51,7 @@ const DetallesOperacionDrawer: FC<{ setShowDetalles: Function }> = ({ setShowDet
           <SelectableBtn texto="Mapa" selectedValue={selectedDetalle} setSelectedValue={setSelectedDetalle} />
           <SelectableBtn texto="Perfiles" selectedValue={selectedDetalle} setSelectedValue={setSelectedDetalle} />
           <SelectableBtn texto="Status" selectedValue={selectedDetalle} setSelectedValue={setSelectedDetalle} />
+          <SelectableBtn texto="Pagos" selectedValue={selectedDetalle} setSelectedValue={setSelectedDetalle} />
         </div>
 
         {(function () {
@@ -60,6 +64,8 @@ const DetallesOperacionDrawer: FC<{ setShowDetalles: Function }> = ({ setShowDet
               return <PerfilesOperacion />;
             case "status":
               return <StatusOperacion />;
+            case "pagos":
+              return <PagosOperacion />;
           }
         })()}
       </div>

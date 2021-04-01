@@ -18,8 +18,6 @@ const BottomTabs = () => {
 
   const hayNotificaciones = hayNotificacionesComprador || hayNotificacionesVendedor || hayNotificacionesRepartidor;
 
-  console.log(hayNotificaciones);
-
   let homeHref = "/comprar";
   let chatHref = "/chatcomprador";
   switch (router.pathname) {

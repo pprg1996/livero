@@ -9,6 +9,7 @@ import { Ubicacion } from "features/ubicacion/types";
 import { Tienda } from "features/tienda/types";
 import { Repartidor } from "features/repartidores/types";
 import { Comprador } from "features/compradores/types";
+import { MetodosDePago } from "features/pagos/types";
 
 type Inputs = {
   correo: string;
@@ -49,6 +50,12 @@ const Registro = () => {
 
       const ubicacionDefault: Ubicacion = { longitud: 0, latitud: 0 };
 
+      const metodosDePagoDefault: MetodosDePago = {
+        pm: { activo: false, cedula: 0, codigoBanco: 0, telefono: "" },
+        zelle: { activo: false, correo: "", titular: "" },
+        paypal: { activo: false, correo: "" },
+      };
+
       const tienda: Tienda = {
         titulo: "Titulo",
         menu: menuDefault,
@@ -57,6 +64,7 @@ const Registro = () => {
         abierto: false,
         ubicacion: ubicacionDefault,
         operaciones: {},
+        metodosDePago: metodosDePagoDefault,
       };
 
       const repartidor: Repartidor = {
@@ -65,6 +73,7 @@ const Registro = () => {
         operaciones: {},
         ubicacion: ubicacionDefault,
         nombre: "Nombre",
+        metodosDePago: metodosDePagoDefault,
       };
 
       const comprador: Comprador = { operaciones: {}, nombre: "Nombre", ubicacion: ubicacionDefault, carritos: {} };

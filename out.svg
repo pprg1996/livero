@@ -1,0 +1,128 @@
+<svg version="1.1" baseProfile="full" width="5449" height="216" viewbox="0 0 5449 216" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Calibri', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
+<title >nomnoml</title>
+<desc >#.interface: fill=lightblue
+#.enumeration: fill=lightgreen
+[&lt;interface&gt;Articulo|+titulo: string;+descripcion: string;+precio: number;+imgUrl: string;+categoria: string;+moneda: string;+tipo: &quot;comida&quot; \| &quot;vestimenta&quot; \| &quot;medicina&quot; \| &quot;tecnologia&quot; \| &quot;hogar&quot; \| &quot;herramienta&quot;|]
+[&lt;interface&gt;Menu|+categorias: string\[\];+articulos: Record&lt;string, Articulo&gt;|]
+[&lt;interface&gt;ArticuloPack|+articulo: Articulo;+articuloId: string;+cantidad: number|]
+[&lt;interface&gt;Carrito|+articuloPacks: ArticuloPack\[\]|]
+[&lt;interface&gt;Mensaje|+texto: string;+rol: &quot;comprador&quot; \| &quot;vendedor&quot; \| &quot;repartidor&quot;;+timestamp: number|]
+[&lt;interface&gt;Operacion|+carrito: Carrito;+tiendaId: string;+compradorId: string;+repartidorId: string \| undefined;+mensajes: Record&lt;string, Mensaje&gt; \| undefined;+status: &quot;pagando&quot; \| &quot;repartiendo&quot; \| &quot;finalizado&quot; \| &quot;cancelado&quot;;+timestamp: number|]
+[&lt;interface&gt;Ubicacion|+longitud: number;+latitud: number|]
+[&lt;interface&gt;Comprador|+operaciones: Record&lt;string, string&gt;;+nombre: string;+ubicacion: Ubicacion;+carritos: Record&lt;string, Carrito&gt; \| undefined|]
+[&lt;interface&gt;Repartidor|+activo: boolean;+disponible: boolean;+operaciones: Record&lt;string, string&gt;;+operacionPendienteId: string \| undefined;+ubicacion: Ubicacion;+nombre: string|]
+[&lt;interface&gt;Dia|+horaApertura: string;+horaCierre: string;+isAbierto: boolean|]
+[&lt;interface&gt;Horario|+tipo: TipoHorario;+dias: { lunes: Dia; martes: Dia; miercoles: Dia; jueves: Dia; viernes: Dia; sabado: Dia; domingo: Dia; }|]
+[&lt;interface&gt;Tienda|+activo: boolean;+abierto: boolean;+horario: Horario;+menu: Menu;+titulo: string;+ubicacion: Ubicacion;+operaciones: Record&lt;string, string&gt;|]
+[&lt;interface&gt;BaseDeDatos|+compradores: Record&lt;string, Comprador&gt;;+operaciones: Record&lt;string, Operacion&gt;;+repartidores: Record&lt;string, Repartidor&gt;;+tiendas: Record&lt;string, Tienda&gt;|]</desc>
+<rect x="13.5" y="28.5" height="160" width="814" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.Articulo" xlink:href="z.ts"><text x="420.5" y="50" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Articulo</text></a>
+<path d="M13.5 59.5 L827.5 59.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="21.5" y="81" style="fill: #33322E;font-weight:normal;">+titulo: string</text>
+<text x="21.5" y="96" style="fill: #33322E;font-weight:normal;">+descripcion: string</text>
+<text x="21.5" y="111" style="fill: #33322E;font-weight:normal;">+precio: number</text>
+<text x="21.5" y="126" style="fill: #33322E;font-weight:normal;">+imgUrl: string</text>
+<text x="21.5" y="141" style="fill: #33322E;font-weight:normal;">+categoria: string</text>
+<text x="21.5" y="156" style="fill: #33322E;font-weight:normal;">+moneda: string</text>
+<text x="21.5" y="171" style="fill: #33322E;font-weight:normal;">+tipo: &quot;comida&quot; | &quot;vestimenta&quot; | &quot;medicina&quot; | &quot;tecnologia&quot; | &quot;hogar&quot; | &quot;herramienta&quot;</text>
+<path d="M13.5 180.5 L827.5 180.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="867.5" y="66.5" height="85" width="358" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.Menu" xlink:href="z.ts"><text x="1046.5" y="88" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Menu</text></a>
+<path d="M867.5 97.5 L1225.5 97.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="875.5" y="119" style="fill: #33322E;font-weight:normal;">+categorias: string[]</text>
+<text x="875.5" y="134" style="fill: #33322E;font-weight:normal;">+articulos: Record&lt;string, Articulo&gt;</text>
+<path d="M867.5 143.5 L1225.5 143.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="1265.5" y="58.5" height="100" width="197" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.ArticuloPack" xlink:href="z.ts"><text x="1364" y="80" style="fill: #33322E;font-weight:normal;text-anchor: middle;">ArticuloPack</text></a>
+<path d="M1265.5 89.5 L1462.5 89.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="1273.5" y="111" style="fill: #33322E;font-weight:normal;">+articulo: Articulo</text>
+<text x="1273.5" y="126" style="fill: #33322E;font-weight:normal;">+articuloId: string</text>
+<text x="1273.5" y="141" style="fill: #33322E;font-weight:normal;">+cantidad: number</text>
+<path d="M1265.5 150.5 L1462.5 150.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="1502.5" y="73.5" height="70" width="301" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.Carrito" xlink:href="z.ts"><text x="1653" y="95" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Carrito</text></a>
+<path d="M1502.5 104.5 L1803.5 104.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="1510.5" y="126" style="fill: #33322E;font-weight:normal;">+articuloPacks: ArticuloPack[]</text>
+<path d="M1502.5 135.5 L1803.5 135.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="1843.5" y="58.5" height="100" width="444" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.Mensaje" xlink:href="z.ts"><text x="2065.5" y="80" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Mensaje</text></a>
+<path d="M1843.5 89.5 L2287.5 89.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="1851.5" y="111" style="fill: #33322E;font-weight:normal;">+texto: string</text>
+<text x="1851.5" y="126" style="fill: #33322E;font-weight:normal;">+rol: &quot;comprador&quot; | &quot;vendedor&quot; | &quot;repartidor&quot;</text>
+<text x="1851.5" y="141" style="fill: #33322E;font-weight:normal;">+timestamp: number</text>
+<path d="M1843.5 150.5 L2287.5 150.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="2327.5" y="28.5" height="160" width="615" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.Operacion" xlink:href="z.ts"><text x="2635" y="50" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Operacion</text></a>
+<path d="M2327.5 59.5 L2942.5 59.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="2335.5" y="81" style="fill: #33322E;font-weight:normal;">+carrito: Carrito</text>
+<text x="2335.5" y="96" style="fill: #33322E;font-weight:normal;">+tiendaId: string</text>
+<text x="2335.5" y="111" style="fill: #33322E;font-weight:normal;">+compradorId: string</text>
+<text x="2335.5" y="126" style="fill: #33322E;font-weight:normal;">+repartidorId: string | undefined</text>
+<text x="2335.5" y="141" style="fill: #33322E;font-weight:normal;">+mensajes: Record&lt;string, Mensaje&gt; | undefined</text>
+<text x="2335.5" y="156" style="fill: #33322E;font-weight:normal;">+status: &quot;pagando&quot; | &quot;repartiendo&quot; | &quot;finalizado&quot; | &quot;cancelado&quot;</text>
+<text x="2335.5" y="171" style="fill: #33322E;font-weight:normal;">+timestamp: number</text>
+<path d="M2327.5 180.5 L2942.5 180.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="2982.5" y="66.5" height="85" width="178" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.Ubicacion" xlink:href="z.ts"><text x="3071.5" y="88" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Ubicacion</text></a>
+<path d="M2982.5 97.5 L3160.5 97.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="2990.5" y="119" style="fill: #33322E;font-weight:normal;">+longitud: number</text>
+<text x="2990.5" y="134" style="fill: #33322E;font-weight:normal;">+latitud: number</text>
+<path d="M2982.5 143.5 L3160.5 143.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="3200.5" y="51.5" height="115" width="453" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.Comprador" xlink:href="z.ts"><text x="3427" y="73" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Comprador</text></a>
+<path d="M3200.5 82.5 L3653.5 82.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="3208.5" y="104" style="fill: #33322E;font-weight:normal;">+operaciones: Record&lt;string, string&gt;</text>
+<text x="3208.5" y="119" style="fill: #33322E;font-weight:normal;">+nombre: string</text>
+<text x="3208.5" y="134" style="fill: #33322E;font-weight:normal;">+ubicacion: Ubicacion</text>
+<text x="3208.5" y="149" style="fill: #33322E;font-weight:normal;">+carritos: Record&lt;string, Carrito&gt; | undefined</text>
+<path d="M3200.5 158.5 L3653.5 158.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="3693.5" y="36.5" height="145" width="406" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.Repartidor" xlink:href="z.ts"><text x="3896.5" y="58" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Repartidor</text></a>
+<path d="M3693.5 67.5 L4099.5 67.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="3701.5" y="89" style="fill: #33322E;font-weight:normal;">+activo: boolean</text>
+<text x="3701.5" y="104" style="fill: #33322E;font-weight:normal;">+disponible: boolean</text>
+<text x="3701.5" y="119" style="fill: #33322E;font-weight:normal;">+operaciones: Record&lt;string, string&gt;</text>
+<text x="3701.5" y="134" style="fill: #33322E;font-weight:normal;">+operacionPendienteId: string | undefined</text>
+<text x="3701.5" y="149" style="fill: #33322E;font-weight:normal;">+ubicacion: Ubicacion</text>
+<text x="3701.5" y="164" style="fill: #33322E;font-weight:normal;">+nombre: string</text>
+<path d="M3693.5 173.5 L4099.5 173.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="4139.5" y="58.5" height="100" width="216" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.Dia" xlink:href="z.ts"><text x="4247.5" y="80" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Dia</text></a>
+<path d="M4139.5 89.5 L4355.5 89.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="4147.5" y="111" style="fill: #33322E;font-weight:normal;">+horaApertura: string</text>
+<text x="4147.5" y="126" style="fill: #33322E;font-weight:normal;">+horaCierre: string</text>
+<text x="4147.5" y="141" style="fill: #33322E;font-weight:normal;">+isAbierto: boolean</text>
+<path d="M4139.5 150.5 L4355.5 150.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="4395.5" y="13.5" height="190" width="197" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.Horario" xlink:href="z.ts"><text x="4494" y="35" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Horario</text></a>
+<path d="M4395.5 44.5 L4592.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="4403.5" y="66" style="fill: #33322E;font-weight:normal;">+tipo: TipoHorario</text>
+<text x="4403.5" y="81" style="fill: #33322E;font-weight:normal;">+dias: { lunes: Dia</text>
+<text x="4403.5" y="96" style="fill: #33322E;font-weight:normal;">martes: Dia</text>
+<text x="4403.5" y="111" style="fill: #33322E;font-weight:normal;">miercoles: Dia</text>
+<text x="4403.5" y="126" style="fill: #33322E;font-weight:normal;">jueves: Dia</text>
+<text x="4403.5" y="141" style="fill: #33322E;font-weight:normal;">viernes: Dia</text>
+<text x="4403.5" y="156" style="fill: #33322E;font-weight:normal;">sabado: Dia</text>
+<text x="4403.5" y="171" style="fill: #33322E;font-weight:normal;">domingo: Dia</text>
+<text x="4403.5" y="186" style="fill: #33322E;font-weight:normal;">}</text>
+<path d="M4395.5 195.5 L4592.5 195.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="4632.5" y="28.5" height="160" width="358" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.Tienda" xlink:href="z.ts"><text x="4811.5" y="50" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Tienda</text></a>
+<path d="M4632.5 59.5 L4990.5 59.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="4640.5" y="81" style="fill: #33322E;font-weight:normal;">+activo: boolean</text>
+<text x="4640.5" y="96" style="fill: #33322E;font-weight:normal;">+abierto: boolean</text>
+<text x="4640.5" y="111" style="fill: #33322E;font-weight:normal;">+horario: Horario</text>
+<text x="4640.5" y="126" style="fill: #33322E;font-weight:normal;">+menu: Menu</text>
+<text x="4640.5" y="141" style="fill: #33322E;font-weight:normal;">+titulo: string</text>
+<text x="4640.5" y="156" style="fill: #33322E;font-weight:normal;">+ubicacion: Ubicacion</text>
+<text x="4640.5" y="171" style="fill: #33322E;font-weight:normal;">+operaciones: Record&lt;string, string&gt;</text>
+<path d="M4632.5 180.5 L4990.5 180.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="5030.5" y="51.5" height="115" width="406" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+<a id="z.ts.BaseDeDatos" xlink:href="z.ts"><text x="5233.5" y="73" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BaseDeDatos</text></a>
+<path d="M5030.5 82.5 L5436.5 82.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="5038.5" y="104" style="fill: #33322E;font-weight:normal;">+compradores: Record&lt;string, Comprador&gt;</text>
+<text x="5038.5" y="119" style="fill: #33322E;font-weight:normal;">+operaciones: Record&lt;string, Operacion&gt;</text>
+<text x="5038.5" y="134" style="fill: #33322E;font-weight:normal;">+repartidores: Record&lt;string, Repartidor&gt;</text>
+<text x="5038.5" y="149" style="fill: #33322E;font-weight:normal;">+tiendas: Record&lt;string, Tienda&gt;</text>
+<path d="M5030.5 158.5 L5436.5 158.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+</svg>

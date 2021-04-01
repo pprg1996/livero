@@ -11,6 +11,7 @@ import firebase from "firebase/app";
 import SwitchToggle from "shared/components/SwitchToggle";
 import { useOperacionesPersonales } from "features/firebase";
 import { triggerInputClick } from "shared/utils";
+import PagosConfigCard from "features/pagos/PagosConfigCard";
 
 const Vender = () => {
   const userUID = useContext(globalContext).state.user?.uid;
@@ -93,6 +94,8 @@ const Vender = () => {
       {tiendaActivada ? (
         <>
           <UbicacionConfigCard />
+
+          <PagosConfigCard />
 
           <MenuConfigCard />
 

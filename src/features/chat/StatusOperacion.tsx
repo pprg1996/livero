@@ -1,7 +1,7 @@
 import { useOperaciones } from "features/firebase";
 import { useRouter } from "next/router";
 import { globalContext } from "pages/_app";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { capitalizeFirstLetter } from "shared/utils";
 import firebase from "firebase/app";
 import { Operacion } from "features/compradores/types";
