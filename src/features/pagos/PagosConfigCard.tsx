@@ -64,6 +64,7 @@ const PagosConfigCard = () => {
           value={metodosDePago.pm.codigoBanco}
           data-pago="pm/codigoBanco"
           onChange={handleDataChange}
+          disabled={!metodosDePago.pm.activo}
         >
           <option value="0">Elegir banco</option>
           {bancos.map(({ id, name }) => (
@@ -81,6 +82,7 @@ const PagosConfigCard = () => {
             value={metodosDePago.pm.cedula}
             data-pago="pm/cedula"
             onChange={handleDataChange}
+            disabled={!metodosDePago.pm.activo}
           />
         </label>
 
@@ -92,6 +94,7 @@ const PagosConfigCard = () => {
             value={metodosDePago.pm.telefono}
             data-pago="pm/telefono"
             onChange={handleDataChange}
+            disabled={!metodosDePago.pm.activo}
           />
         </label>
       </div>
@@ -110,6 +113,7 @@ const PagosConfigCard = () => {
             value={metodosDePago.zelle.titular}
             data-pago="zelle/titular"
             onChange={handleDataChange}
+            disabled={!metodosDePago.zelle.activo}
           />
         </label>
 
@@ -121,6 +125,7 @@ const PagosConfigCard = () => {
             value={metodosDePago.zelle.correo}
             data-pago="zelle/correo"
             onChange={handleDataChange}
+            disabled={!metodosDePago.zelle.activo}
           />
         </label>
       </div>
@@ -144,6 +149,7 @@ const PagosConfigCard = () => {
             value={metodosDePago.paypal.correo}
             data-pago="paypal/correo"
             onChange={handleDataChange}
+            disabled={!metodosDePago.paypal.activo}
           />
         </label>
       </div>
