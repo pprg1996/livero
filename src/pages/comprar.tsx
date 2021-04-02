@@ -22,6 +22,7 @@ const Comprar = () => {
       vendedor: Tienda;
     }>[]
   >([]);
+  const [isBuscando, setIsBuscando] = useState(false);
 
   useUpdateUbicacion("compradores");
 
@@ -63,7 +64,14 @@ const Comprar = () => {
     );
 
     setBusqueda(terminoABuscar);
+    setIsBuscando(true);
   };
+
+  useEffect(() => {
+    if (isBuscando) {
+      setTimeout(() => setIsBuscando(false), Math.floor(Math.random() * (2500 - 1500) + 1500));
+    }
+  }, [isBuscando]);
 
   return (
     <div tw="p-2 flex flex-col ">
@@ -102,17 +110,21 @@ const Comprar = () => {
         </div>
       ) : (
         <div tw="flex flex-col items-center mt-3">
-          {resultadoBusqueda.map(({ item: { articulo, articuloId, vendedorId, vendedor } }) => {
-            return (
-              <ArticuloCartaConDescripcion
-                key={articuloId}
-                id={articuloId}
-                articulo={articulo}
-                vendedorId={vendedorId}
-                vendedorNombre={vendedor.titulo}
-              />
-            );
-          })}
+          {!isBuscando ? (
+            resultadoBusqueda.map(({ item: { articulo, articuloId, vendedorId, vendedor } }) => {
+              return (
+                <ArticuloCartaConDescripcion
+                  key={articuloId}
+                  id={articuloId}
+                  articulo={articulo}
+                  vendedorId={vendedorId}
+                  vendedorNombre={vendedor.titulo}
+                />
+              );
+            })
+          ) : (
+            <span tw="animate-ping mt-16">Buscando...</span>
+          )}
         </div>
       )}
     </div>
