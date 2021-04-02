@@ -102,13 +102,14 @@ const Comprar = () => {
         </div>
       ) : (
         <div tw="flex flex-col items-center mt-3">
-          {resultadoBusqueda.map(({ item: { articulo, articuloId, vendedorId } }) => {
+          {resultadoBusqueda.map(({ item: { articulo, articuloId, vendedorId, vendedor } }) => {
             return (
               <ArticuloCartaConDescripcion
                 key={articuloId}
                 id={articuloId}
                 articulo={articulo}
                 vendedorId={vendedorId}
+                vendedorNombre={vendedor.titulo}
               />
             );
           })}

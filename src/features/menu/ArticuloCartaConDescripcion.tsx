@@ -4,13 +4,15 @@ import { Articulo } from "./types";
 import firebase from "firebase/app";
 import { useCompradores } from "features/firebase";
 import { meterArticuloAlCarrito } from "shared/utils";
+import Link from "next/link";
 
-const ArticuloCartaConDescripcion: FC<{ articulo: Articulo; id: string; editable?: boolean; vendedorId?: string }> = ({
-  articulo,
-  id,
-  editable,
-  vendedorId,
-}) => {
+const ArticuloCartaConDescripcion: FC<{
+  articulo: Articulo;
+  id: string;
+  editable?: boolean;
+  vendedorId?: string;
+  vendedorNombre?: string;
+}> = ({ articulo, id, editable, vendedorId, vendedorNombre }) => {
   const [mostrarDescripcion, setMostrarDescripcion] = useState(false);
   const userUID = useContext(globalContext).state.user?.uid as string;
   const carrito = useCompradores()?.[userUID]?.carritos?.[vendedorId as string];
@@ -46,7 +48,14 @@ const ArticuloCartaConDescripcion: FC<{ articulo: Articulo; id: string; editable
           ) : null}
         </div>
 
-        <span tw="text-gray-700">${articulo.precio}</span>
+        <div tw="flex justify-between items-center">
+          <span tw="text-gray-700">${articulo.precio}</span>
+          {vendedorNombre ? (
+            <Link href={`/tiendas/${vendedorId}`} passHref>
+              <a tw="text-gray-700 underline my-2">{vendedorNombre}</a>
+            </Link>
+          ) : null}
+        </div>
 
         <button onClick={() => setMostrarDescripcion(s => !s)} tw="bg-blue-700 text-white rounded p-1 my-2 text-sm">
           Descripción: {mostrarDescripcion ? "Ocultar" : "Mostrar"}
