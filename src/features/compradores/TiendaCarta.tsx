@@ -18,7 +18,7 @@ const TiendaCarta: FC<{ vendedor: Tienda; tiendaId: string }> = ({ vendedor, tie
   }
 
   let tiposDeProductos: string[] = [];
-  Object.entries(vendedor.menu.articulos).forEach(([id, articulo]) => {
+  Object.entries(vendedor.menu.articulos).forEach(([, articulo]) => {
     tiposDeProductos.push(articulo.tipo);
   });
 
