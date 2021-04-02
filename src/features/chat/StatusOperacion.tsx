@@ -57,7 +57,9 @@ const StatusOperacion = () => {
         </button>
       ) : null}
 
-      {(router.pathname === "/chatcomprador" || router.pathname === "/chatvendedor") && status !== "cancelado" ? (
+      {(router.pathname === "/chatcomprador" || router.pathname === "/chatvendedor") &&
+      status !== "cancelado" &&
+      status !== "finalizado" ? (
         <button onClick={cancelarOperacion} tw="bg-red-700 p-1.5 rounded text-white">
           Cancelar operación
         </button>
