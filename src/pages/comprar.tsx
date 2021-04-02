@@ -75,10 +75,10 @@ const Comprar = () => {
 
   return (
     <div tw="p-2 flex flex-col ">
-      <h1 tw="text-2xl text-gray-700 mb-2">Tiendas en tu proximidad</h1>
+      <h1 tw="text-2xl text-gray-700 mb-2">¡Compra cerca de ti!</h1>
 
       <div>
-        <span tw="font-medium text-gray-700">Distancia maxima: </span>
+        <span tw="font-medium text-gray-700">Distancia máxima: </span>
         <input
           tw="border rounded w-12"
           type="number"
