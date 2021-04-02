@@ -1,3 +1,5 @@
+import { Calificacion } from "features/tienda/types";
+
 export type Articulo = {
   titulo: string;
   descripcion: string;
@@ -6,6 +8,7 @@ export type Articulo = {
   categoria: string;
   moneda: string;
   tipo: "comida" | "vestimenta" | "medicina" | "tecnologia" | "hogar" | "herramienta";
+  calificaciones?: Record<string, Calificacion>;
 };
 
 export type ArticuloId = string;

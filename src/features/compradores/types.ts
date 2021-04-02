@@ -18,6 +18,12 @@ export type Pagos = {
   repartidor: { zelle: string; pm: string; paypal: string };
 };
 
+export type CalificacionesEnviadas = {
+  vendedor: boolean;
+  repartidor: boolean;
+  articulos?: Record<string, boolean>;
+};
+
 export type Operacion = {
   carrito: Carrito;
   tiendaId: string;
@@ -27,6 +33,7 @@ export type Operacion = {
   status: "pagando" | "repartiendo" | "finalizado" | "cancelado";
   timestamp: number;
   pagos: Pagos;
+  calificacionesEnviadas: CalificacionesEnviadas;
 };
 
 type vendedorId = string;
