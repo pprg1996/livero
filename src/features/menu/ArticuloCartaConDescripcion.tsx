@@ -2,9 +2,10 @@ import { globalContext } from "pages/_app";
 import { FC, useContext, useState } from "react";
 import { Articulo } from "./types";
 import firebase from "firebase/app";
-import { useCompradores } from "features/firebase";
+import { useCompradores, useVendedores } from "features/firebase";
 import { meterArticuloAlCarrito } from "shared/utils";
 import Link from "next/link";
+import CalificacionPromedio from "features/calificaciones/CalificacionPromedio";
 
 const ArticuloCartaConDescripcion: FC<{
   articulo: Articulo;
@@ -16,8 +17,8 @@ const ArticuloCartaConDescripcion: FC<{
   const [mostrarDescripcion, setMostrarDescripcion] = useState(false);
   const userUID = useContext(globalContext).state.user?.uid as string;
   const carrito = useCompradores()?.[userUID]?.carritos?.[vendedorId as string];
-
   const enCarrito = carrito?.articuloPacks.some(ap => ap.articuloId === id);
+  const calificaciones = useVendedores()?.[vendedorId ?? userUID].menu.articulos[id].calificaciones;
 
   const eliminarArticulo = () => {
     if (!confirm("¿Seguro que desea borrar el artículo?")) return;
@@ -56,6 +57,8 @@ const ArticuloCartaConDescripcion: FC<{
             </Link>
           ) : null}
         </div>
+
+        <CalificacionPromedio calificaciones={calificaciones} />
 
         <button onClick={() => setMostrarDescripcion(s => !s)} tw="bg-blue-700 text-white rounded p-1 my-2 text-sm">
           Descripción: {mostrarDescripcion ? "Ocultar" : "Mostrar"}

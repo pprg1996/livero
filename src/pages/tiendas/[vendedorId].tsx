@@ -1,3 +1,4 @@
+import CalificacionPromedio from "features/calificaciones/CalificacionPromedio";
 import { useFirebaseImg, useFirebaseTiendaTitulo, useVendedores } from "features/firebase";
 import ArticuloCarta from "features/menu/ArticuloCarta";
 import { Articulo } from "features/menu/types";
@@ -13,6 +14,7 @@ const Tienda = ({ vendedorId }: InferGetServerSidePropsType<typeof getServerSide
   const { titulo } = useFirebaseTiendaTitulo(vendedorId);
 
   const vendedores = useVendedores();
+  const calificaciones = vendedores?.[vendedorId].calificaciones;
 
   let articulosPorTipo: Record<Articulo["tipo"], [string, Articulo][]> = {
     comida: [],
@@ -41,6 +43,10 @@ const Tienda = ({ vendedorId }: InferGetServerSidePropsType<typeof getServerSide
 
       <div className="titulo" tw="-mt-10 mb-8 ml-32 flex items-center">
         <h1 tw="font-medium text-lg">{titulo}</h1>
+
+        <div tw="ml-auto mr-12">
+          <CalificacionPromedio calificaciones={calificaciones} />
+        </div>
       </div>
 
       <div tw="rounded shadow p-3 space-y-4">

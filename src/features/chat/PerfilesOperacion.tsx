@@ -1,7 +1,8 @@
-import { Comprador, Operacion } from "features/compradores/types";
+import CalificacionPromedio from "features/calificaciones/CalificacionPromedio";
+import { Comprador } from "features/compradores/types";
 import { useCompradores, useFirebaseImg, useOperaciones, useRepartidores, useVendedores } from "features/firebase";
 import { Repartidor } from "features/repartidores/types";
-import { Tienda } from "features/tienda/types";
+import { Calificacion, Tienda } from "features/tienda/types";
 import { useRouter } from "next/router";
 import { globalContext } from "pages/_app";
 import { FC, useContext } from "react";
@@ -59,6 +60,11 @@ type Props =
 const PerfilCarta: FC<Props> = ({ tipo, perfil, id }) => {
   const { imgUrl } = useFirebaseImg(id, "profile", tipo);
   let nombre = "";
+  let calificaciones: Record<string, Calificacion> | undefined;
+
+  if (tipo !== "compradores") {
+    calificaciones = (perfil as Tienda).calificaciones;
+  }
 
   if (tipo === "compradores" || tipo === "repartidores") {
     nombre = (perfil as Comprador | Repartidor).nombre;
@@ -69,7 +75,7 @@ const PerfilCarta: FC<Props> = ({ tipo, perfil, id }) => {
   return (
     <div>
       <img src={imgUrl} tw="w-52 h-52 object-contain" />
-      <span tw="text-gray-700 font-medium">
+      <span tw="text-gray-700 font-medium mr-4">
         {tipo === "compradores"
           ? "Comprador: "
           : tipo === "tiendas"
@@ -79,6 +85,8 @@ const PerfilCarta: FC<Props> = ({ tipo, perfil, id }) => {
           : ""}
         {nombre}
       </span>
+
+      {tipo !== "compradores" ? <CalificacionPromedio calificaciones={calificaciones} /> : null}
     </div>
   );
 };
