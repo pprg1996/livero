@@ -33,6 +33,7 @@ const PagosOperacion = () => {
   const operaciones = useOperaciones();
   const vendedorId = operaciones?.[operacionChatId].tiendaId;
   const repartidorId = operaciones?.[operacionChatId].repartidorId;
+  const repartidorConfirmado = operaciones?.[operacionChatId].repartidorConfirmado;
   const metodosDePagoVendedor = useVendedores()?.[vendedorId ?? ""].metodosDePago;
   const metodosDePagoRepartidor = useRepartidores()?.[repartidorId ?? ""]?.metodosDePago;
   const metodosDePagoCorrespondiente = pathname === "/chatcomprador" ? metodosDePagoVendedor : metodosDePagoRepartidor;
@@ -118,7 +119,7 @@ const PagosOperacion = () => {
         <h1 tw="font-medium text-gray-700">No has recibido ningun pago</h1>
       ) : null}
 
-      {pathname === "/chatcomprador" || (pathname === "/chatvendedor" && repartidorId) ? (
+      {pathname === "/chatcomprador" || (pathname === "/chatvendedor" && repartidorId && repartidorConfirmado) ? (
         <div>
           <h1 tw="font-medium text-gray-700">
             {pathname === "/chatcomprador"

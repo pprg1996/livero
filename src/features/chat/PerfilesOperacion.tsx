@@ -12,6 +12,7 @@ const PerfilesOperacion = () => {
   const operacionChatId = useContext(globalContext).state.operacionChatId as string;
   const operaciones = useOperaciones();
   const operacionChat = operaciones?.[operacionChatId];
+  const repartidorConfirmado = operaciones?.[operacionChatId].repartidorConfirmado;
 
   const { compradorId, tiendaId, repartidorId } = operacionChat
     ? operacionChat
@@ -33,7 +34,7 @@ const PerfilesOperacion = () => {
         <PerfilCarta tipo="tiendas" perfil={vendedor} id={tiendaId} />
       ) : null}
 
-      {repartidor && router.pathname !== "/chatrepartidor" ? (
+      {repartidor && router.pathname !== "/chatrepartidor" && repartidorConfirmado ? (
         <PerfilCarta tipo="repartidores" perfil={repartidor} id={repartidorId as string} />
       ) : null}
     </div>
