@@ -46,6 +46,7 @@ const CarritoDrawer: FC<{ setShowCarrito: Function }> = ({ setShowCarrito }) => 
       timestamp: Date.now(),
       pagos: { repartidor: { paypal: "", zelle: "", pm: "" }, vendedor: { paypal: "", zelle: "", pm: "" } },
       calificacionesEnviadas: { vendedor: false, repartidor: false },
+      repartidorConfirmado: false,
     };
 
     const operacionId = firebase.database().ref(`/operaciones`).push(newOperacion).key;

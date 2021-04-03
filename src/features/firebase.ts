@@ -47,7 +47,7 @@ export const useFirebaseImg: FirebaseImg = (uid, imgTipo, tipoUsuario = "tiendas
       const imgRef = data.items[0];
       if (imgRef) imgRef.getDownloadURL().then(url => setImgUrl(url));
     });
-  }, []);
+  }, [uid, imgTipo, tipoUsuario]);
 
   // Actualiza la imagen y borra la anterior
   const actualizarImg = (imgFile: File) => {

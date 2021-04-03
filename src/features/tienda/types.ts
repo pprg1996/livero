@@ -12,7 +12,7 @@ export type Tienda = {
   menu: Menu;
   titulo: string;
   ubicacion: Ubicacion;
-  operaciones: Record<string, string>;
+  operaciones?: Record<string, string>;
   notificacionesEnOperaciones?: Record<string, boolean>;
   pagosNuevosEnOperaciones?: Record<string, boolean>;
   metodosDePago: MetodosDePago;

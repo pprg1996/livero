@@ -63,20 +63,18 @@ const Registro = () => {
         activo: false,
         abierto: false,
         ubicacion: ubicacionDefault,
-        operaciones: {},
         metodosDePago: metodosDePagoDefault,
       };
 
       const repartidor: Repartidor = {
         activo: false,
         disponible: true,
-        operaciones: {},
         ubicacion: ubicacionDefault,
         nombre: "Nombre",
         metodosDePago: metodosDePagoDefault,
       };
 
-      const comprador: Comprador = { operaciones: {}, nombre: "Nombre", ubicacion: ubicacionDefault, carritos: {} };
+      const comprador: Comprador = { nombre: "Nombre", ubicacion: ubicacionDefault, carritos: {} };
 
       firebase.database().ref(`tiendas/${userCredential.user?.uid}`).set(tienda);
       firebase.database().ref(`repartidores/${userCredential.user?.uid}`).set(repartidor);

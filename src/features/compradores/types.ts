@@ -34,12 +34,13 @@ export type Operacion = {
   timestamp: number;
   pagos: Pagos;
   calificacionesEnviadas: CalificacionesEnviadas;
+  repartidorConfirmado: boolean;
 };
 
 type vendedorId = string;
 
 export type Comprador = {
-  operaciones: Record<string, string>;
+  operaciones?: Record<string, string>;
   nombre: string;
   ubicacion: Ubicacion;
   carritos?: Record<vendedorId, Carrito>;

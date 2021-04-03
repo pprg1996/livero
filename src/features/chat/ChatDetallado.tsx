@@ -1,18 +1,31 @@
 import { Mensaje } from "features/compradores/types";
-import { mandarMensaje, setNotificacion, useOperacionesPersonales } from "features/firebase";
+import {
+  mandarMensaje,
+  setNotificacion,
+  useFirebaseImg,
+  useOperacionesPersonales,
+  useRepartidores,
+} from "features/firebase";
 import { FC, useContext, useEffect, useRef } from "react";
 import tw from "twin.macro";
 import firebase from "firebase/app";
 import { globalContext } from "pages/_app";
+import CalificacionPromedio from "features/calificaciones/CalificacionPromedio";
+import { useRouter } from "next/router";
 
 const ChatDetallado: FC<{ operacionIdSeleccionada: string; tipo: "compradores" | "tiendas" | "repartidores" }> = ({
   operacionIdSeleccionada,
   tipo,
 }) => {
+  const { pathname, push } = useRouter();
   const userUID = useContext(globalContext).state.user?.uid;
   const inputRef = useRef<HTMLInputElement>(null);
   const operaciones = useOperacionesPersonales(tipo);
-  const operacionSeleccionada = operaciones && operaciones[operacionIdSeleccionada];
+  const operacionSeleccionada = operaciones?.[operacionIdSeleccionada];
+
+  const repartidor = useRepartidores()?.[operacionSeleccionada?.repartidorId ?? ""];
+  const { imgUrl: repartidorImgUrl } = useFirebaseImg(operacionSeleccionada?.repartidorId, "profile", "repartidores");
+
   const mensajesRecord = operacionSeleccionada?.mensajes;
   const mensajes = mensajesRecord
     ? Object.entries(mensajesRecord)
@@ -25,6 +38,13 @@ const ChatDetallado: FC<{ operacionIdSeleccionada: string; tipo: "compradores" |
   useEffect(() => {
     firebase.database().ref(`/${tipo}/${userUID}/notificacionesEnOperaciones/${operacionIdSeleccionada}`).remove();
   });
+
+  useEffect(() => {
+    if (pathname === "/chatrepartidor" && operacionSeleccionada && !repartidor) {
+      alert("Fuiste rechazado por el comprador");
+      push("/repartir");
+    }
+  }, [repartidor]);
 
   const enviarMensaje = () => {
     inputRef.current?.focus();
@@ -48,8 +68,54 @@ const ChatDetallado: FC<{ operacionIdSeleccionada: string; tipo: "compradores" |
     (inputRef.current as HTMLInputElement).value = "";
   };
 
+  const aceptarRepartidor = () => {
+    firebase.database().ref(`operaciones/${operacionIdSeleccionada}/repartidorConfirmado`).set(true);
+  };
+
+  const rechazarRepartidor = () => {
+    firebase.database().ref(`operaciones/${operacionIdSeleccionada}/repartidorId`).remove();
+    firebase
+      .database()
+      .ref(`repartidores/${operacionSeleccionada?.repartidorId}/operaciones`)
+      .get()
+      .then(data => {
+        const operacionesTuple = Object.entries(data.val());
+
+        operacionesTuple.forEach(([metaId, operacionId]) => {
+          if (operacionId === operacionIdSeleccionada)
+            firebase
+              .database()
+              .ref(`repartidores/${operacionSeleccionada?.repartidorId}/operaciones/${metaId}`)
+              .remove();
+        });
+      });
+  };
+
+  if (pathname === "/chatrepartidor" && !operacionSeleccionada?.repartidorConfirmado) {
+    return <h1 tw="text-center mt-64 font-medium text-gray-700">Espera que el comprador te acepte</h1>;
+  }
+
   return (
     <div tw="h-full grid grid-template-rows[1fr auto] grid-cols-1 space-y-2">
+      {pathname === "/chatcomprador" && repartidor && !operacionSeleccionada?.repartidorConfirmado ? (
+        <div tw="border-b flex justify-end px-8 py-1 space-x-3">
+          <img tw="w-32 h-32 object-contain" src={repartidorImgUrl} />
+
+          <div tw="flex flex-col self-center space-y-3">
+            <span>Repartidor: {repartidor.nombre}</span>
+            <CalificacionPromedio calificaciones={repartidor.calificaciones} />
+            <div tw="space-x-2">
+              <button onClick={aceptarRepartidor} tw="rounded p-1 text-white bg-blue-700">
+                Aceptar
+              </button>
+              <button onClick={rechazarRepartidor} tw="rounded p-1 text-white bg-red-700">
+                Rechazar
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <MensajesList mensajes={mensajes} tipo={tipo} />
 
       <div tw="flex space-x-2">
@@ -71,7 +137,7 @@ const MensajesList: FC<{ mensajes: Mensaje[]; tipo: "compradores" | "tiendas" | 
 
   useEffect(() => {
     scrollToBottom();
-  });
+  }, [mensajes.length]);
 
   useEffect(() => {
     new ResizeObserver(() => scrollToBottom()).observe(listDivRef.current as HTMLDivElement);
