@@ -9,7 +9,7 @@ export type ArticuloPack = {
 
 export type Carrito = { articuloPacks: ArticuloPack[] };
 
-export type Mensaje = { texto: string; rol: "comprador" | "vendedor" | "repartidor"; timestamp: number };
+export type Mensaje = { texto: string; rol: "comprador" | "vendedor" | "repartidor" | "info"; timestamp: number };
 
 export type CompraStatus = "explorando" | "pagando" | "repartiendo";
 

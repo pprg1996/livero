@@ -70,6 +70,8 @@ const ChatDetallado: FC<{ operacionIdSeleccionada: string; tipo: "compradores" |
 
   const aceptarRepartidor = () => {
     firebase.database().ref(`operaciones/${operacionIdSeleccionada}/repartidorConfirmado`).set(true);
+
+    mandarMensaje({ rol: "info", texto: "Repartidor aceptado", timestamp: Date.now() }, operacionIdSeleccionada);
   };
 
   const rechazarRepartidor = () => {
@@ -89,6 +91,8 @@ const ChatDetallado: FC<{ operacionIdSeleccionada: string; tipo: "compradores" |
               .remove();
         });
       });
+
+    mandarMensaje({ rol: "info", texto: "Repartidor rechazado", timestamp: Date.now() }, operacionIdSeleccionada);
   };
 
   if (pathname === "/chatrepartidor" && !operacionSeleccionada?.repartidorConfirmado) {
@@ -134,6 +138,7 @@ const MensajesList: FC<{ mensajes: Mensaje[]; tipo: "compradores" | "tiendas" | 
 }) => {
   const listDivRef = useRef<HTMLDivElement>(null);
   const scrollToBottom = () => listDivRef.current?.scrollTo(0, listDivRef.current.scrollHeight);
+  const { pathname } = useRouter();
 
   useEffect(() => {
     scrollToBottom();
@@ -145,6 +150,61 @@ const MensajesList: FC<{ mensajes: Mensaje[]; tipo: "compradores" | "tiendas" | 
 
   return (
     <div tw="flex flex-col space-y-2 overflow-auto px-2" ref={listDivRef}>
+      <div tw="flex space-x-2">
+        <div tw="rounded p-1 self-center bg-yellow-700">
+          <span tw="text-white text-sm">{pathname === "/chatvendedor" ? "Tu" : "Vendedor"}</span>
+        </div>
+        <div tw="rounded p-1 self-center bg-blue-700">
+          <span tw="text-white text-sm">{pathname === "/chatcomprador" ? "Tu" : "Comprador"}</span>
+        </div>
+        <div tw="rounded p-1 self-center bg-green-700">
+          <span tw="text-white text-sm">{pathname === "/chatrepartidor" ? "Tu" : "Repartidor"}</span>
+        </div>
+      </div>
+
+      <div tw="rounded p-1 self-center bg-gray-500">
+        <span tw="text-white text-sm">¡Usa el chat para comunicarte!</span>
+      </div>
+
+      {pathname === "/chatvendedor" ? (
+        <>
+          <div tw="rounded p-1 self-center bg-gray-500">
+            <span tw="text-white text-sm">
+              Ve a Detalles ➡ Pagos para chequear tus pagos recibidos y pagar al repartidor cuando se asigne uno
+            </span>
+          </div>
+
+          <div tw="rounded p-1 self-center bg-gray-500">
+            <span tw="text-white text-sm">Ve a Detalles ➡ Status y marca como "Pagado" al recibir tu pago</span>
+          </div>
+        </>
+      ) : null}
+
+      {pathname === "/chatcomprador" ? (
+        <>
+          <div tw="rounded p-1 self-center bg-gray-500">
+            <span tw="text-white text-sm">
+              Ve a Detalles ➡ Pagos para pagar al vendedor. Él se encargara de pagarle al repartidor cuando se asigne
+              uno
+            </span>
+          </div>
+
+          <div tw="rounded p-1 self-center bg-gray-500">
+            <span tw="text-white text-sm">Debes aceptar o rechazar un repartidor cuando se asigne uno</span>
+          </div>
+
+          <div tw="rounded p-1 self-center bg-gray-500">
+            <span tw="text-white text-sm">Ve a Detalles ➡ Status y marca como "Entregado" al recibir tu pedido</span>
+          </div>
+        </>
+      ) : null}
+
+      {pathname === "/chatrepartidor" ? (
+        <div tw="rounded p-1 self-center bg-gray-500">
+          <span tw="text-white text-sm">Ve a Detalles ➡ Pagos para chequear tus pagos recibidos</span>
+        </div>
+      ) : null}
+
       {mensajes.map(mensaje => {
         let mensajeBg = tw`bg-blue-700`;
         switch (mensaje.rol) {
@@ -153,6 +213,9 @@ const MensajesList: FC<{ mensajes: Mensaje[]; tipo: "compradores" | "tiendas" | 
             break;
           case "repartidor":
             mensajeBg = tw`bg-green-700`;
+            break;
+          case "info":
+            mensajeBg = tw`bg-gray-500`;
             break;
 
           default:
@@ -166,11 +229,13 @@ const MensajesList: FC<{ mensajes: Mensaje[]; tipo: "compradores" | "tiendas" | 
           (tipo === "repartidores" && mensaje.rol === "repartidor")
         ) {
           mensajeAlign = tw`self-end`;
+        } else if (mensaje.rol === "info") {
+          mensajeAlign = tw`self-center`;
         }
 
         return (
-          <div key={mensaje.timestamp} tw="rounded p-1" css={[mensajeBg, mensajeAlign]}>
-            <span tw="text-white text-sm">{mensaje.texto}</span>
+          <div key={mensaje.timestamp} tw="rounded p-1 max-w-full" css={[mensajeBg, mensajeAlign]}>
+            <span tw="text-white text-sm max-w-full break-words">{mensaje.texto}</span>
           </div>
         );
       })}

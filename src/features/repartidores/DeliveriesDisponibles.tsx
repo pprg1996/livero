@@ -1,4 +1,4 @@
-import { useCompradores, useOperaciones, useVendedores } from "features/firebase";
+import { mandarMensaje, useCompradores, useOperaciones, useVendedores } from "features/firebase";
 import { FC, MouseEventHandler, useContext } from "react";
 import tw from "twin.macro";
 import firebase from "firebase/app";
@@ -70,6 +70,11 @@ const DeliveryCarta: FC<{
     const sendInfoToFirebase = async () => {
       await firebase.database().ref(`/operaciones/${operacionId}/repartidorId`).set(userUID);
       await firebase.database().ref(`/repartidores/${userUID}/operaciones`).push(operacionId);
+
+      mandarMensaje(
+        { rol: "info", texto: "Repartidor esperando confirmación", timestamp: Date.now() },
+        operacionId as string,
+      );
 
       dispatch({ type: Actions.SET_OPERACION_CHAT_ID, payload: operacionId });
       router.push("/chatrepartidor");

@@ -1,5 +1,12 @@
 import { Operacion } from "features/compradores/types";
-import { setNuevoPago, useCompradores, useOperaciones, useRepartidores, useVendedores } from "features/firebase";
+import {
+  mandarMensaje,
+  setNuevoPago,
+  useCompradores,
+  useOperaciones,
+  useRepartidores,
+  useVendedores,
+} from "features/firebase";
 import { bancos } from "features/pagos/bancos";
 import { useRouter } from "next/router";
 import { globalContext } from "pages/_app";
@@ -79,6 +86,8 @@ const PagosOperacion = () => {
       });
 
     dataInput.value = "";
+
+    mandarMensaje({ rol: "info", texto: `Pago enviado a ${perfilAPagar}`, timestamp: Date.now() }, operacionChatId);
   };
 
   return (
