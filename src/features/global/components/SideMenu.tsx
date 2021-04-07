@@ -10,18 +10,29 @@ const SideMenu: FC<{ showSideMenu: boolean; setShowSideMenu: Function }> = ({ sh
     if (showSideMenu) setShowSideMenu(false);
   });
 
+  const cerrarSideMenuOnClick = () => {
+    setShowSideMenu(false);
+  };
+
   return (
     <div ref={menuRef} tw="absolute bg-white top-12 hidden border flex-col p-4 z-10" css={[showSideMenu && tw`flex`]}>
       <Link href="/comprar">
-        <a>Comprar</a>
+        <a onClick={cerrarSideMenuOnClick}>Comprar</a>
       </Link>
       <Link href="/vender">
-        <a>Vender</a>
+        <a onClick={cerrarSideMenuOnClick}>Vender</a>
       </Link>
       <Link href="/repartir">
-        <a>Repartir</a>
+        <a onClick={cerrarSideMenuOnClick}>Repartir</a>
       </Link>
-      <button onClick={() => firebase.auth().signOut()}>Cerrar sesion</button>
+      <button
+        onClick={() => {
+          firebase.auth().signOut();
+          cerrarSideMenuOnClick();
+        }}
+      >
+        Cerrar sesión
+      </button>
     </div>
   );
 };
