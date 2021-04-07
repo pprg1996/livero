@@ -4,10 +4,17 @@ import { useForm } from "react-hook-form";
 import firebase from "firebase";
 import { useRouter } from "next/router";
 import TextInput from "shared/components/TextInput";
+import { useContext, useEffect } from "react";
+import { globalContext } from "./_app";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const router = useRouter();
+  const userUID = useContext(globalContext).state.user?.uid;
+
+  useEffect(() => {
+    if (userUID) router.replace("/rolselect");
+  }, []);
 
   const handleLogin = ({ correo, contrasena }: { correo: string; contrasena: string }) => {
     firebase

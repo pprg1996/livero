@@ -10,6 +10,8 @@ import { Tienda } from "features/tienda/types";
 import { Repartidor } from "features/repartidores/types";
 import { Comprador } from "features/compradores/types";
 import { MetodosDePago } from "features/pagos/types";
+import { globalContext } from "./_app";
+import { useContext, useEffect } from "react";
 
 type Inputs = {
   correo: string;
@@ -20,6 +22,11 @@ type Inputs = {
 const Registro = () => {
   const { register, handleSubmit } = useForm<Inputs>();
   const router = useRouter();
+  const userUID = useContext(globalContext).state.user?.uid;
+
+  useEffect(() => {
+    if (userUID) router.replace("/rolselect");
+  }, []);
 
   const handleRegister = async ({ correo, contrasena, contrasena2 }: Inputs) => {
     if (contrasena !== contrasena2) {
