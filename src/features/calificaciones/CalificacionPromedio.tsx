@@ -29,7 +29,7 @@ const CalificacionPromedio: FC<{ calificaciones: Record<string, Calificacion> | 
     >
       Calificación {estrellasPromedio.toFixed(1)}⭐
       {showCriticas ? (
-        <div tw="absolute left-1/2 transform -translate-x-1/2 top-5 bg-white shadow border p-2 rounded max-h-32 w-52 overflow-auto flex flex-col divide-y">
+        <div tw="absolute z-20 left-1/2 transform -translate-x-1/2 top-5 bg-white shadow border p-2 rounded max-h-32 w-52 overflow-auto flex flex-col divide-y">
           {criticasTuple.length ? (
             criticasTuple.map(([id, critica]) => <span key={id}>{critica}</span>)
           ) : (

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import SwitchToggle from "shared/components/SwitchToggle";
+// import SwitchToggle from "shared/components/SwitchToggle";
 import firebase from "firebase/app";
 import { globalContext } from "./_app";
 import mapboxgl from "mapbox-gl";
@@ -9,9 +9,10 @@ import { useOperaciones, useCompradores, useRepartidores, useUpdateUbicacion, us
 import { distance } from "@turf/turf";
 import markerStyles from "features/css/markerStyles.module.css";
 import PagosConfigCard from "features/pagos/PagosConfigCard";
+import CalificacionPromedio from "features/calificaciones/CalificacionPromedio";
 
 const Repartir = () => {
-  const userUID = useContext(globalContext).state.user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid as string;
   const [repartirdorActivado, setRepartidorActivado] = useState();
   const mapRef = useRef<mapboxgl.Map>();
   const repartidorMarkerRef = useRef<mapboxgl.Marker>();
@@ -24,6 +25,7 @@ const Repartir = () => {
   const compradores = useCompradores();
   const vendedores = useVendedores();
   const repartidores = useRepartidores();
+  const calificaciones = repartidores?.[userUID]?.calificaciones;
 
   useEffect(() => {
     const repartidorActivoRef = firebase.database().ref(`/repartidores/${userUID}/activo`);
@@ -146,11 +148,15 @@ const Repartir = () => {
 
   return (
     <div tw="space-y-2">
-      <SwitchToggle
+      {/* <SwitchToggle
         label={repartirdorActivado ? "Disponible para repartir" : "No disposible para repartir"}
         checked={repartirdorActivado ?? false}
         setChecked={setRepartidorActivado}
-      />
+      /> */}
+
+      <div tw="ml-16">
+        <CalificacionPromedio calificaciones={calificaciones} />
+      </div>
 
       <div className="mapboxgl-map" id="map" tw="h-80"></div>
 

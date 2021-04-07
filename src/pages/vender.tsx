@@ -2,24 +2,27 @@ import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import tw from "twin.macro";
 import { globalContext } from "pages/_app";
-import { useFirebaseImg, useFirebaseTiendaTitulo } from "features/firebase";
+import { useFirebaseImg, useFirebaseTiendaTitulo, useVendedores } from "features/firebase";
 import EditSvg from "../assets/icons/edit.svg";
 import HorariosConfigCard from "features/horario/HorariosConfigCard";
 import MenuConfigCard from "features/menu/MenuConfigCard";
 import UbicacionConfigCard from "features/ubicacion/UbicacionConfigCard";
 import firebase from "firebase/app";
 import SwitchToggle from "shared/components/SwitchToggle";
-import { useOperacionesPersonales } from "features/firebase";
+// import { useOperacionesPersonales } from "features/firebase";
 import { triggerInputClick } from "shared/utils";
 import PagosConfigCard from "features/pagos/PagosConfigCard";
+import CalificacionPromedio from "features/calificaciones/CalificacionPromedio";
 
 const Vender = () => {
-  const userUID = useContext(globalContext).state.user?.uid;
+  const userUID = useContext(globalContext).state.user?.uid as string;
   const { imgUrl: bannerImgUrl, actualizarImg: actualizarBannerImg } = useFirebaseImg(userUID, "banner");
   const { imgUrl: profileImgUrl, actualizarImg: actualizarProfileImg } = useFirebaseImg(userUID, "profile");
   const { titulo, actualizarTitulo } = useFirebaseTiendaTitulo(userUID);
   const [tiendaActivada, setTiendaActivada] = useState();
-  const operaciones = useOperacionesPersonales("tiendas");
+  // const operaciones = useOperacionesPersonales("tiendas");
+
+  const calificaciones = useVendedores()?.[userUID]?.calificaciones;
 
   // Subir foto de banner cuando hay un cambio en el archivo seleccionado
   const handleBannerImgChange = (e: SyntheticEvent) => {
@@ -79,9 +82,13 @@ const Vender = () => {
 
       <div className="titulo" tw="-mt-10 mb-8 ml-32 flex items-center">
         <h1 tw="font-medium text-lg">{titulo}</h1>
-        <button tw="ml-2" onClick={cambiarTitulo}>
+        <button tw="ml-2 mr-4" onClick={cambiarTitulo}>
           <EditSvg tw="w-4" />
         </button>
+      </div>
+
+      <div tw="mb-3 flex justify-center">
+        <CalificacionPromedio calificaciones={calificaciones} />
       </div>
 
       <SwitchToggle

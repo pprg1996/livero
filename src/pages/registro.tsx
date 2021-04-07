@@ -67,7 +67,7 @@ const Registro = () => {
       };
 
       const repartidor: Repartidor = {
-        activo: false,
+        activo: true,
         disponible: true,
         ubicacion: ubicacionDefault,
         nombre: "Nombre",
