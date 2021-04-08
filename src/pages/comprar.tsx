@@ -57,11 +57,16 @@ const Comprar = () => {
       );
     }
 
-    setResultadoBusqueda(
-      new Fuse(articulosDeBusqueda, {
-        keys: ["articulo.titulo", "articulo.descripcion", "articulo.tipo", "articulo.categoria", "vendedor.titulo"],
-      }).search(terminoABuscar),
-    );
+    const fuseInstance = new Fuse(articulosDeBusqueda, {
+      keys: ["articulo.titulo", "articulo.descripcion", "articulo.tipo", "articulo.categoria", "vendedor.titulo"],
+      includeScore: true,
+      threshold: 0.5,
+    });
+
+    const fuseResultado = fuseInstance.search(terminoABuscar);
+    // console.log(fuseResultado);
+
+    setResultadoBusqueda(fuseResultado);
 
     setBusqueda(terminoABuscar);
     setIsBuscando(true);
