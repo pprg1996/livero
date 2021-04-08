@@ -145,7 +145,9 @@ const MensajesList: FC<{ mensajes: Mensaje[]; tipo: "compradores" | "tiendas" | 
   }, [mensajes.length]);
 
   useEffect(() => {
-    new ResizeObserver(() => scrollToBottom()).observe(listDivRef.current as HTMLDivElement);
+    try {
+      new ResizeObserver(() => scrollToBottom()).observe(listDivRef.current as HTMLDivElement);
+    } catch {}
   }, []);
 
   return (
