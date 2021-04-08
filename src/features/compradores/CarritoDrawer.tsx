@@ -69,6 +69,7 @@ const CarritoDrawer: FC<{ setShowCarrito: Function }> = ({ setShowCarrito }) => 
     };
 
     sendInfoToFirebase();
+    setShowCarrito(false);
   };
 
   if (typeof window === "undefined") {
