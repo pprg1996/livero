@@ -109,7 +109,7 @@ const Comprar = () => {
           <div tw="w-1 flex-shrink-0"></div>
         </div>
       ) : (
-        <div tw="flex flex-col items-center mt-3">
+        <div tw="flex flex-col items-center mt-3 space-y-2">
           {!isBuscando ? (
             resultadoBusqueda.map(({ item: { articulo, articuloId, vendedorId, vendedor } }) => {
               return (
