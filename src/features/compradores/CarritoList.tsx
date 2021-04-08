@@ -1,6 +1,6 @@
 import distance from "@turf/distance";
 import { ArticuloPack, Carrito } from "features/compradores/types";
-import { useCompradores, useOperaciones, useVendedores } from "features/firebase";
+import { useCompradores, useVendedores } from "features/firebase";
 import { globalContext } from "pages/_app";
 import { FC, useContext } from "react";
 import PlusSvg from "../../assets/icons/plus.svg";

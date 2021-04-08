@@ -83,7 +83,7 @@ const CarritoDrawer: FC<{ setShowCarrito: Function }> = ({ setShowCarrito }) => 
         css={[startAnimation ? tw`right-0` : null]}
       >
         {usarTodosLosCarritos && carritosVendedoresId.length > 0 ? (
-          <div tw="flex space-x-2">
+          <div tw="flex space-x-2 mb-2">
             <h1>Tienda:</h1>
 
             <select
