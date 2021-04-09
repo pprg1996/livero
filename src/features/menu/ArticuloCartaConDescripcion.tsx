@@ -32,8 +32,8 @@ const ArticuloCartaConDescripcion: FC<{
       <img src={articulo.imgUrl} tw="w-64 h-64 object-contain" />
 
       <div tw="py-2 flex flex-col">
-        <div tw="flex justify-between items-center">
-          <span tw="font-medium text-gray-700">{articulo.titulo}</span>
+        <div tw="flex justify-between items-center w-60 space-x-2">
+          <span tw="font-medium text-gray-700 break-words">{articulo.titulo}</span>
 
           {editable ? (
             <button onClick={eliminarArticulo} tw="text-red-700 border-2 border-red-700 p-1 rounded text-xs">
