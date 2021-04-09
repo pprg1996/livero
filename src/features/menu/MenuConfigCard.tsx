@@ -150,7 +150,16 @@ const MenuArticuloCreator: FC<{ tipo: string; categoria: string; setOpenCrearArt
         <TextInput required ref={register} name="descripcion" as="textarea" placeholder="Descripcion del articulo" />
 
         <div tw="space-x-2">
-          <TextInput required ref={register} name="precio" tw="w-32" type="number" placeholder="Precio" />
+          <TextInput
+            required
+            ref={register}
+            name="precio"
+            tw="w-32"
+            type="number"
+            placeholder="Precio"
+            step={0.1}
+            min={0.1}
+          />
           <span tw="text-gray-700">Dólares</span>
           <select tw="hidden" required ref={register} name="moneda">
             <option value="dolares">Dolares</option>
