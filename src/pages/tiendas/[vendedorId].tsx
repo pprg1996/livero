@@ -76,7 +76,7 @@ const MenuListConTipo: FC<{ tipo: string; listaDeTipo: [string, Articulo][]; ven
 
         <Link href={`/tiendas/${vendedorId}/${tipo}`} passHref>
           <a tw="border rounded p-2 flex items-center justify-center w-56 flex-shrink-0 font-medium text-gray-700">
-            Ver mas {tipo}
+            Ver mas
           </a>
         </Link>
       </div>
