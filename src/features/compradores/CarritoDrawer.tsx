@@ -77,7 +77,7 @@ const CarritoDrawer: FC<{ setShowCarrito: Function }> = ({ setShowCarrito }) => 
   }
 
   return ReactDOM.createPortal(
-    <div tw="bg-gray-700 bg-opacity-40 w-full h-full absolute z-10 flex justify-end right-0 top-0">
+    <div tw="bg-gray-700 bg-opacity-40 w-full h-full fixed z-10 flex justify-end right-0 top-0">
       <div
         ref={carritoDivRef}
         tw="relative -right-96 bg-white transition-all p-2 overflow-auto"

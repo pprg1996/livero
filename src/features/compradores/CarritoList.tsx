@@ -99,7 +99,7 @@ const CarritoItem: FC<{ articuloPack: ArticuloPack; vendedorId: string; carrito:
 
       <div tw="mt-2 flex-grow">
         <div tw="flex space-x-2">
-          <h2 tw="font-medium">{titulo}</h2>
+          <h2 tw="font-medium max-width[10rem]">{titulo}</h2>
           <span>
             {moneda === "dolares" ? "$" : "Bs"}
             {precio}
