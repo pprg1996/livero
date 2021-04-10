@@ -135,8 +135,12 @@ const PagosOperacion = () => {
               ? `Pagar a vendedor: $${(costoCarrito + costoDelivery).toFixed(2)} = Bs${(
                   (costoCarrito + costoDelivery) *
                   dolar
-                ).toFixed(2)}`
-              : `Pagar a repartidor: $${costoDelivery.toFixed(2)} = Bs${(costoDelivery * dolar).toFixed(2)}`}
+                )
+                  .toFixed(2)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
+              : `Pagar a repartidor: $${costoDelivery.toFixed(2)} = Bs${(costoDelivery * dolar)
+                  .toFixed(2)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}
           </h1>
 
           <label tw="flex justify-between items-center">
