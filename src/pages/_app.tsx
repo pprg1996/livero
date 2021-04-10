@@ -8,6 +8,16 @@ import { useRouter } from "next/router";
 import firebase from "firebase/app";
 import Header from "features/global/components/Header";
 import BottomTabs from "features/global/components/BottomTabs";
+import Router from "next/router";
+import NProgress from "nprogress"; //nprogress module
+import "nprogress/nprogress.css"; //styles of nprogress
+
+NProgress.configure({ showSpinner: false });
+
+//Binding events.
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
 
 const CustomGlobalStyles = createGlobalStyle`
 html,
