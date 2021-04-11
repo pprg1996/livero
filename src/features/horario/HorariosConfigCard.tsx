@@ -28,9 +28,9 @@ const HorariosConfigCard = () => {
 
   useEffect(() => {
     if (tipoHorario === "automatico")
-      setTipoDescripcion("Tu tienda abrira y cerrara automaticamente en un horario establecido");
+      setTipoDescripcion(`Tu tienda solo aparecerá en los resultados de busqueda cuando este en horario de apertura`);
     else if (tipoHorario === "manual")
-      setTipoDescripcion("Tu tienda recibira ordenes solo cuando abras y dejara de recibirlas cuando cierres");
+      setTipoDescripcion(`Tu tienda solo aparecerá en los resultados de busqueda cuando este marcada como "Abierta"`);
   }, [tipoHorario]);
 
   const handleHorarioTipoChange = (e: SyntheticEvent) => {
