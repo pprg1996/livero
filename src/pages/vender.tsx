@@ -91,12 +91,12 @@ const Vender = () => {
         <CalificacionPromedio calificaciones={calificaciones} />
       </div>
 
-      <SwitchToggle
+      {/* <SwitchToggle
         checked={tiendaActivada ?? true}
         setChecked={setTiendaActivada}
         label={tiendaActivada ? "Tienda activada" : "Tienda desactivada"}
         wrapperTW={tw`self-center mb-2`}
-      />
+      /> */}
 
       {tiendaActivada ? (
         <>

@@ -67,7 +67,7 @@ const Registro = () => {
         titulo: "Titulo",
         menu: menuDefault,
         horario: horarioDefault,
-        activo: false,
+        activo: true,
         abierto: false,
         ubicacion: ubicacionDefault,
         metodosDePago: metodosDePagoDefault,
