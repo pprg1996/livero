@@ -8,6 +8,8 @@ import tw from "twin.macro";
 import { useCompradores, useVendedores } from "features/firebase";
 import { useRouter } from "next/router";
 import CarritoList from "./CarritoList";
+import { filtrarVendedorPorHorario } from "shared/utils";
+import { Tienda } from "features/tienda/types";
 
 const CarritoDrawer: FC<{ setShowCarrito: Function }> = ({ setShowCarrito }) => {
   const dispatch = useContext(globalContext).dispatch;
@@ -36,40 +38,42 @@ const CarritoDrawer: FC<{ setShowCarrito: Function }> = ({ setShowCarrito }) => 
   useEffect(() => setStartAnimation(true), []);
 
   const procederAPagar = () => {
-    if (!userUID || !carritos) return;
+    if (filtrarVendedorPorHorario(vendedores?.[carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]] as Tienda)) {
+      if (!userUID || !carritos) return;
 
-    const newOperacion: Operacion = {
-      carrito: carritos[carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]],
-      compradorId: userUID,
-      tiendaId: carritoVendedorIdSeleccionado ?? carritosVendedoresId[0],
-      status: "pagando",
-      timestamp: Date.now(),
-      pagos: { repartidor: { paypal: "", zelle: "", pm: "" }, vendedor: { paypal: "", zelle: "", pm: "" } },
-      calificacionesEnviadas: { vendedor: false, repartidor: false },
-      repartidorConfirmado: false,
-    };
+      const newOperacion: Operacion = {
+        carrito: carritos[carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]],
+        compradorId: userUID,
+        tiendaId: carritoVendedorIdSeleccionado ?? carritosVendedoresId[0],
+        status: "pagando",
+        timestamp: Date.now(),
+        pagos: { repartidor: { paypal: "", zelle: "", pm: "" }, vendedor: { paypal: "", zelle: "", pm: "" } },
+        calificacionesEnviadas: { vendedor: false, repartidor: false },
+        repartidorConfirmado: false,
+      };
 
-    const operacionId = firebase.database().ref(`/operaciones`).push(newOperacion).key;
+      const operacionId = firebase.database().ref(`/operaciones`).push(newOperacion).key;
 
-    const sendInfoToFirebase = async () => {
-      await firebase
-        .database()
-        .ref(`tiendas/${carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]}/operaciones`)
-        .push(operacionId);
+      const sendInfoToFirebase = async () => {
+        await firebase
+          .database()
+          .ref(`tiendas/${carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]}/operaciones`)
+          .push(operacionId);
 
-      await firebase.database().ref(`compradores/${userUID}/operaciones`).push(operacionId);
+        await firebase.database().ref(`compradores/${userUID}/operaciones`).push(operacionId);
 
-      await firebase
-        .database()
-        .ref(`compradores/${userUID}/carritos/${carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]}`)
-        .remove();
+        await firebase
+          .database()
+          .ref(`compradores/${userUID}/carritos/${carritoVendedorIdSeleccionado ?? carritosVendedoresId[0]}`)
+          .remove();
 
-      dispatch({ type: Actions.SET_OPERACION_CHAT_ID, payload: operacionId });
-      router.push("/chatcomprador");
-    };
+        dispatch({ type: Actions.SET_OPERACION_CHAT_ID, payload: operacionId });
+        router.push("/chatcomprador");
+      };
 
-    sendInfoToFirebase();
-    setShowCarrito(false);
+      sendInfoToFirebase();
+      setShowCarrito(false);
+    } else alert("Esta tienda esta cerrada");
   };
 
   if (typeof window === "undefined") {
