@@ -1,4 +1,4 @@
-import { useOperaciones } from "features/firebase";
+import { mandarMensaje, useOperaciones } from "features/firebase";
 import { useRouter } from "next/router";
 import { globalContext } from "pages/_app";
 import { FC, useContext, useEffect, useState } from "react";
@@ -23,6 +23,11 @@ const StatusOperacion = () => {
     setTimeout(() => {
       firebase.database().ref(`operaciones/${operacionChatId}/status`).set(nuevoStatus);
     }, 500);
+
+    mandarMensaje(
+      { texto: "Compra pagada. En espera de repartidor...", rol: "info", timestamp: Date.now() },
+      operacionChatId,
+    );
   };
 
   const marcarComoEntregado = () => {
@@ -31,6 +36,11 @@ const StatusOperacion = () => {
     setTimeout(() => {
       firebase.database().ref(`operaciones/${operacionChatId}/status`).set(nuevoStatus);
     }, 500);
+
+    mandarMensaje(
+      { texto: "Compra recibida. Operación finalizada", rol: "info", timestamp: Date.now() },
+      operacionChatId,
+    );
   };
 
   const cancelarOperacion = () => {
@@ -41,6 +51,8 @@ const StatusOperacion = () => {
     setTimeout(() => {
       firebase.database().ref(`operaciones/${operacionChatId}/status`).set(nuevoStatus);
     }, 500);
+
+    mandarMensaje({ texto: "Operación cancelada", rol: "info", timestamp: Date.now() }, operacionChatId);
   };
 
   return (
