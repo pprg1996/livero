@@ -172,7 +172,8 @@ const MensajesList: FC<{ mensajes: Mensaje[]; tipo: "compradores" | "tiendas" | 
         <>
           <div tw="rounded p-1 self-center bg-gray-500">
             <span tw="text-white text-sm">
-              Ve a Detalles ➡ Pagos para chequear tus pagos recibidos y pagar al repartidor cuando se asigne uno
+              Ve a Detalles ➡ Pagos para chequear tus pagos recibidos, y pagar al repartidor cuando finalice la
+              operación
             </span>
           </div>
 
