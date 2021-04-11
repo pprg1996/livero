@@ -12,7 +12,7 @@ const PerfilesOperacion = () => {
   const operacionChatId = useContext(globalContext).state.operacionChatId as string;
   const operaciones = useOperaciones();
   const operacionChat = operaciones?.[operacionChatId];
-  const repartidorConfirmado = operaciones?.[operacionChatId].repartidorConfirmado;
+  const repartidorConfirmado = operaciones?.[operacionChatId]?.repartidorConfirmado;
 
   const { compradorId, tiendaId, repartidorId } = operacionChat
     ? operacionChat
@@ -76,18 +76,20 @@ const PerfilCarta: FC<Props> = ({ tipo, perfil, id }) => {
   return (
     <div>
       <img src={imgUrl} tw="w-52 h-52 object-contain" />
-      <span tw="text-gray-700 font-medium mr-4">
-        {tipo === "compradores"
-          ? "Comprador: "
-          : tipo === "tiendas"
-          ? "Vendedor: "
-          : tipo === "repartidores"
-          ? "Repartidor: "
-          : ""}
-        {nombre}
-      </span>
+      <div tw="flex flex-col items-start">
+        <span tw="text-gray-700 font-medium mr-4">
+          {tipo === "compradores"
+            ? "Comprador: "
+            : tipo === "tiendas"
+            ? "Vendedor: "
+            : tipo === "repartidores"
+            ? "Repartidor: "
+            : ""}
+          {nombre}
+        </span>
 
-      {tipo !== "compradores" ? <CalificacionPromedio calificaciones={calificaciones} /> : null}
+        {tipo !== "compradores" ? <CalificacionPromedio calificaciones={calificaciones} /> : null}
+      </div>
     </div>
   );
 };
