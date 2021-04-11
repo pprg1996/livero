@@ -1,5 +1,6 @@
 import CalificacionPromedio from "features/calificaciones/CalificacionPromedio";
 import { useFirebaseImg, useFirebaseTiendaTitulo, useVendedores } from "features/firebase";
+import HorarioDeTienda from "features/horario/HorarioDeTienda";
 import ArticuloCarta from "features/menu/ArticuloCarta";
 import { Articulo } from "features/menu/types";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
@@ -48,6 +49,8 @@ const Tienda = ({ vendedorId }: InferGetServerSidePropsType<typeof getServerSide
           <CalificacionPromedio calificaciones={calificaciones} />
         </div>
       </div>
+
+      <HorarioDeTienda tienda={vendedores?.[vendedorId]} />
 
       <div tw="rounded shadow p-3 space-y-4">
         {Object.entries(articulosPorTipo).map(([tipo, listaDeTipo]) => (
