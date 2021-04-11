@@ -25,7 +25,7 @@ const StatusOperacion = () => {
     }, 500);
 
     mandarMensaje(
-      { texto: "Compra pagada. En espera de repartidor...", rol: "info", timestamp: Date.now() },
+      { texto: "Compra pagada. En espera de repartidor", rol: "info", timestamp: Date.now() },
       operacionChatId,
     );
   };
@@ -41,6 +41,8 @@ const StatusOperacion = () => {
       { texto: "Compra recibida. Operación finalizada", rol: "info", timestamp: Date.now() },
       operacionChatId,
     );
+
+    mandarMensaje({ texto: "Repartidor en espera de pago", rol: "info", timestamp: Date.now() }, operacionChatId);
   };
 
   const cancelarOperacion = () => {
