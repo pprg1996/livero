@@ -88,7 +88,7 @@ const PerfilCarta: FC<Props> = ({ tipo, perfil, id }) => {
           {nombre}
         </span>
 
-        {tipo !== "compradores" ? <CalificacionPromedio calificaciones={calificaciones} /> : null}
+        {tipo !== "compradores" ? <CalificacionPromedio calificaciones={calificaciones} posicion="left" /> : null}
       </div>
     </div>
   );
