@@ -57,14 +57,32 @@ const Comprar = () => {
       );
     }
 
-    const fuseInstance = new Fuse(articulosDeBusqueda, {
+    let fuseInstance = new Fuse(articulosDeBusqueda, {
       keys: ["articulo.titulo", "articulo.descripcion", "articulo.tipo", "articulo.categoria", "vendedor.titulo"],
       includeScore: true,
       threshold: 0.5,
     });
 
-    const fuseResultado = fuseInstance.search(terminoABuscar);
-    // console.log(fuseResultado);
+    let fuseResultado: Fuse.FuseResult<{
+      articulo: Articulo;
+      articuloId: string;
+      vendedorId: string;
+      vendedor: Tienda;
+    }>[] = [];
+
+    for (let termino of terminoABuscar.split(" ")) {
+      fuseResultado = fuseInstance.search(termino);
+
+      const nuevoArticulosDeBusqueda = fuseResultado.map(r => r.item);
+
+      fuseInstance = new Fuse(nuevoArticulosDeBusqueda, {
+        keys: ["articulo.titulo", "articulo.descripcion", "articulo.tipo", "articulo.categoria", "vendedor.titulo"],
+        includeScore: true,
+        threshold: 0.5,
+      });
+    }
+
+    console.log(fuseResultado);
 
     setResultadoBusqueda(fuseResultado);
 
