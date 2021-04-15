@@ -122,7 +122,7 @@ const UbicacionConfigCard = () => {
         </div>
       ) : (
         <button onClick={() => setIsModUbicacion(true)} tw="bg-blue-700 p-1.5 rounded  text-white text-sm">
-          Cambiar ubicacion
+          Cambiar ubicación
         </button>
       )}
     </Card>
