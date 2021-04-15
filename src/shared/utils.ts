@@ -108,3 +108,13 @@ export const meterArticuloAlCarrito = (
     firebase.database().ref(`compradores/${compradorId}/carritos/${vendedorId}/`).set(newCarrito);
   }
 };
+
+export const amPM = (cadena: string): string => {
+  const [horaString, minutoString] = cadena.split(":");
+  const horaNumber = Number(horaString);
+
+  if (horaNumber === 0) return `12:${minutoString} AM`;
+  else if (horaNumber === 12) return `12:${minutoString} PM`;
+  else if (horaNumber > 12) return `${horaNumber - 12}:${minutoString} PM`;
+  else return `${cadena} AM`;
+};

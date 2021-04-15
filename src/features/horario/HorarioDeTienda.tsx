@@ -1,7 +1,7 @@
 import { Tienda } from "features/tienda/types";
 import { FC, useRef, useState } from "react";
 import { useClickOutside } from "shared/hooks";
-import { filtrarVendedorPorHorario } from "shared/utils";
+import { amPM, filtrarVendedorPorHorario } from "shared/utils";
 
 const HorarioDeTienda: FC<{ tienda: Tienda | undefined }> = ({ tienda }) => {
   const [showHorario, setShowHorario] = useState(false);
@@ -27,46 +27,49 @@ const HorarioDeTienda: FC<{ tienda: Tienda | undefined }> = ({ tienda }) => {
     >
       La tienda esta {filtrarVendedorPorHorario(tienda) ? "abierta" : "cerrada"}
       {showHorario ? (
-        <div tw="absolute z-20 left-1/2 transform -translate-x-1/2 top-5 bg-white shadow border p-2 rounded max-h-32 w-52 overflow-auto flex flex-col divide-y">
+        <div tw="absolute z-20 left-1/2 transform -translate-x-1/2 top-5 bg-white shadow border p-2 rounded max-h-32 w-72 overflow-auto flex flex-col divide-y">
           {tienda.horario.dias.lunes.isAbierto ? (
             <span>
-              Lunes de {tienda.horario.dias.lunes.horaApertura} a {tienda.horario.dias.lunes.horaCierre}
+              Lunes de {amPM(tienda.horario.dias.lunes.horaApertura)} a {amPM(tienda.horario.dias.lunes.horaCierre)}
             </span>
           ) : null}
 
           {tienda.horario.dias.martes.isAbierto ? (
             <span>
-              Martes de {tienda.horario.dias.martes.horaApertura} a {tienda.horario.dias.martes.horaCierre}
+              Martes de {amPM(tienda.horario.dias.martes.horaApertura)} a {amPM(tienda.horario.dias.martes.horaCierre)}
             </span>
           ) : null}
 
           {tienda.horario.dias.miercoles.isAbierto ? (
             <span>
-              Miercoles de {tienda.horario.dias.miercoles.horaApertura} a {tienda.horario.dias.miercoles.horaCierre}
+              Miercoles de {amPM(tienda.horario.dias.miercoles.horaApertura)} a{" "}
+              {amPM(tienda.horario.dias.miercoles.horaCierre)}
             </span>
           ) : null}
 
           {tienda.horario.dias.jueves.isAbierto ? (
             <span>
-              Jueves de {tienda.horario.dias.jueves.horaApertura} a {tienda.horario.dias.jueves.horaCierre}
+              Jueves de {amPM(tienda.horario.dias.jueves.horaApertura)} a {amPM(tienda.horario.dias.jueves.horaCierre)}
             </span>
           ) : null}
 
           {tienda.horario.dias.viernes.isAbierto ? (
             <span>
-              Viernes de {tienda.horario.dias.viernes.horaApertura} a {tienda.horario.dias.viernes.horaCierre}
+              Viernes de {amPM(tienda.horario.dias.viernes.horaApertura)} a{" "}
+              {amPM(tienda.horario.dias.viernes.horaCierre)}
             </span>
           ) : null}
 
           {tienda.horario.dias.sabado.isAbierto ? (
             <span>
-              sábado de {tienda.horario.dias.sabado.horaApertura} a {tienda.horario.dias.sabado.horaCierre}
+              sábado de {amPM(tienda.horario.dias.sabado.horaApertura)} a {amPM(tienda.horario.dias.sabado.horaCierre)}
             </span>
           ) : null}
 
           {tienda.horario.dias.domingo.isAbierto ? (
             <span>
-              Domingo de {tienda.horario.dias.domingo.horaApertura} a {tienda.horario.dias.domingo.horaCierre}
+              Domingo de {amPM(tienda.horario.dias.domingo.horaApertura)} a{" "}
+              {amPM(tienda.horario.dias.domingo.horaCierre)}
             </span>
           ) : null}
         </div>
