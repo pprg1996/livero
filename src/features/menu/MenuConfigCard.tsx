@@ -146,7 +146,14 @@ const MenuArticuloCreator: FC<{ tipo: string; categoria: string; setOpenCrearArt
           Elegir foto
         </button>
 
-        <TextInput required ref={register} name="titulo" type="text" placeholder="Nombre del artículo" />
+        <TextInput
+          required
+          ref={register}
+          name="titulo"
+          type="text"
+          placeholder="Nombre del artículo"
+          autoComplete="off"
+        />
         <TextInput required ref={register} name="descripcion" as="textarea" placeholder="Descripcion del artículo" />
 
         <div tw="space-x-2">
