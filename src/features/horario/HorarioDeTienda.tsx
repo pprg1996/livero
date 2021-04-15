@@ -27,7 +27,7 @@ const HorarioDeTienda: FC<{ tienda: Tienda | undefined }> = ({ tienda }) => {
     >
       La tienda esta {filtrarVendedorPorHorario(tienda) ? "abierta" : "cerrada"}
       {showHorario ? (
-        <div tw="absolute z-20 left-1/2 transform -translate-x-1/2 top-5 bg-white shadow border p-2 rounded max-h-32 w-72 overflow-auto flex flex-col divide-y">
+        <div tw="absolute z-20 left-1/2 transform -translate-x-1/2 top-5 bg-white shadow border p-2 rounded w-72 overflow-auto flex flex-col divide-y">
           {tienda.horario.dias.lunes.isAbierto ? (
             <span>
               Lunes de {amPM(tienda.horario.dias.lunes.horaApertura)} a {amPM(tienda.horario.dias.lunes.horaCierre)}
