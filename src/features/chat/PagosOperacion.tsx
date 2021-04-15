@@ -214,7 +214,7 @@ const PagosOperacion = () => {
 
                     {pathname === "/chatvendedor" && pagosDeOperacion?.repartidor.paypal ? (
                       <span tw="my-3">
-                        Correo desde donde enviaste el págo:
+                        Correo desde donde enviaste el pago:
                         <br />
                         {pagosDeOperacion.repartidor.paypal}
                       </span>
@@ -222,7 +222,7 @@ const PagosOperacion = () => {
 
                     {pathname === "/chatcomprador" && pagosDeOperacion?.vendedor.paypal ? (
                       <span tw="my-3">
-                        Correo desde donde enviaste el págo:
+                        Correo desde donde enviaste el pago:
                         <br />
                         {pagosDeOperacion.vendedor.paypal}
                       </span>
@@ -231,7 +231,7 @@ const PagosOperacion = () => {
                     <input
                       id="input-paypal"
                       type="email"
-                      placeholder="Correo desde donde hiciste el págo"
+                      placeholder="Correo desde donde enviaste el pago"
                       tw="border rounded p-1 my-2"
                     />
                     <button onClick={enviarPago} data-pago="paypal" tw="text-white rounded bg-blue-700 p-2">
