@@ -30,7 +30,7 @@ const MenuConfigCard = () => {
     <Card className="menu" tw="mb-4">
       <div tw="flex flex-col gap-2 py-2">
         <div tw="flex justify-between">
-          <h1 tw="font-medium text-lg">Menu</h1>
+          <h1 tw="font-medium text-lg">Menú</h1>
 
           {categoria !== "todo" ? (
             <button tw="w-6" onClick={() => setOpenCrearArticulo(true)}>
@@ -55,7 +55,7 @@ const MenuConfigCard = () => {
             <ArticuloCartaConDescripcion key={id} articulo={articulo} id={id} editable />
           ))
         ) : (
-          <h2>No tienes articulos en tu menu</h2>
+          <h2>No tienes artículos en tu menú</h2>
         )}
       </div>
     </Card>
@@ -113,7 +113,7 @@ const MenuArticuloCreator: FC<{ tipo: string; categoria: string; setOpenCrearArt
   return (
     <form tw="space-y-3" onSubmit={handleArticleCreation}>
       <div tw="flex justify-between">
-        <h2 tw="font-medium text-gray-700">Nuevo articulo</h2>
+        <h2 tw="font-medium text-gray-700">Nuevo artículo</h2>
 
         <div tw="flex flex-col items-end">
           <span tw="text-gray-700">Tipo: {tipo.charAt(0).toUpperCase() + tipo.substring(1)}</span>
@@ -146,8 +146,8 @@ const MenuArticuloCreator: FC<{ tipo: string; categoria: string; setOpenCrearArt
           Elegir foto
         </button>
 
-        <TextInput required ref={register} name="titulo" type="text" placeholder="Nombre del articulo" />
-        <TextInput required ref={register} name="descripcion" as="textarea" placeholder="Descripcion del articulo" />
+        <TextInput required ref={register} name="titulo" type="text" placeholder="Nombre del artículo" />
+        <TextInput required ref={register} name="descripcion" as="textarea" placeholder="Descripcion del artículo" />
 
         <div tw="space-x-2">
           <TextInput
@@ -171,7 +171,7 @@ const MenuArticuloCreator: FC<{ tipo: string; categoria: string; setOpenCrearArt
       <div tw="space-x-2 flex justify-end">
         <input
           type="submit"
-          value="Crear articulo"
+          value="Crear artículo"
           tw="border border-blue-700 bg-blue-700 rounded p-1.5 text-sm text-white"
         />
 

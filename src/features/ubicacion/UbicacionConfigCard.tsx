@@ -94,7 +94,7 @@ const UbicacionConfigCard = () => {
         setIsModUbicacion(false);
 
         setTimeout(() => {
-          alert("Nueva ubicacion guardada");
+          alert("Nueva ubicación guardada");
         }, 1200);
       });
   };
@@ -106,11 +106,11 @@ const UbicacionConfigCard = () => {
       {isModUbicacion ? (
         <div tw="border-none flex gap-2">
           <button onClick={goToCurrentLocation} tw="bg-blue-700 p-1.5 rounded  text-white text-sm">
-            Ir a tu ubicacion actual
+            Ir a tu ubicación actual
           </button>
 
           <button onClick={saveNewLocation} tw="bg-blue-700 p-1.5 rounded text-white text-sm ml-auto">
-            Guardar ubicacion
+            Guardar ubicación
           </button>
 
           <button
